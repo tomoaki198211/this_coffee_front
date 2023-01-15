@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import { useAuthStore } from "./stores/auth";
+import GlobalNav from "./components/GlobalNav.vue";
 
 const authStore = useAuthStore();
-
-const onLogout = (): void => {
-  const authStore = useAuthStore();
-  authStore.logout();
-  authStore;
-};
 </script>
 
 <template>
@@ -17,9 +12,10 @@ const onLogout = (): void => {
     <div v-if="authStore.uid !== ''">
       <p>ユーザー:{{ authStore.uid }}</p>
     </div>
-    <nav>
+    <GlobalNav />
+    <!-- <nav>
       <ul>
-        <template v-if="authStore.client == ''">
+        <template v-if="authStore.uid == ''">
           <li><RouterLink to="/">Home</RouterLink></li>
           <li><RouterLink to="/auth/login">ログイン</RouterLink></li>
           <li><RouterLink to="/auth/signup">アカウント新規登録</RouterLink></li>
@@ -29,20 +25,20 @@ const onLogout = (): void => {
           <li><RouterLink to="/reviews">レビュー一覧</RouterLink></li>
           <li><RouterLink to="/review/post">レビュー投稿</RouterLink></li>
           <li><RouterLink to="/recommendation">おすすめ</RouterLink></li>
-          <li><a href="" @click="onLogout">ログアウト</a></li>
+          <li><RouterLink to="/auth/login">ログイン</RouterLink></li>
         </template>
       </ul>
-    </nav>
+    </nav> -->
   </header>
   <main>
-    <RouterView />
+    <RouterView></RouterView>
   </main>
 </template>
 
 <style scoped>
 header {
   height: 100px;
-  background-color: bisque;
+  background-color: rgb(220, 204, 212);
 }
 nav {
   text-align: center;
