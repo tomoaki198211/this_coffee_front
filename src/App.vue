@@ -1,15 +1,36 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
+import { useAuthStore } from "./stores/auth";
+
+const authStore = useAuthStore();
+
+const onLogout = (): void => {
+  const authStore = useAuthStore();
+  authStore.logout();
+  authStore;
+};
 </script>
 
 <template>
   <header>
     <h1>this_coffee!!</h1>
+    <div v-if="authStore.uid !== ''">
+      <p>ユーザー:{{ authStore.uid }}</p>
+    </div>
     <nav>
       <ul>
-        <li><RouterLink to="/">Home</RouterLink></li>
-        <li><RouterLink to="/login">ログイン</RouterLink></li>
-        <li><RouterLink to="/signup">アカウント登録</RouterLink></li>
+        <template v-if="authStore.client == ''">
+          <li><RouterLink to="/">Home</RouterLink></li>
+          <li><RouterLink to="/auth/login">ログイン</RouterLink></li>
+          <li><RouterLink to="/auth/signup">アカウント新規登録</RouterLink></li>
+        </template>
+        <template v-else>
+          <li><RouterLink to="/user">ユーザー情報</RouterLink></li>
+          <li><RouterLink to="/reviews">レビュー一覧</RouterLink></li>
+          <li><RouterLink to="/review/post">レビュー投稿</RouterLink></li>
+          <li><RouterLink to="/recommendation">おすすめ</RouterLink></li>
+          <li><a href="" @click="onLogout">ログアウト</a></li>
+        </template>
       </ul>
     </nav>
   </header>
@@ -33,7 +54,7 @@ nav ul {
 nav ul li {
   list-style: none;
   display: inline-block;
-  width: 18%;
-  min-width: 90px;
+  width: 15%;
+  min-width: 50px;
 }
 </style>

@@ -79,7 +79,7 @@ export const useAuthStore = defineStore({
       this.client = "";
       this.uid = "";
     },
-    isauthencated(): boolean {
+    isAuthencated(): boolean {
       return !!this.client;
     },
   },
