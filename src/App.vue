@@ -2,9 +2,11 @@
 import { ref } from "vue";
 import { RouterLink, RouterView } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import { useMessageStore } from "@/stores/message";
 import GlobalNav from "@/components/GlobalNav.vue";
 
 const authStore = useAuthStore();
+const messageStore = useMessageStore();
 </script>
 
 <template>
@@ -32,7 +34,9 @@ const authStore = useAuthStore();
     </nav> -->
   </header>
   <main>
-    {{ authStore.message }}
+    <template v-if="(messageStore.flag = true)">
+      {{ messageStore.text }}
+    </template>
     <RouterView></RouterView>
   </main>
 </template>

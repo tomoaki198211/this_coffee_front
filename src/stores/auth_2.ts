@@ -61,12 +61,12 @@ export const useAuthStore = defineStore({
             this.uid = response.headers["uid"];
             console.log("status:", response.status);
             console.log(response.data);
-            messageStore.message_display("ログインしました");
+            messageStore.text = "ログインしました";
             // console.log(response.data.erros);
           });
       } catch (error) {
         console.log(error.response.status);
-        messageStore.message_display(error.response.data.errors[0]);
+        messageStore.text = error.response.data.errors[0];
       }
     },
     async logout(): Promise<void> {
@@ -85,7 +85,6 @@ export const useAuthStore = defineStore({
       this.access_token = "";
       this.client = "";
       this.uid = "";
-      messageStore.message_display("ログアウトしました");
     },
     isAuthencated(): boolean {
       return !!this.client;

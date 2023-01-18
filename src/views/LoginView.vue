@@ -10,8 +10,8 @@ const user = reactive({
 });
 
 const router = useRouter();
-
 const authStore = useAuthStore();
+
 const onLogin = (): void => {
   const authStore = useAuthStore();
   const email = user.email;
