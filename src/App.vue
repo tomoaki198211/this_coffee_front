@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { RouterLink, RouterView } from "vue-router";
-import { useAuthStore } from "./stores/auth";
-import GlobalNav from "./components/GlobalNav.vue";
+import { useAuthStore } from "@/stores/auth";
+import GlobalNav from "@/components/GlobalNav.vue";
 
 const authStore = useAuthStore();
 </script>
@@ -31,6 +32,7 @@ const authStore = useAuthStore();
     </nav> -->
   </header>
   <main>
+    {{ authStore.message }}
     <RouterView></RouterView>
   </main>
 </template>

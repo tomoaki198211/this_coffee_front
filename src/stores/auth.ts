@@ -7,6 +7,7 @@ export const useAuthStore = defineStore({
     uid: localStorage.getItem("uid"),
     access_token: localStorage.getItem("access-token"),
     client: localStorage.getItem("client"),
+    message: "",
     returnUrl: null,
   }),
   actions: {
@@ -58,9 +59,13 @@ export const useAuthStore = defineStore({
             this.client = response.headers["client"];
             this.uid = response.headers["uid"];
             console.log("status:", response.status);
+            console.log(response.data);
+            this.message = "ログインしました";
+            // console.log(response.data.erros);
           });
       } catch (error) {
-        console.log(error);
+        console.log(error.response.status);
+        this.message = error.response.data.errors[0];
       }
     },
     async logout(): Promise<void> {
