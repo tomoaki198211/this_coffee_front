@@ -1,44 +1,27 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { RouterLink, RouterView } from "vue-router";
-import { useAuthStore } from "@/stores/auth";
-import { useMessageStore } from "@/stores/message";
-import GlobalNav from "@/components/GlobalNav.vue";
+import { useAuthStore } from "./stores/auth";
+import { useMessageStore } from "./stores/message";
+import GlobalNav from "./components/GlobalNav.vue";
+import GlobalMessage from "./components/GlobalMessage.vue";
 
 const authStore = useAuthStore();
 const messageStore = useMessageStore();
 </script>
 
 <template>
-  <header>
-    <h1>this_coffee!!</h1>
-    <div v-if="authStore.uid !== ''">
-      <p>ユーザー:{{ authStore.uid }}</p>
-    </div>
-    <GlobalNav />
-    <!-- <nav>
-      <ul>
-        <template v-if="authStore.uid == ''">
-          <li><RouterLink to="/">Home</RouterLink></li>
-          <li><RouterLink to="/auth/login">ログイン</RouterLink></li>
-          <li><RouterLink to="/auth/signup">アカウント新規登録</RouterLink></li>
-        </template>
-        <template v-else>
-          <li><RouterLink to="/user">ユーザー情報</RouterLink></li>
-          <li><RouterLink to="/reviews">レビュー一覧</RouterLink></li>
-          <li><RouterLink to="/review/post">レビュー投稿</RouterLink></li>
-          <li><RouterLink to="/recommendation">おすすめ</RouterLink></li>
-          <li><RouterLink to="/auth/login">ログイン</RouterLink></li>
-        </template>
-      </ul>
-    </nav> -->
-  </header>
-  <main>
-    <template v-if="(messageStore.flag = true)">
-      {{ messageStore.text }}
-    </template>
-    <RouterView></RouterView>
-  </main>
+  <div>
+    <header>
+      <h1>this_coffee!!</h1>
+      <template v-if="authStore.uid !== ''">
+        <p>ユーザー:{{ authStore.uid }}</p>
+      </template>
+      <GlobalNav />
+    </header>
+    <GlobalMessage />
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>

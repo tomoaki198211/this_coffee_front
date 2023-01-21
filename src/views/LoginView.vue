@@ -2,7 +2,7 @@
 import { reactive, computed } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "../stores/auth";
 
 type userLoginObj = {
   email: string;

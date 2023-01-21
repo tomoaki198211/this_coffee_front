@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, computed } from "vue";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "../stores/auth";
 
 type userSignObj = {
   name: string;

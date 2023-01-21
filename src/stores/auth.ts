@@ -2,15 +2,15 @@ import { defineStore } from "pinia";
 import axios, { type AxiosResponse } from "axios";
 import { useMessageStore } from "@/stores/message";
 
-type State = {
-  uid: string | null;
-  access_token: string | null;
-  client: string | null;
+type User = {
+  uid?: string | null;
+  access_token?: string | null;
+  client?: string | null;
 };
+
 export const useAuthStore = defineStore({
   id: "auth",
-
-  state: (): State => ({
+  state: (): User => ({
     uid: localStorage.getItem("uid"),
     access_token: localStorage.getItem("access-token"),
     client: localStorage.getItem("client"),
@@ -32,15 +32,12 @@ export const useAuthStore = defineStore({
             name: name,
           })
           .then((response: AxiosResponse<any>) => {
-            localStorage.setItem("client", response.headers["client"] || "");
-            localStorage.setItem("uid", response.headers["uid"] || "");
-            localStorage.setItem(
-              "access-token",
-              response.headers["access-token"] || ""
-            );
-            this.access_token = response.headers["access-token"] || "";
-            this.client = response.headers["client"] || "";
-            this.uid = response.headers["uid"] || "";
+            localStorage["client"] = response.headers["client"];
+            localStorage["uid"] = response.headers["uid"];
+            localStorage["access-token"] = response.headers["access-token"];
+            this.access_token = response.headers["access-token"];
+            this.client = response.headers["client"];
+            this.uid = response.headers["uid"];
             console.log("status:", response.status);
           });
       } catch (error: any) {
@@ -58,19 +55,15 @@ export const useAuthStore = defineStore({
             password: password,
           })
           .then((response) => {
-            localStorage.setItem("client", response.headers["client"] || "");
-            localStorage.setItem("uid", response.headers["uid"] || "");
-            localStorage.setItem(
-              "access-token",
-              response.headers["access-token"] || ""
-            );
-            this.access_token = response.headers["access-token"] || "";
-            this.client = response.headers["client"] || "";
-            this.uid = response.headers["uid"] || "";
+            localStorage["client"] = response.headers["client"];
+            localStorage["uid"] = response.headers["uid"];
+            localStorage["access-token"] = response.headers["access-token"];
+            this.access_token = response.headers["access-token"];
+            this.client = response.headers["client"];
+            this.uid = response.headers["uid"];
             console.log("status:", response.status);
             console.log(response.data);
             messageStore.flash("ログインしました");
-            // console.log(response.data.erros);
           });
       } catch (error: any) {
         console.log(error.response.status);
@@ -86,13 +79,12 @@ export const useAuthStore = defineStore({
           client: this.client,
         },
       });
-      // localStorage.removeItem("user");
       localStorage.removeItem("access-token");
       localStorage.removeItem("uid");
       localStorage.removeItem("client");
-      this.access_token = "";
-      this.client = "";
-      this.uid = "";
+      this.access_token = null;
+      this.client = null;
+      this.uid = null;
       messageStore.flash("ログアウトしました");
     },
     isAuthencated(): boolean {
