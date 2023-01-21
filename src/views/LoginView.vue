@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { reactive, computed } from "vue";
-import { useRouter } from "vue-router";
 import axios from "axios";
 import { useAuthStore } from "../stores/auth";
 
@@ -14,7 +13,6 @@ const user: userLoginObj = reactive({
   password: "",
 });
 
-const router = useRouter();
 const authStore = useAuthStore();
 
 const onLogin = (): void => {
@@ -24,7 +22,6 @@ const onLogin = (): void => {
   authStore.login(email, password);
   user.email = "";
   user.password = "";
-  router.push({ name: "reviews" });
 };
 </script>
 <template>

@@ -3,6 +3,7 @@ import { useAuthStore } from "@/stores/auth";
 import LoginView from "../views/LoginView.vue";
 import HomeView from "../views/HomeView.vue";
 import SignupView from "../views/SignupView.vue";
+import Reviews from "../views/ReviewsView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +22,11 @@ const router = createRouter({
       path: "/auth/signup",
       name: "signup",
       component: SignupView,
+    },
+    {
+      path: "/reviews",
+      name: "reviews",
+      component: Reviews,
     },
   ],
 });

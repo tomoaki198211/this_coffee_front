@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axios, { type AxiosResponse } from "axios";
 import { useMessageStore } from "@/stores/message";
+import router from "../router";
 
 type User = {
   uid?: string | null;
@@ -64,6 +65,7 @@ export const useAuthStore = defineStore({
             console.log("status:", response.status);
             console.log(response.data);
             messageStore.flash("ログインしました");
+            router.push({ path: "/reviews" });
           });
       } catch (error: any) {
         console.log(error.response.status);
