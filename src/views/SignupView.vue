@@ -2,7 +2,14 @@
 import { reactive, computed } from "vue";
 import { useAuthStore } from "@/stores/auth";
 
-const user = reactive({
+type userSignObj = {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+};
+
+const user: userSignObj = reactive({
   name: "",
   email: "",
   password: "",

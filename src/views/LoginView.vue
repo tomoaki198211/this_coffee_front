@@ -4,7 +4,12 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import { useAuthStore } from "@/stores/auth";
 
-const user = reactive({
+type userLoginObj = {
+  email: string;
+  password: string;
+};
+
+const user: userLoginObj = reactive({
   email: "",
   password: "",
 });
@@ -17,9 +22,9 @@ const onLogin = (): void => {
   const email = user.email;
   const password = user.password;
   authStore.login(email, password);
-  router.push({ name: "reviews" });
   user.email = "";
   user.password = "";
+  router.push({ name: "reviews" });
 };
 </script>
 <template>
