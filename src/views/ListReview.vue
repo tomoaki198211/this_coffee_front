@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios, { type AxiosResponse } from "axios";
+import { RouterLink } from "vue-router";
 
 const authStore = useAuthStore();
 const index = reactive({
@@ -11,8 +12,6 @@ const index = reactive({
 setReview();
 
 async function setReview(): Promise<void> {
-  const header = authStore.get_headers;
-  console.log(header);
   await axios
     .get("http://localhost:3000/api/v1/reviews", {
       headers: {
@@ -32,9 +31,11 @@ async function setReview(): Promise<void> {
   <div>
     <ul>
       <li v-for="review in index.reviews" :key="review.id">
-        投稿者:{{ review.user.name }}<br />
-        備考:{{ review.remarks }}<br />
-        商品名:{{ review.coffee.coffee_property.name }}
+        <RouterLink v-bind:to="{ name: 'review', params: { id: review.id } }">
+          投稿者:{{ review.user.name }}<br />
+          備考:{{ review.remarks }}<br />
+          商品名:{{ review.coffee.coffee_property.name }}
+        </RouterLink>
       </li>
     </ul>
   </div>

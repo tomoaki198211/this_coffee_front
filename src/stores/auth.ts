@@ -16,6 +16,7 @@ export const useAuthStore = defineStore({
     access_token: localStorage.getItem("access-token"),
     client: localStorage.getItem("client"),
   }),
+
   actions: {
     async signup(
       email: string,

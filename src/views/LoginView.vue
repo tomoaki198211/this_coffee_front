@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { reactive, computed } from "vue";
-import axios from "axios";
 import { useAuthStore } from "../stores/auth";
 
 type userLoginObj = {
