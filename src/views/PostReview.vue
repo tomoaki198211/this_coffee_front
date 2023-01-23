@@ -2,6 +2,7 @@
 import { reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
 import axios, { type AxiosResponse } from "axios";
+import type { Coffee } from "./CoffeeInterfaces";
 
 const evalutions = [
   { id: 5, text: "5:高い" },
@@ -11,7 +12,10 @@ const evalutions = [
   { id: 1, text: "1:低い" },
 ];
 
-const item = reactive({
+const authStore = useAuthStore();
+
+const item: Coffee = reactive({
+  coffee_id: "",
   intuition: 3,
   efficiency: 3,
   flavor: 3,

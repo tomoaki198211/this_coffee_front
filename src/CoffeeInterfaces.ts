@@ -1,8 +1,7 @@
 export interface Coffee {
-  id: number;
-  user_id: number;
   coffee_id: number;
   intuition: number;
+  efficiency: number;
   flavor: number;
   sweetness: number;
   rich: number;
@@ -10,6 +9,4 @@ export interface Coffee {
   bitter: number;
   remarks: string;
   setting: boolean;
-  created_at: Date;
-  updated_at: Date;
 }
