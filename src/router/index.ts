@@ -5,6 +5,7 @@ import HomeView from "../views/HomeView.vue";
 import SignupView from "../views/SignupView.vue";
 import ListReview from "../views/ListReview.vue";
 import PostReview from "../views/PostReview.vue";
+import ListCoffee from "@/views/ListCoffee.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +24,11 @@ const router = createRouter({
       path: "/auth/signup",
       name: "signup",
       component: SignupView,
+    },
+    {
+      path: "/coffees",
+      name: "coffees",
+      component: ListCoffee,
     },
     {
       path: "/reviews",
