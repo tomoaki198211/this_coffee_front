@@ -24,7 +24,7 @@ const onLogout = (): void => {
         <template v-else>
           <!-- <li><RouterLink to="/user">ユーザー情報</RouterLink></li> -->
           <li><RouterLink to="/reviews">レビュー一覧</RouterLink></li>
-          <li><RouterLink to="/review/post">レビュー投稿</RouterLink></li>
+          <li><RouterLink to="/coffees">レビュー投稿</RouterLink></li>
           <li><RouterLink to="/recommendation">おすすめ</RouterLink></li>
           <li><a href="#" @click="onLogout">ログアウト</a></li>
         </template>

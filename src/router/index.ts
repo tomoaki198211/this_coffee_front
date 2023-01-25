@@ -4,7 +4,6 @@ import LoginView from "../views/LoginView.vue";
 import HomeView from "../views/HomeView.vue";
 import SignupView from "../views/SignupView.vue";
 import ListReview from "../views/ListReview.vue";
-import PostReview from "../views/PostReview.vue";
 import ListCoffee from "@/views/ListCoffee.vue";
 
 const router = createRouter({
@@ -36,9 +35,18 @@ const router = createRouter({
       component: ListReview,
     },
     {
-      path: "/review/post",
+      path: "/review/post/:id",
       name: "post_review",
-      component: PostReview,
+      //動的インポート
+      component: () => {
+        return import("../views/PostReview.vue");
+      },
+      props: (routes) => {
+        const idNum = Number(routes.params.id);
+        return {
+          id: idNum,
+        };
+      },
     },
     {
       path: "/review/:id",

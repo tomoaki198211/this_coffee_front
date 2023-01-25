@@ -3,7 +3,10 @@ import { reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
 import axios, { type AxiosResponse } from "axios";
 import type { Coffee } from "./CoffeeInterfaces";
-
+interface Props {
+  id: number;
+}
+const props = defineProps<Props>();
 const evalutions = [
   { id: 5, text: "5:高い" },
   { id: 4, text: "4:やや高い" },
@@ -15,7 +18,7 @@ const evalutions = [
 const authStore = useAuthStore();
 
 const item: Coffee = reactive({
-  coffee_id: "",
+  coffee_id: props.id,
   intuition: 3,
   efficiency: 3,
   flavor: 3,
@@ -26,10 +29,13 @@ const item: Coffee = reactive({
   remarks: "",
   setting: false,
 });
+
+//show画面
 </script>
 
 <template>
   <div>
+    {{ item.coffee_id }}
     <table>
       <thead>
         <tr>
