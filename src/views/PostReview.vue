@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from "vue";
+import { ref, reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
 import axios, { type AxiosResponse } from "axios";
 import type { Coffee } from "./CoffeeInterfaces";
@@ -7,6 +7,7 @@ interface Props {
   id: number;
 }
 const props = defineProps<Props>();
+const authStore = useAuthStore();
 const evalutions = [
   { id: 5, text: "5:高い" },
   { id: 4, text: "4:やや高い" },
@@ -14,9 +15,6 @@ const evalutions = [
   { id: 2, text: "2:やや低い" },
   { id: 1, text: "1:低い" },
 ];
-
-const authStore = useAuthStore();
-
 const item: Coffee = reactive({
   coffee_id: props.id,
   intuition: 3,
@@ -29,13 +27,61 @@ const item: Coffee = reactive({
   remarks: "",
   setting: false,
 });
+const p_name = ref("");
 
-//show画面
+showCoffee();
+
+//選択したマスターのshow画面
+async function showCoffee(): Promise<void> {
+  await axios
+    .get(`http://localhost:3000/api/v1/coffees/${props.id}`, {
+      headers: {
+        uid: authStore.uid,
+        "access-token": authStore.access_token,
+        client: authStore.client,
+      },
+    })
+    .then((response: AxiosResponse<any>) => {
+      p_name.value = response.data;
+      console.log(response.data);
+    });
+}
+
+//投稿処理
+async function postCoffee(): Promise<void> {
+  const data = {
+    review: {
+      coffee_id: item.coffee_id,
+      intuition: item.intuition,
+      efficiency: item.efficiency,
+      flavor: item.flavor,
+      sweetness: item.sweetness,
+      rich: item.rich,
+      acidity: item.acidity,
+      bitter: item.bitter,
+      remarks: item.remarks,
+      setting: item.setting,
+    },
+  };
+  const config = {
+    headers: {
+      uid: authStore.uid,
+      "access-token": authStore.access_token,
+      client: authStore.client,
+    },
+  };
+  await axios
+    .post("http://localhost:3000/api/v1/reviews", data, config)
+    .then((response) => {
+      console.log(response.data);
+    });
+}
 </script>
 
 <template>
   <div>
-    {{ item.coffee_id }}
+    販売店: {{ p_name ? p_name.coffee.coffee_property.store.name : "" }}<br />
+    商品名: {{ p_name ? p_name.coffee.coffee_property.name : "" }}
     <table>
       <thead>
         <tr>
@@ -157,5 +203,6 @@ const item: Coffee = reactive({
         </tr>
       </tbody>
     </table>
+    <button @click="postCoffee()">投稿する</button>
   </div>
 </template>
