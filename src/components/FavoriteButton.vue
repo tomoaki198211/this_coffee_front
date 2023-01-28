@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
 import { useAuthStore } from "../stores/auth";
+import { useMessageStore } from "@/stores/message";
 import axios from "axios";
 
 interface Props {
@@ -11,10 +12,10 @@ const authStore = useAuthStore();
 const favorites = reactive({
   list: [],
 });
-
 const count = computed((): number => {
   return favorites.list.length;
 });
+const messageStore = useMessageStore();
 
 setFavorite();
 
@@ -29,7 +30,7 @@ const isFavorited = computed((): Boolean => {
 //idを探す
 const findFavoriteId = () => {
   const favorite = favorites.list.find((favorite) => {
-    return favorite.user_id === 23;
+    return favorite.user_id === Number(authStore.user_id);
   });
   if (favorite) {
     return favorite.id;
@@ -80,6 +81,8 @@ async function registerFavorite(): Promise<void> {
     .then((response) => {
       console.log(response.data);
       favorites.list = response.data;
+      messageStore.flash("お気に入りしました");
+      setFavorite();
     });
 }
 
@@ -99,20 +102,10 @@ async function deleteFavorite(): Promise<void> {
     )
     .then((response) => {
       console.log(response.data);
+      messageStore.flash("お気に入りを解除しました");
+      setFavorite();
     });
 }
-// const data = {
-//     favorite: {
-//       id: favoriteid,
-//     },
-//   };
-//   const config = {
-//     headers: {
-//       uid: authStore.uid,
-//       "access-token": authStore.access_token,
-//       client: authStore.client,
-//     },
-//   };
 </script>
 
 <template>
