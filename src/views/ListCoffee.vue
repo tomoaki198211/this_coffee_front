@@ -2,6 +2,7 @@
 import { ref, reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
 import axios, { type AxiosResponse } from "axios";
+import FavoriteButton from "../components/FavoriteButton.vue";
 
 const authStore = useAuthStore();
 const search_store = ref("");
@@ -101,6 +102,7 @@ async function setSearch(): Promise<void> {
           >
             この商品のレビューを書く
           </RouterLink>
+          <FavoriteButton v-bind:coffee_id="coffee.id" />
         </li>
       </ul>
     </div>
