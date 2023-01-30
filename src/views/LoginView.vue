@@ -22,6 +22,14 @@ const onLogin = (): void => {
   user.email = "";
   user.password = "";
 };
+
+const guestLogin = (): void => {
+  authStore.guest_login();
+};
+
+const guestAdminLogin = (): void => {
+  authStore.guest_admin_login();
+};
 </script>
 <template>
   <div>
@@ -39,5 +47,7 @@ const onLogin = (): void => {
       />
     </div>
     <button @click="onLogin">ログイン</button>
+    <button @click="guestLogin">ゲストログイン</button>
+    <button @click="guestAdminLogin">ゲスト管理者ログイン</button>
   </div>
 </template>

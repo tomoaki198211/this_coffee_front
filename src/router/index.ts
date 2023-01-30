@@ -5,6 +5,7 @@ import HomeView from "../views/HomeView.vue";
 import SignupView from "../views/SignupView.vue";
 import ListReview from "../views/ListReview.vue";
 import ListCoffee from "@/views/ListCoffee.vue";
+import ListUser from "@/views/ListUser.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +24,11 @@ const router = createRouter({
       path: "/auth/signup",
       name: "signup",
       component: SignupView,
+    },
+    {
+      path: "/users",
+      name: "users",
+      component: ListUser,
     },
     {
       path: "/coffees",
@@ -54,6 +60,20 @@ const router = createRouter({
       //動的インポート
       component: () => {
         return import("../views/ShowReview.vue");
+      },
+      props: (routes) => {
+        const idNum = Number(routes.params.id);
+        return {
+          id: idNum,
+        };
+      },
+    },
+    {
+      path: "/review/edit/:id",
+      name: "edit_review",
+      //動的インポート
+      component: () => {
+        return import("../views/EditReview.vue");
       },
       props: (routes) => {
         const idNum = Number(routes.params.id);
