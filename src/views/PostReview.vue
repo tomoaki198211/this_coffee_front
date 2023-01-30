@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, provide } from "vue";
 import { useAuthStore } from "../stores/auth";
 import axios, { type AxiosResponse } from "axios";
 import type { Coffee } from "./CoffeeInterfaces";
+import RadarChart from "../components/RadarChart.vue";
+
 interface Props {
   id: number;
 }
@@ -204,5 +206,12 @@ async function postCoffee(): Promise<void> {
       </tbody>
     </table>
     <button @click="postCoffee()">投稿する</button>
+    <RadarChart
+      :flavor="item.flavor"
+      :sweetness="item.sweetness"
+      :rich="item.rich"
+      :acidity="item.acidity"
+      :bitter="item.bitter"
+    />
   </div>
 </template>
