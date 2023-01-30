@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { useAuthStore } from "../stores/auth";
 import axios, { type AxiosResponse } from "axios";
+import { RouterLink } from "vue-router";
 interface Props {
   id: number;
 }
@@ -24,6 +25,19 @@ async function setReview(): Promise<void> {
       show.value = response.data;
     });
 }
+async function destroyReview(id): Promise<void> {
+  await axios
+    .delete(`http://localhost:3000/api/v1/reviews/${id}`, {
+      headers: {
+        uid: authStore.uid,
+        "access-token": authStore.access_token,
+        client: authStore.client,
+      },
+    })
+    .then((response: AxiosResponse<any>) => {
+      console.log(response.status);
+    });
+}
 </script>
 
 <template>
@@ -42,4 +56,11 @@ async function setReview(): Promise<void> {
       <p>{{ show ? show.review.remarks : "" }}</p>
     </div>
   </div>
+  <button @click="destroyReview(show.review.id)">削除する</button>
+  <RouterLink
+    v-if="show"
+    v-bind:to="{ name: 'edit_review', params: { id: show.review.id } }"
+  >
+    編集する
+  </RouterLink>
 </template>

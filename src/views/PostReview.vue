@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, provide } from "vue";
+import { ref, reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
 import axios, { type AxiosResponse } from "axios";
 import type { Coffee } from "./CoffeeInterfaces";
