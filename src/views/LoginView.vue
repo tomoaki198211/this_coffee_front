@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { reactive, computed } from "vue";
 import { useAuthStore } from "../stores/auth";
+import { mdiEmailOutline } from "@mdi/js";
+import { mdiLockOutline } from "@mdi/js";
 
 type userLoginObj = {
   email: string;
@@ -35,19 +37,28 @@ const guestAdminLogin = (): void => {
   <div>
     <div>
       <label for="email"> Email </label>
-      <input v-model="user.email" id="Email" type="text" placeholder="Email" />
+      <v-text-field
+        v-model="user.email"
+        density="compact"
+        placeholder=" Email"
+        variant="outlined"
+      >
+        <v-icon :icon="mdiEmailOutline"></v-icon
+      ></v-text-field>
     </div>
     <div>
       <label for="password"> Password </label>
-      <input
+      <v-text-field
         v-model="user.password"
-        id="password"
-        type="password"
-        placeholder="******************"
-      />
+        placeholder=" ******************"
+        variant="outlined"
+        ><v-icon :icon="mdiLockOutline"></v-icon
+      ></v-text-field>
     </div>
-    <button @click="onLogin">ログイン</button>
-    <button @click="guestLogin">ゲストログイン</button>
-    <button @click="guestAdminLogin">ゲスト管理者ログイン</button>
+    <div>
+      <v-btn @click="onLogin">ログイン</v-btn>
+      <v-btn @click="guestLogin">ゲストログイン</v-btn>
+      <v-btn @click="guestAdminLogin">ゲスト管理者ログイン</v-btn>
+    </div>
   </div>
 </template>

@@ -17,6 +17,7 @@ const evalutions = [
   { id: 2, text: "2:やや低い" },
   { id: 1, text: "1:低い" },
 ];
+const evalutions2 = [5, 4, 3, 2, 1];
 const item: Coffee = reactive({
   coffee_id: props.id,
   intuition: 3,
@@ -84,7 +85,7 @@ async function postCoffee(): Promise<void> {
   <div>
     販売店: {{ p_name ? p_name.coffee.coffee_property.store.name : "" }}<br />
     商品名: {{ p_name ? p_name.coffee.coffee_property.name : "" }}
-    <table>
+    <v-table>
       <thead>
         <tr>
           <th>評価項目名</th>
@@ -95,7 +96,7 @@ async function postCoffee(): Promise<void> {
         <tr>
           <td>直感的な評価</td>
           <td>
-            <select v-model="item.intuition">
+            <v-select v-model="item.intuition">
               <option
                 v-for="evalution in evalutions"
                 :value="evalution.id"
@@ -103,27 +104,32 @@ async function postCoffee(): Promise<void> {
               >
                 {{ evalution.text }}
               </option>
-            </select>
+            </v-select>
           </td>
         </tr>
         <tr>
           <td>コストパフォーマンス</td>
           <td>
-            <select v-model="item.efficiency">
-              <option
+            <v-select
+              v-model="item.efficiency"
+              :items="evalutions2"
+              variant="underlined"
+              class="text-center"
+            >
+              <!-- <option
                 v-for="evalution in evalutions"
                 :value="evalution.id"
                 :key="evalution.id"
               >
                 {{ evalution.text }}
-              </option>
-            </select>
+              </option> -->
+            </v-select>
           </td>
         </tr>
         <tr>
           <td>風味</td>
           <td>
-            <select v-model="item.flavor">
+            <v-select v-model="item.flavor">
               <option
                 v-for="evalution in evalutions"
                 :value="evalution.id"
@@ -131,13 +137,13 @@ async function postCoffee(): Promise<void> {
               >
                 {{ evalution.text }}
               </option>
-            </select>
+            </v-select>
           </td>
         </tr>
         <tr>
           <td>甘み</td>
           <td>
-            <select v-model="item.sweetness">
+            <v-select v-model="item.sweetness">
               <option
                 v-for="evalution in evalutions"
                 :value="evalution.id"
@@ -145,13 +151,13 @@ async function postCoffee(): Promise<void> {
               >
                 {{ evalution.text }}
               </option>
-            </select>
+            </v-select>
           </td>
         </tr>
         <tr>
           <td>コク</td>
           <td>
-            <select v-model="item.rich">
+            <v-select v-model="item.rich">
               <option
                 v-for="evalution in evalutions"
                 :value="evalution.id"
@@ -159,13 +165,13 @@ async function postCoffee(): Promise<void> {
               >
                 {{ evalution.text }}
               </option>
-            </select>
+            </v-select>
           </td>
         </tr>
         <tr>
           <td>酸味</td>
           <td>
-            <select v-model="item.acidity">
+            <v-select v-model="item.acidity">
               <option
                 v-for="evalution in evalutions"
                 :value="evalution.id"
@@ -173,13 +179,13 @@ async function postCoffee(): Promise<void> {
               >
                 {{ evalution.text }}
               </option>
-            </select>
+            </v-select>
           </td>
         </tr>
         <tr>
           <td>苦味</td>
           <td>
-            <select v-model="item.bitter">
+            <v-select v-model="item.bitter">
               <option
                 v-for="evalution in evalutions"
                 :value="evalution.id"
@@ -187,31 +193,35 @@ async function postCoffee(): Promise<void> {
               >
                 {{ evalution.text }}
               </option>
-            </select>
+            </v-select>
           </td>
         </tr>
         <tr>
           <td>備考</td>
-          <td><input type="texterea" v-model="item.remarks" /></td>
+          <td><v-textarea v-model="item.remarks" /></td>
         </tr>
         <tr>
           <td>公開設定</td>
           <td>
-            <input type="radio" value="true" v-model="item.setting" />
-            <label>公開</label>
-            <input type="radio" value="false" v-model="item.setting" />
-            <label>非公開</label>
+            <v-radio-group inline v-model="item.setting">
+              <v-radio label="公開" value="true"></v-radio>
+              <v-radio label="非公開" value="false"></v-radio>
+            </v-radio-group>
           </td>
         </tr>
       </tbody>
-    </table>
-    <button @click="postCoffee()">投稿する</button>
-    <RadarChart
-      :flavor="item.flavor"
-      :sweetness="item.sweetness"
-      :rich="item.rich"
-      :acidity="item.acidity"
-      :bitter="item.bitter"
-    />
+    </v-table>
+    <v-btn @click="postCoffee()">投稿する</v-btn>
+    <v-card class="mx-auto">
+      <div class="d-flex justify-center">
+        <RadarChart
+          :flavor="item.flavor"
+          :sweetness="item.sweetness"
+          :rich="item.rich"
+          :acidity="item.acidity"
+          :bitter="item.bitter"
+        />
+      </div>
+    </v-card>
   </div>
 </template>
