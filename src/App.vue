@@ -10,18 +10,11 @@ const authStore = useAuthStore();
 
 <template>
   <v-app>
-    <div>
-      <header>
-        <GlobalNav />
-      </header>
-      <template v-if="authStore.uid !== ''">
-        <p>ユーザー:{{ authStore.uid }}</p>
-      </template>
-      <GlobalMessage />
-      <main>
-        <RouterView />
-      </main>
-    </div>
+    <GlobalNav />
+    <GlobalMessage />
+    <v-main>
+      <RouterView />
+    </v-main>
   </v-app>
 </template>
 

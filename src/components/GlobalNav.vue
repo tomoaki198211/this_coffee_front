@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { RouterLink, useRouter } from "vue-router";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import { mdiAccountPlus } from "@mdi/js";
 import { mdiHome } from "@mdi/js";
@@ -8,6 +9,7 @@ import { mdiLogout } from "@mdi/js";
 import { mdiCoffee } from "@mdi/js";
 import { mdiComment } from "@mdi/js";
 
+const drawer = ref(false);
 const authStore = useAuthStore();
 const router = useRouter();
 
@@ -20,34 +22,52 @@ const onLogout = (): void => {
 
 <template>
   <v-app-bar :elevation="2">
+    <v-app-bar-nav-icon
+      variant="text"
+      @click.stop="drawer = !drawer"
+    ></v-app-bar-nav-icon>
     <v-app-bar-title>this Coffee!</v-app-bar-title>
-    <v-row justify="space-around">
-      <template v-if="!authStore.isAuthencated()">
-        <v-btn size="small" icon @click="router.push('/')">
+  </v-app-bar>
+  <v-navigation-drawer v-model="drawer" location="left" temporary>
+    <template v-if="!authStore.isAuthencated()">
+      <v-list
+        ><v-btn variant="plain" @click="router.push('/')">
           <v-icon :icon="mdiHome"></v-icon>home
-        </v-btn>
-        <v-btn size="small" icon @click="router.push('/auth/login')">
+        </v-btn></v-list
+      >
+      <v-list
+        ><v-btn variant="plain" @click="router.push('/auth/login')">
           <v-icon :icon="mdiLogin"></v-icon>login
-        </v-btn>
-        <v-btn size="small" icon @click="router.push('/auth/signup')">
-          <v-icon :icon="mdiAccountPlus"></v-icon>sign
-        </v-btn>
-      </template>
-      <template v-else>
-        <!-- <li><RouterLink to="/user">ユーザー情報</RouterLink></li> -->
-        <v-btn size="small" icon @click="router.push('/reviews')">
+        </v-btn></v-list
+      >
+      <v-list
+        ><v-btn variant="plain" @click="router.push('/auth/signup')">
+          <v-icon :icon="mdiAccountPlus"></v-icon>signup
+        </v-btn></v-list
+      >
+    </template>
+    <template v-else>
+      <v-list
+        ><v-btn variant="plain" @click="router.push('/reviews')">
           <v-icon :icon="mdiComment"></v-icon>review
-        </v-btn>
-        <v-btn size="small" icon @click="router.push('/coffees')">
+        </v-btn></v-list
+      >
+      <v-list>
+        <v-btn variant="plain" @click="router.push('/coffees')">
           <v-icon :icon="mdiCoffee"></v-icon>coffee
         </v-btn>
-        <v-btn size="small" icon @click="onLogout()">
+      </v-list>
+      <v-list>
+        <v-btn variant="plain" @click="onLogout()">
           <v-icon :icon="mdiLogout"></v-icon>logout
         </v-btn>
-        <RouterLink to="/recommendation">おすすめ</RouterLink>
-      </template>
-    </v-row>
-  </v-app-bar>
+      </v-list>
+      <v-divider></v-divider>
+      <v-list>
+        <p class="ml-3 overflow-x-auto">{{ authStore.uid }}</p>
+      </v-list>
+    </template>
+  </v-navigation-drawer>
 </template>
 
 <style scoped></style>
