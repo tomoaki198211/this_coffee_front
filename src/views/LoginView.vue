@@ -34,31 +34,56 @@ const guestAdminLogin = (): void => {
 };
 </script>
 <template>
-  <div>
-    <div>
-      <label for="email"> Email </label>
+  <v-card class="mt-10 mb-8 mx-auto" width="400px">
+    <v-container class="">
       <v-text-field
+        :prepend-icon="mdiEmailOutline"
         v-model="user.email"
+        label="Email"
         density="compact"
-        placeholder=" Email"
         variant="outlined"
-      >
-        <v-icon :icon="mdiEmailOutline"></v-icon
       ></v-text-field>
-    </div>
-    <div>
-      <label for="password"> Password </label>
       <v-text-field
+        :prepend-icon="mdiLockOutline"
         v-model="user.password"
-        placeholder=" ******************"
+        label="Password"
+        density="compact"
+        type="password"
         variant="outlined"
-        ><v-icon :icon="mdiLockOutline"></v-icon
       ></v-text-field>
-    </div>
-    <div>
-      <v-btn @click="onLogin">ログイン</v-btn>
-      <v-btn @click="guestLogin">ゲストログイン</v-btn>
-      <v-btn @click="guestAdminLogin">ゲスト管理者ログイン</v-btn>
-    </div>
-  </div>
+      <v-card-actions>
+        <v-btn
+          class="mx-auto"
+          variant="flat"
+          color="primary"
+          width="200px"
+          @click="onLogin"
+        >
+          <p class="font-weight-bold">ログイン</p>
+        </v-btn>
+      </v-card-actions>
+      <v-card-actions>
+        <v-btn
+          class="mx-auto"
+          variant="flat"
+          color="primary"
+          width="200px"
+          @click="guestLogin"
+        >
+          <p class="font-weight-bold">ゲストログイン</p>
+        </v-btn>
+      </v-card-actions>
+      <v-card-actions>
+        <v-btn
+          class="mx-auto"
+          variant="flat"
+          color="primary"
+          width="200px"
+          @click="guestAdminLogin"
+        >
+          <p class="font-weight-bold">ゲスト管理者ログイン</p>
+        </v-btn>
+      </v-card-actions>
+    </v-container>
+  </v-card>
 </template>
