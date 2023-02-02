@@ -2,7 +2,7 @@
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
-import axios, { type AxiosResponse } from "axios";
+import axios from "axios";
 import { RouterLink } from "vue-router";
 
 const authStore = useAuthStore();

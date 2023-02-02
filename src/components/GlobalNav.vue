@@ -26,7 +26,7 @@ const onLogout = (): void => {
       variant="text"
       @click.stop="drawer = !drawer"
     ></v-app-bar-nav-icon>
-    <v-app-bar-title>this Coffee!</v-app-bar-title>
+    <v-app-bar-title color="#7b5544">this Coffee!</v-app-bar-title>
   </v-app-bar>
   <v-navigation-drawer v-model="drawer" location="left" temporary>
     <template v-if="!authStore.isAuthencated()">

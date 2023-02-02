@@ -1,17 +1,25 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
-import axios, { type AxiosResponse } from "axios";
+import axios from "axios";
 import FavoriteButton from "../components/FavoriteButton.vue";
+import { mdiMagnify } from "@mdi/js";
 
 const authStore = useAuthStore();
-const search_store = ref("");
-const search_category = ref("");
-const search_word = ref("");
+const router = useRouter();
 const index = reactive({
   coffees: [],
 });
-
+const search_word = ref("");
+const selected_category = reactive({
+  id: "",
+  name: "",
+});
+const selected_store = reactive({
+  id: "",
+  name: "",
+});
 const categories = ref([]);
 const stores = ref([]);
 
@@ -56,8 +64,8 @@ async function setSearch(): Promise<void> {
     .post("http://localhost:3000/api/v1/coffees/search", {
       search: {
         word: search_word.value,
-        category: search_category.value,
-        store: search_store.value,
+        category: selected_category.id,
+        store: selected_store.id,
       },
       headers: {
         uid: authStore.uid,
@@ -73,39 +81,102 @@ async function setSearch(): Promise<void> {
 </script>
 
 <template>
-  <div>
-    <div>
-      <input type="text" placeholder="Search" v-model="search_word" />
-      <select v-model="search_category">
-        <option
-          v-for="category in categories"
-          :value="category.id"
-          :key="category.id"
+  <v-container fluid grid-list-xl class="container_out">
+    <v-row>
+      <v-col cols="12" sm="5">
+        <v-text-field
+          v-model="search_word"
+          label="商品名"
+          variant="underlined"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12" sm="3">
+        <v-select
+          v-model="selected_category.id"
+          label="分類"
+          :hint="`${selected_category.id},${selected_category.name}`"
+          :items="categories"
+          item-title="name"
+          item-value="id"
+          variant="underlined"
+          class="text-center"
         >
-          {{ category.name }}
-        </option>
-      </select>
-      <select v-model="search_store">
-        <option v-for="store in stores" :value="store.id" :key="store.id">
-          {{ store.name }}
-        </option>
-      </select>
-    </div>
-    <div>
-      <ul>
-        <li v-for="coffee in index.coffees" :key="coffee.id">
-          販売店:{{ coffee.coffee_property.store.name }}<br />
-          商品名:{{ coffee.coffee_property.name }}<br />
-          商品名:{{ coffee.coffee_property.price }}円
-          <RouterLink
-            v-bind:to="{ name: 'post_review', params: { id: coffee.id } }"
-          >
-            この商品のレビューを書く
-          </RouterLink>
-          <FavoriteButton v-bind:coffee_id="coffee.id" />
-        </li>
-      </ul>
-    </div>
-    <button @click="setSearch()">検索</button>
-  </div>
+        </v-select>
+      </v-col>
+      <v-col cols="12" sm="3">
+        <v-select
+          v-model="selected_store.id"
+          label="販売店"
+          :hint="`${selected_store.id},${selected_store.name}`"
+          :items="stores"
+          item-title="name"
+          item-value="id"
+          variant="underlined"
+          class="text-center"
+        >
+        </v-select>
+      </v-col>
+      <v-col cols="12" sm="1">
+        <v-btn
+          icon
+          color="#7b5544"
+          variant="plain"
+          class="mx-auto"
+          @click="setSearch()"
+        >
+          <v-icon :icon="mdiMagnify"></v-icon>検索
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col
+        v-for="coffee in index.coffees"
+        :key="coffee.id"
+        cols="12"
+        xs="1"
+        sm="6"
+        md="4"
+        lg="3"
+        xl="2"
+      >
+        <v-card class="mx-auto" max-width="300">
+          <v-img src="" alt="" height="100" cover></v-img>
+          <v-list-item>
+            <v-list-item-title
+              >{{ coffee.coffee_property.name }}
+            </v-list-item-title>
+            <v-list-item-subtitle>{{
+              coffee.coffee_property.store.name
+            }}</v-list-item-subtitle>
+          </v-list-item>
+          <v-card-actions>
+            <v-btn
+              class="mx-auto"
+              color="#7b5544"
+              @click="
+                router.push({
+                  path: `/review/post/${coffee.id}`,
+                })
+              "
+              >レビューを書く
+            </v-btn>
+            <v-btn class="mx-auto" color="#7b5544">詳細 </v-btn>
+            <FavoriteButton v-bind:coffee_id="coffee.id" />
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+    <template v-if="index.coffees.length === 0">
+      <v-row justify="center" align="center">
+        <p>検索結果がありません。<br />検索条件を変更して下さい。</p>
+      </v-row>
+    </template>
+  </v-container>
 </template>
+
+<style scoped>
+.container_out {
+  width: 95%;
+}
+</style>
