@@ -2,7 +2,6 @@
 import { ref, reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
 import axios, { type AxiosResponse } from "axios";
-import type { Coffee } from "./CoffeeInterfaces";
 import RadarChart from "../components/RadarChart.vue";
 
 interface Props {
@@ -11,32 +10,26 @@ interface Props {
 const props = defineProps<Props>();
 const authStore = useAuthStore();
 const evalutions = [
-  { value: 5, text: "5:高い" },
-  { value: 4, text: "4:やや高い" },
+  { value: 5, text: "5:最高！" },
+  { value: 4, text: "4:満足！" },
   { value: 3, text: "3:普通" },
-  { value: 2, text: "2:やや低い" },
-  { value: 1, text: "1:低い" },
+  { value: 2, text: "2:微妙" },
+  { value: 1, text: "1:うーん" },
 ];
 
-const item: Coffee = reactive({
-  coffee_id: props.id,
-  intuition: 3,
-  efficiency: 3,
-  flavor: 3,
-  sweetness: 3,
-  rich: 3,
-  acidity: 3,
-  bitter: 3,
-  remarks: "",
-  setting: false,
-});
+const evalutions_rate = ["弱い", "やや弱い", "普通", "やや強い", "強い"];
+const evalutions_colors = ["red", "orange", "grey", "cyan", "green"];
+
+const coffee_id: number = ref(props.id);
+const remarks: string = ref("");
+const setting: boolean = ref("");
 
 const intuition = reactive({
-  value: 3,
+  value: "",
   text: "",
 });
 const efficiency = reactive({
-  value: 3,
+  value: "",
   text: "",
 });
 const flavor = reactive({
@@ -84,7 +77,7 @@ async function showCoffee(): Promise<void> {
 async function postCoffee(): Promise<void> {
   const data = {
     review: {
-      coffee_id: item.coffee_id,
+      coffee_id: coffee_id.value,
       intuition: intuition.value,
       efficiency: efficiency.value,
       flavor: flavor.value,
@@ -92,8 +85,8 @@ async function postCoffee(): Promise<void> {
       rich: rich.value,
       acidity: acidity.value,
       bitter: bitter.value,
-      remarks: item.remarks,
-      setting: item.setting,
+      remarks: remarks.value,
+      setting: setting.value,
     },
   };
   const config = {
@@ -114,9 +107,9 @@ async function postCoffee(): Promise<void> {
 <template>
   <v-container fluid grid-list-xl class="container_out">
     <v-row width="95%">
-      <v-col cols="12" sm="6">
-        <v-card class="mx-auto" max-width="300">
-          <v-img src="" alt="" height="200" cover></v-img>
+      <v-col cols="12" sm="5">
+        <v-card class="mx-auto" max-width="320">
+          <v-img src="" alt="" height="190" cover></v-img>
           <v-list-item>
             <v-list-item-title
               >{{ p_name ? p_name.coffee.coffee_property.store.name : "" }}
@@ -126,7 +119,71 @@ async function postCoffee(): Promise<void> {
             }}</v-list-item-subtitle>
           </v-list-item>
         </v-card>
-        <v-card class="mx-auto my-auto mt-10" max-width="300">
+        <v-card class="mt-5">
+          <v-table density="compact">
+            <tbody>
+              <tr>
+                <td>
+                  <v-select
+                    v-model="intuition.value"
+                    density="compact"
+                    label="直感的な評価"
+                    :hint="`${intuition.value},${intuition.text}`"
+                    :items="evalutions"
+                    item-title="text"
+                    item-value="value"
+                    class="pt-5"
+                  >
+                  </v-select>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <v-select
+                    v-model="efficiency.value"
+                    density="compact"
+                    label="コストパフォーマンス"
+                    :hint="`${efficiency.value},${efficiency.text}`"
+                    :items="evalutions"
+                    item-title="text"
+                    item-value="value"
+                    class="pt-5"
+                  >
+                  </v-select>
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+        </v-card>
+        <v-card class="mt-2">
+          <v-list>
+            <v-list-item>
+              <v-textarea v-model="remarks" label="備考" rows="2" class="" />
+              <v-list-item-title>
+                ※レビューを公開しない場合は非公開
+              </v-list-item-title>
+              <v-radio-group inline v-model="setting" class="">
+                <v-radio label="公開" value="true"></v-radio>
+                <v-radio label="非公開" value="false"></v-radio>
+              </v-radio-group>
+            </v-list-item>
+            <v-card-actions>
+              <v-btn
+                class="mx-auto"
+                variant="flat"
+                color="#7b5544"
+                width="200px"
+                @click="postCoffee()"
+              >
+                <p class="font-weight-bold btn-txt">レビューを投稿する</p>
+              </v-btn>
+            </v-card-actions>
+          </v-list>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" sm="7">
+        <v-card class="mx-auto my-auto">
           <div class="d-flex justify-center">
             <RadarChart
               :flavor="flavor.value"
@@ -137,146 +194,107 @@ async function postCoffee(): Promise<void> {
             />
           </div>
         </v-card>
-      </v-col>
-      <v-col cols="12" sm="6">
-        <v-card>
-          <v-table density="compact" :table-row-height="0.5">
-            <thead>
-              <tr>
-                <th>評価項目名</th>
-                <th>評価</th>
-              </tr>
-            </thead>
+        <v-card class="mt-5">
+          <v-table density="compact">
             <tbody>
-              <tr>
-                <td>直感的な評価</td>
-                <td>
-                  <v-select
-                    v-model="intuition.value"
-                    label="直感的な評価"
-                    :hint="`${intuition.value},${intuition.text}`"
-                    :items="evalutions"
-                    item-title="text"
-                    item-value="value"
-                    variant="underlined"
-                    class="text-center"
-                  >
-                  </v-select>
-                </td>
-              </tr>
-              <tr>
-                <td>コストパフォーマンス</td>
-                <td>
-                  <v-select
-                    v-model="efficiency.value"
-                    label="直感的な評価"
-                    :hint="`${efficiency.value},${efficiency.text}`"
-                    :items="evalutions"
-                    item-title="text"
-                    item-value="value"
-                    variant="underlined"
-                    class="text-center"
-                  >
-                  </v-select>
-                </td>
-              </tr>
               <tr>
                 <td>風味</td>
                 <td>
-                  <v-select
+                  <v-rating
                     v-model="flavor.value"
-                    label="直感的な評価"
-                    :hint="`${flavor.value},${flavor.text}`"
-                    :items="evalutions"
-                    item-title="text"
-                    item-value="value"
-                    variant="underlined"
-                    class="text-center"
-                  >
-                  </v-select>
+                    :item-labels="evalutions_rate"
+                    color="#7b5544"
+                    hover
+                    ><template v-slot:item-label="props">
+                      <span
+                        class="font-weight-black text-caption"
+                        :class="`text-${evalutions_colors[props.index]}`"
+                      >
+                        {{ props.label }}
+                      </span>
+                    </template>
+                  </v-rating>
                 </td>
               </tr>
               <tr>
                 <td>甘み</td>
                 <td>
-                  <v-select
+                  <v-rating
                     v-model="sweetness.value"
-                    label="直感的な評価"
-                    :hint="`${sweetness.value},${sweetness.text}`"
-                    :items="evalutions"
-                    item-title="text"
-                    item-value="value"
-                    variant="underlined"
-                    class="text-center"
-                  >
-                  </v-select>
+                    :item-labels="evalutions_rate"
+                    color="#7b5544"
+                    hover
+                    ><template v-slot:item-label="props">
+                      <span
+                        class="font-weight-black text-caption"
+                        :class="`text-${evalutions_colors[props.index]}`"
+                      >
+                        {{ props.label }}
+                      </span>
+                    </template>
+                  </v-rating>
                 </td>
               </tr>
               <tr>
                 <td>コク</td>
                 <td>
-                  <v-select
+                  <v-rating
                     v-model="rich.value"
-                    label="直感的な評価"
-                    :hint="`${rich.value},${rich.text}`"
-                    :items="evalutions"
-                    item-title="text"
-                    item-value="value"
-                    variant="underlined"
-                    class="text-center"
-                  >
-                  </v-select>
+                    :item-labels="evalutions_rate"
+                    color="#7b5544"
+                    hover
+                    ><template v-slot:item-label="props">
+                      <span
+                        class="font-weight-black text-caption"
+                        :class="`text-${evalutions_colors[props.index]}`"
+                      >
+                        {{ props.label }}
+                      </span>
+                    </template>
+                  </v-rating>
                 </td>
               </tr>
               <tr>
                 <td>酸味</td>
                 <td>
-                  <v-select
+                  <v-rating
                     v-model="acidity.value"
-                    label="直感的な評価"
-                    :hint="`${acidity.value},${acidity.text}`"
-                    :items="evalutions"
-                    item-title="text"
-                    item-value="value"
-                    variant="underlined"
-                    class="text-center"
-                  >
-                  </v-select>
+                    :item-labels="evalutions_rate"
+                    color="#7b5544"
+                    hover
+                    ><template v-slot:item-label="props">
+                      <span
+                        class="font-weight-black text-caption"
+                        :class="`text-${evalutions_colors[props.index]}`"
+                      >
+                        {{ props.label }}
+                      </span>
+                    </template>
+                  </v-rating>
                 </td>
               </tr>
               <tr>
                 <td>苦味</td>
                 <td>
-                  <v-select
+                  <v-rating
                     v-model="bitter.value"
-                    label="直感的な評価"
-                    :hint="`${bitter.value},${bitter.text}`"
-                    :items="evalutions"
-                    item-title="text"
-                    item-value="value"
-                    variant="underlined"
-                    class="text-center"
-                  >
-                  </v-select>
-                </td>
-              </tr>
-              <tr>
-                <td>備考</td>
-                <td><v-textarea v-model="item.remarks" /></td>
-              </tr>
-              <tr>
-                <td>公開設定</td>
-                <td>
-                  <v-radio-group inline v-model="item.setting">
-                    <v-radio label="公開" value="true"></v-radio>
-                    <v-radio label="非公開" value="false"></v-radio>
-                  </v-radio-group>
+                    :item-labels="evalutions_rate"
+                    color="#7b5544"
+                    hover
+                    ><template v-slot:item-label="props">
+                      <span
+                        class="font-weight-black text-caption"
+                        :class="`text-${evalutions_colors[props.index]}`"
+                      >
+                        {{ props.label }}
+                      </span>
+                    </template>
+                  </v-rating>
                 </td>
               </tr>
             </tbody>
           </v-table>
         </v-card>
-        <v-btn @click="postCoffee()">投稿する</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -285,5 +303,11 @@ async function postCoffee(): Promise<void> {
 <style scoped>
 .container_out {
   width: 95%;
+}
+td {
+  text-align: center;
+}
+.btn-txt {
+  color: white;
 }
 </style>
