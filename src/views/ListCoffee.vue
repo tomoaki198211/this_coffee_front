@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios from "axios";
@@ -22,6 +22,18 @@ const selected_store = reactive({
 });
 const categories = ref([]);
 const stores = ref([]);
+
+watch(search_word, () => {
+  setSearch();
+});
+
+watch(selected_category, () => {
+  setSearch();
+});
+
+watch(selected_store, () => {
+  setSearch();
+});
 
 setCoffee();
 setMaster();
@@ -78,6 +90,12 @@ async function setSearch(): Promise<void> {
       console.log(response.data);
     });
 }
+
+const searchReset = () => {
+  selected_category.id = "";
+  selected_store.id = "";
+  search_word.value = "";
+};
 </script>
 
 <template>
@@ -88,11 +106,13 @@ async function setSearch(): Promise<void> {
           v-model="search_word"
           label="商品名"
           variant="underlined"
+          :prepend-icon="mdiMagnify"
         ></v-text-field>
       </v-col>
       <v-col cols="12" sm="3">
         <v-select
           v-model="selected_category.id"
+          :prepend-icon="mdiMagnify"
           label="分類"
           :hint="`${selected_category.id},${selected_category.name}`"
           :items="categories"
@@ -106,6 +126,7 @@ async function setSearch(): Promise<void> {
       <v-col cols="12" sm="3">
         <v-select
           v-model="selected_store.id"
+          :prepend-icon="mdiMagnify"
           label="販売店"
           :hint="`${selected_store.id},${selected_store.name}`"
           :items="stores"
@@ -121,10 +142,9 @@ async function setSearch(): Promise<void> {
           icon
           color="#7b5544"
           variant="plain"
-          class="mx-auto"
-          @click="setSearch()"
-        >
-          <v-icon :icon="mdiMagnify"></v-icon>検索
+          class="mx-auto ml-3"
+          @click="searchReset()"
+          ><p>検索リセット</p>
         </v-btn>
       </v-col>
     </v-row>
@@ -169,7 +189,9 @@ async function setSearch(): Promise<void> {
     </v-row>
     <template v-if="index.coffees.length === 0">
       <v-row justify="center" align="center">
-        <p>検索結果がありません。<br />検索条件を変更して下さい。</p>
+        <p class="coffee_txt">
+          検索結果がありません。<br />検索条件を変更して下さい。
+        </p>
       </v-row>
     </template>
   </v-container>
@@ -178,5 +200,8 @@ async function setSearch(): Promise<void> {
 <style scoped>
 .container_out {
   width: 95%;
+}
+.coffee_txt {
+  color: #7b5544;
 }
 </style>

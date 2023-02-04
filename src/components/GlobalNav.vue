@@ -32,34 +32,34 @@ const onLogout = (): void => {
     <template v-if="!authStore.isAuthencated()">
       <v-list
         ><v-btn variant="plain" @click="router.push('/')">
-          <v-icon :icon="mdiHome"></v-icon>home
+          <v-icon :icon="mdiHome"></v-icon>ホーム
         </v-btn></v-list
       >
       <v-list
         ><v-btn variant="plain" @click="router.push('/auth/login')">
-          <v-icon :icon="mdiLogin"></v-icon>login
+          <v-icon :icon="mdiLogin"></v-icon>ログイン
         </v-btn></v-list
       >
       <v-list
         ><v-btn variant="plain" @click="router.push('/auth/signup')">
-          <v-icon :icon="mdiAccountPlus"></v-icon>signup
+          <v-icon :icon="mdiAccountPlus"></v-icon>新規登録
         </v-btn></v-list
       >
     </template>
     <template v-else>
       <v-list
         ><v-btn variant="plain" @click="router.push('/reviews')">
-          <v-icon :icon="mdiComment"></v-icon>review
+          <v-icon :icon="mdiComment"></v-icon>レビュー
         </v-btn></v-list
       >
       <v-list>
         <v-btn variant="plain" @click="router.push('/coffees')">
-          <v-icon :icon="mdiCoffee"></v-icon>coffee
+          <v-icon :icon="mdiCoffee"></v-icon>コーヒー
         </v-btn>
       </v-list>
       <v-list>
         <v-btn variant="plain" @click="onLogout()">
-          <v-icon :icon="mdiLogout"></v-icon>logout
+          <v-icon :icon="mdiLogout"></v-icon>ログアウト
         </v-btn>
       </v-list>
       <v-divider></v-divider>

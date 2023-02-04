@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { reactive, computed } from "vue";
 import { useAuthStore } from "../stores/auth";
+import { mdiEmailOutline } from "@mdi/js";
+import { mdiLockOutline } from "@mdi/js";
 
 type userSignObj = {
   name: string;
@@ -16,7 +18,6 @@ const user: userSignObj = reactive({
   password_confirmation: "",
 });
 
-const authStore = useAuthStore();
 const onSignup = (): void => {
   const authStore = useAuthStore();
   const name = user.name;
@@ -28,33 +29,46 @@ const onSignup = (): void => {
 </script>
 
 <template>
-  <div>
-    <div>
-      <label for="name"> Name </label>
-      <input v-model="user.name" id="Name" type="text" placeholder="Name" />
-    </div>
-    <div>
-      <label for="email"> Email </label>
-      <input v-model="user.email" id="Email" type="text" placeholder="Email" />
-    </div>
-    <div>
-      <label for="password"> Password </label>
-      <input
+  <v-card class="mt-10 mb-8 mx-auto" width="400px">
+    <v-container class="">
+      <v-text-field
+        :prepend-icon="mdiEmailOutline"
+        v-model="user.name"
+        label="Name"
+        density="compact"
+        variant="outlined"
+      ></v-text-field>
+      <v-text-field
+        :prepend-icon="mdiEmailOutline"
+        v-model="user.email"
+        label="Email"
+        density="compact"
+        variant="outlined"
+      ></v-text-field>
+      <v-text-field
+        :prepend-icon="mdiLockOutline"
         v-model="user.password"
-        id="password"
+        label="Password"
+        density="compact"
         type="password"
-        placeholder="******************"
-      />
-    </div>
-    <div>
-      <label for="password_confirmation"> Password確認 </label>
-      <input
-        v-model="user.password_confirmation"
-        id="password_confirmation"
-        type="password"
-        placeholder="******************"
-      />
-    </div>
-    <button @click="onSignup()">Sign up</button>
-  </div>
+        variant="outlined"
+      ></v-text-field>
+      <v-card-actions>
+        <v-btn
+          class="mx-auto"
+          variant="flat"
+          color="#7b5544"
+          width="200px"
+          @click="onSignup()"
+          ><p class="font-weight-bold btn-txt">新規登録</p>
+        </v-btn>
+      </v-card-actions>
+    </v-container>
+  </v-card>
 </template>
+
+<style scoped>
+.btn-txt {
+  color: white;
+}
+</style>

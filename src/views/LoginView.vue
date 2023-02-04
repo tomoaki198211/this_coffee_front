@@ -55,35 +55,41 @@ const guestAdminLogin = (): void => {
         <v-btn
           class="mx-auto"
           variant="flat"
-          color="primary"
+          color="#7b5544"
           width="200px"
           @click="onLogin"
         >
-          <p class="font-weight-bold">ログイン</p>
+          <p class="font-weight-bold btn-txt">ログイン</p>
         </v-btn>
       </v-card-actions>
       <v-card-actions>
         <v-btn
           class="mx-auto"
           variant="flat"
-          color="primary"
+          color="#7b5544"
           width="200px"
           @click="guestLogin"
         >
-          <p class="font-weight-bold">ゲストログイン</p>
+          <p class="font-weight-bold btn-txt">ゲストログイン</p>
         </v-btn>
       </v-card-actions>
       <v-card-actions>
         <v-btn
           class="mx-auto"
           variant="flat"
-          color="primary"
+          color="#7b5544"
           width="200px"
           @click="guestAdminLogin"
         >
-          <p class="font-weight-bold">ゲスト管理者ログイン</p>
+          <p class="font-weight-bold btn-txt">ゲスト管理者ログイン</p>
         </v-btn>
       </v-card-actions>
     </v-container>
   </v-card>
 </template>
+
+<style scoped>
+.btn-txt {
+  color: white;
+}
+</style>
