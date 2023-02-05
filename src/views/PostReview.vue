@@ -1,11 +1,18 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import { useAuthStore } from "../stores/auth";
 import axios, { type AxiosResponse } from "axios";
 import RadarChart from "../components/RadarChart.vue";
 
 interface Props {
   id: number;
+}
+interface attribute {
+  flavor: number;
+  sweetness: number;
+  rich: number;
+  acidity: number;
+  bitter: number;
 }
 const props = defineProps<Props>();
 const authStore = useAuthStore();
@@ -16,13 +23,12 @@ const evalutions = [
   { value: 2, text: "2:微妙" },
   { value: 1, text: "1:うーん" },
 ];
-
 const evalutions_rate = ["弱い", "やや弱い", "普通", "やや強い", "強い"];
 const evalutions_colors = ["red", "orange", "grey", "cyan", "green"];
 
 const coffee_id: number = ref(props.id);
-const remarks: string = ref("");
-const setting: boolean = ref("");
+const remarks: string = ref();
+const setting: boolean = ref(false);
 
 const intuition = reactive({
   value: "",
@@ -32,27 +38,13 @@ const efficiency = reactive({
   value: "",
   text: "",
 });
-const flavor = reactive({
-  value: 3,
-  text: "",
+const attributes: attribute = reactive({
+  flavor: null,
+  sweetness: null,
+  rich: null,
+  acidity: null,
+  bitter: null,
 });
-const sweetness = reactive({
-  value: 3,
-  text: "",
-});
-const rich = reactive({
-  value: 3,
-  text: "",
-});
-const acidity = reactive({
-  value: 3,
-  text: "",
-});
-const bitter = reactive({
-  value: 3,
-  text: "",
-});
-
 const p_name = ref("");
 
 showCoffee();
@@ -80,13 +72,13 @@ async function postCoffee(): Promise<void> {
       coffee_id: coffee_id.value,
       intuition: intuition.value,
       efficiency: efficiency.value,
-      flavor: flavor.value,
-      sweetness: sweetness.value,
-      rich: rich.value,
-      acidity: acidity.value,
-      bitter: bitter.value,
       remarks: remarks.value,
       setting: setting.value,
+      flavor: attributes.flavor,
+      sweetness: attributes.sweetness,
+      rich: attributes.rich,
+      acidity: attributes.acidity,
+      bitter: attributes.bitter,
     },
   };
   const config = {
@@ -162,10 +154,15 @@ async function postCoffee(): Promise<void> {
               <v-list-item-title>
                 ※レビューを公開しない場合は非公開
               </v-list-item-title>
-              <v-radio-group inline v-model="setting" class="">
-                <v-radio label="公開" value="true"></v-radio>
-                <v-radio label="非公開" value="false"></v-radio>
-              </v-radio-group>
+              <v-switch
+                v-model="setting"
+                hide-details
+                color="primary"
+                class="ml-5"
+                true-value="公開"
+                false-value="非公開"
+                :label="setting || '非公開'"
+              ></v-switch>
             </v-list-item>
             <v-card-actions>
               <v-btn
@@ -186,11 +183,11 @@ async function postCoffee(): Promise<void> {
         <v-card class="mx-auto my-auto">
           <div class="d-flex justify-center">
             <RadarChart
-              :flavor="flavor.value"
-              :sweetness="sweetness.value"
-              :rich="rich.value"
-              :acidity="acidity.value"
-              :bitter="bitter.value"
+              :flavor="attributes.flavor"
+              :sweetness="attributes.sweetness"
+              :rich="attributes.rich"
+              :acidity="attributes.acidity"
+              :bitter="attributes.bitter"
             />
           </div>
         </v-card>
@@ -201,7 +198,7 @@ async function postCoffee(): Promise<void> {
                 <td>風味</td>
                 <td>
                   <v-rating
-                    v-model="flavor.value"
+                    v-model="attributes.flavor"
                     :item-labels="evalutions_rate"
                     color="#7b5544"
                     hover
@@ -220,7 +217,7 @@ async function postCoffee(): Promise<void> {
                 <td>甘み</td>
                 <td>
                   <v-rating
-                    v-model="sweetness.value"
+                    v-model="attributes.sweetness"
                     :item-labels="evalutions_rate"
                     color="#7b5544"
                     hover
@@ -239,7 +236,7 @@ async function postCoffee(): Promise<void> {
                 <td>コク</td>
                 <td>
                   <v-rating
-                    v-model="rich.value"
+                    v-model="attributes.rich"
                     :item-labels="evalutions_rate"
                     color="#7b5544"
                     hover
@@ -258,7 +255,7 @@ async function postCoffee(): Promise<void> {
                 <td>酸味</td>
                 <td>
                   <v-rating
-                    v-model="acidity.value"
+                    v-model="attributes.acidity"
                     :item-labels="evalutions_rate"
                     color="#7b5544"
                     hover
@@ -277,7 +274,7 @@ async function postCoffee(): Promise<void> {
                 <td>苦味</td>
                 <td>
                   <v-rating
-                    v-model="bitter.value"
+                    v-model="attributes.bitter"
                     :item-labels="evalutions_rate"
                     color="#7b5544"
                     hover
