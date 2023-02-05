@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios, { type AxiosResponse } from "axios";
 import RadarChart from "../components/RadarChart.vue";
+import moment from "moment";
 
 interface Props {
   id: number;
@@ -30,7 +31,10 @@ const evalutions_colors = ["red", "orange", "grey", "cyan", "green"];
 
 const review_created = ref();
 const coffee_id: number = ref(props.id);
+const coffee_name: string = ref("");
+const coffee_store: string = ref("");
 const review_id: number = ref();
+const review_name: string = ref();
 const remarks: string = ref();
 const setting = reactive({
   value: "",
@@ -57,6 +61,10 @@ const attributes: attribute = reactive({
 });
 const disabled_flg = ref(true);
 
+const momentDate = (date) => {
+  return moment(date).format("YYYY年/MM月/DD日");
+};
+
 setReview();
 
 async function setReview(): Promise<void> {
@@ -71,7 +79,11 @@ async function setReview(): Promise<void> {
     .then((response: AxiosResponse<any>) => {
       console.log(response.data);
       coffee_id.value = response.data.review.coffee.id;
+      coffee_name.value = response.data.review.coffee.coffee_property.name;
+      coffee_store.value =
+        response.data.review.coffee.coffee_property.store.name;
       review_id.value = response.data.review.id;
+      review_name.value = response.data.review.user.name;
       review_created.value = response.data.review.created_at;
       remarks.value = response.data.review.remarks;
       setting.value = response.data.review.setting;
@@ -149,17 +161,18 @@ async function updateReview(): Promise<void> {
         <v-card class="mx-auto" max-width="320">
           <v-img src="" alt="" height="190" cover></v-img>
           <v-list-item>
-            <v-list-item-title
-              >{{ show ? show.review.coffee.coffee_property.name : "" }}
-            </v-list-item-title>
-            <v-list-item-subtitle>{{
-              show ? show.review.coffee.coffee_property.name : ""
-            }}</v-list-item-subtitle>
+            <v-list-item-title>{{ coffee_name }} </v-list-item-title>
+            <v-list-item-subtitle>{{ coffee_store }}</v-list-item-subtitle>
           </v-list-item>
         </v-card>
         <v-card class="mt-5">
-          <v-list>
-            <v-list-item>{{}}</v-list-item>
+          <v-list class="ml-5">
+            <v-list-item-subtitle
+              >投稿日:{{ momentDate(review_created) }}</v-list-item-subtitle
+            >
+            <v-list-item-subtitle
+              >投稿者:{{ review_name }}</v-list-item-subtitle
+            >
           </v-list>
           <v-table density="compact">
             <tbody>
@@ -173,7 +186,7 @@ async function updateReview(): Promise<void> {
                     :items="evalutions"
                     item-title="text"
                     item-value="value"
-                    class="pt-5"
+                    class=""
                     v-bind:readonly="disabled_flg"
                   >
                   </v-select>
@@ -189,7 +202,7 @@ async function updateReview(): Promise<void> {
                     :items="evalutions"
                     item-title="text"
                     item-value="value"
-                    class="pt-5"
+                    class="pt-2"
                     v-bind:readonly="disabled_flg"
                   >
                   </v-select>

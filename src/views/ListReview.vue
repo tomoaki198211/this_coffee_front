@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import { mdiMagnify } from "@mdi/js";
+import moment from "moment";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -33,8 +34,13 @@ watch(selected_category, () => {
 watch(selected_store, () => {
   setSearch();
 });
+
 setMaster();
 setReview();
+
+const momentDate = (date) => {
+  return moment(date).format("YYYY/MM/DD");
+};
 
 async function setMaster(): Promise<void> {
   await axios
@@ -89,6 +95,7 @@ const searchReset = () => {
   selected_category.id = "";
   selected_store.id = "";
   search_word.value = "";
+  setReview();
 };
 </script>
 
@@ -165,11 +172,13 @@ const searchReset = () => {
           <v-list-item>
             <v-row>
               <v-col>
-                <v-list-item-subtitle> 投稿日:{{}} </v-list-item-subtitle>
+                <v-list-item-subtitle>
+                  from: {{ review.user.name }}
+                </v-list-item-subtitle>
               </v-col>
               <v-col>
                 <v-list-item-subtitle>
-                  投稿者:{{ review.user.name }}
+                  {{ momentDate(review.created_at) }}
                 </v-list-item-subtitle>
               </v-col>
             </v-row>
