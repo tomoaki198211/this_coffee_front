@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
+import { ref, reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
+import { useRouter } from "vue-router";
 import axios, { type AxiosResponse } from "axios";
 import RadarChart from "../components/RadarChart.vue";
 
@@ -16,6 +17,7 @@ interface attribute {
 }
 const props = defineProps<Props>();
 const authStore = useAuthStore();
+const router = useRouter();
 const evalutions = [
   { value: 5, text: "5:最高！" },
   { value: 4, text: "4:満足！" },
@@ -45,7 +47,7 @@ const attributes: attribute = reactive({
   acidity: null,
   bitter: null,
 });
-const p_name = ref("");
+const prop_name = ref("");
 
 showCoffee();
 
@@ -60,13 +62,13 @@ async function showCoffee(): Promise<void> {
       },
     })
     .then((response: AxiosResponse<any>) => {
-      p_name.value = response.data;
+      prop_name.value = response.data;
       console.log(response.data);
     });
 }
 
 //投稿処理
-async function postCoffee(): Promise<void> {
+async function postReview(): Promise<void> {
   const data = {
     review: {
       coffee_id: coffee_id.value,
@@ -91,6 +93,7 @@ async function postCoffee(): Promise<void> {
   await axios
     .post("http://localhost:3000/api/v1/reviews", data, config)
     .then((response) => {
+      router.push("/reviews");
       console.log(response.data);
     });
 }
@@ -104,10 +107,12 @@ async function postCoffee(): Promise<void> {
           <v-img src="" alt="" height="190" cover></v-img>
           <v-list-item>
             <v-list-item-title
-              >{{ p_name ? p_name.coffee.coffee_property.store.name : "" }}
+              >{{
+                prop_name ? prop_name.coffee.coffee_property.store.name : ""
+              }}
             </v-list-item-title>
             <v-list-item-subtitle>{{
-              p_name ? p_name.coffee.coffee_property.name : ""
+              prop_name ? prop_name.coffee.coffee_property.name : ""
             }}</v-list-item-subtitle>
           </v-list-item>
         </v-card>
@@ -170,7 +175,7 @@ async function postCoffee(): Promise<void> {
                 variant="flat"
                 color="#7b5544"
                 width="200px"
-                @click="postCoffee()"
+                @click="postReview()"
               >
                 <p class="font-weight-bold btn-txt">レビューを投稿する</p>
               </v-btn>

@@ -28,10 +28,18 @@ const evalutions = [
 const evalutions_rate = ["弱い", "やや弱い", "普通", "やや強い", "強い"];
 const evalutions_colors = ["red", "orange", "grey", "cyan", "green"];
 
+const review_created = ref();
 const coffee_id: number = ref(props.id);
 const review_id: number = ref();
 const remarks: string = ref();
-const setting: boolean = ref();
+const setting = reactive({
+  value: "",
+  text: "",
+});
+const settings = [
+  { value: true, text: "公開" },
+  { value: false, text: "非公開" },
+];
 const intuition = reactive({
   value: "",
   text: "",
@@ -48,7 +56,6 @@ const attributes: attribute = reactive({
   bitter: null,
 });
 const disabled_flg = ref(true);
-const p_name = ref("");
 
 setReview();
 
@@ -65,6 +72,7 @@ async function setReview(): Promise<void> {
       console.log(response.data);
       coffee_id.value = response.data.review.coffee.id;
       review_id.value = response.data.review.id;
+      review_created.value = response.data.review.created_at;
       remarks.value = response.data.review.remarks;
       setting.value = response.data.review.setting;
       intuition.value = response.data.review.intuition;
@@ -87,6 +95,7 @@ async function destroyReview(id): Promise<void> {
     })
     .then((response: AxiosResponse<any>) => {
       console.log(response.status);
+      router.push("/reviews");
     });
 }
 const onEdit = () => {
@@ -96,6 +105,51 @@ const onShow = () => {
   disabled_flg.value = true;
   setReview();
 };
+const dateFormat = (date, format) => {
+  format = format.replace(/YYYY/, date.getFullYear());
+  format = format.replace(/MM/, date.getMonth() + 1);
+  format = format.replace(/DD/, date.getDate());
+  return format;
+};
+
+const created_at = computed(() => {
+  return dateFormat(review_created, "YYY年MM月DD日");
+});
+
+async function updateReview(): Promise<void> {
+  const data = {
+    review: {
+      coffee_id: coffee_id.value,
+      intuition: intuition.value,
+      efficiency: efficiency.value,
+      remarks: remarks.value,
+      setting: setting.value,
+      flavor: attributes.flavor,
+      sweetness: attributes.sweetness,
+      rich: attributes.rich,
+      acidity: attributes.acidity,
+      bitter: attributes.bitter,
+    },
+  };
+  const config = {
+    headers: {
+      uid: authStore.uid,
+      "access-token": authStore.access_token,
+      client: authStore.client,
+    },
+  };
+  await axios
+    .patch(
+      `http://localhost:3000/api/v1/reviews/${review_id.value}`,
+      data,
+      config
+    )
+    .then((response) => {
+      setReview();
+      onShow();
+      console.log(response.data);
+    });
+}
 </script>
 
 <template>
@@ -114,6 +168,9 @@ const onShow = () => {
           </v-list-item>
         </v-card>
         <v-card class="mt-5">
+          <v-list>
+            <v-list-item>{{ review_created }}</v-list-item>
+          </v-list>
           <v-table density="compact">
             <tbody>
               <tr>
@@ -127,7 +184,7 @@ const onShow = () => {
                     item-title="text"
                     item-value="value"
                     class="pt-5"
-                    v-bind:disabled="disabled_flg"
+                    v-bind:readonly="disabled_flg"
                   >
                   </v-select>
                 </td>
@@ -143,7 +200,7 @@ const onShow = () => {
                     item-title="text"
                     item-value="value"
                     class="pt-5"
-                    v-bind:disabled="disabled_flg"
+                    v-bind:readonly="disabled_flg"
                   >
                   </v-select>
                 </td>
@@ -161,16 +218,18 @@ const onShow = () => {
                 class=""
                 v-bind:readonly="disabled_flg"
               />
-              <v-switch
-                v-model="setting"
-                hide-details
-                color="primary"
-                class="ml-5"
-                true-value="公開"
-                false-value="非公開"
-                :label="setting || '非公開'"
-              ></v-switch
-              >{{ setting }}
+              <v-select
+                v-model="setting.value"
+                density="compact"
+                label="公開・非公開"
+                :hint="`${setting.value},${setting.text}`"
+                :items="settings"
+                item-title="text"
+                item-value="value"
+                class=""
+                v-bind:readonly="disabled_flg"
+              >
+              </v-select>
             </v-list-item>
             <v-card-actions>
               <template v-if="disabled_flg == true">
@@ -178,7 +237,6 @@ const onShow = () => {
                   class="mx-auto"
                   variant="flat"
                   color="#7b5544"
-                  width="200px"
                   @click="onEdit()"
                 >
                   <p class="font-weight-bold btn-txt">編集</p>
@@ -187,7 +245,6 @@ const onShow = () => {
                   class="mx-auto"
                   variant="flat"
                   color="#7b5544"
-                  width="200px"
                   @click="destroyReview(review_id)"
                 >
                   <p class="font-weight-bold btn-txt">削除</p>
@@ -198,7 +255,6 @@ const onShow = () => {
                   class="mx-auto"
                   variant="flat"
                   color="#7b5544"
-                  width="200px"
                   @click="onShow()"
                 >
                   <p class="font-weight-bold btn-txt">編集取消し</p>
@@ -207,8 +263,7 @@ const onShow = () => {
                   class="mx-auto"
                   variant="flat"
                   color="#7b5544"
-                  width="200px"
-                  @click="on"
+                  @click="updateReview()"
                 >
                   <p class="font-weight-bold btn-txt">更新</p>
                 </v-btn>
@@ -338,8 +393,6 @@ const onShow = () => {
         </v-card>
       </v-col>
     </v-row>
-
-    <button @click="destroyReview(show.review.id)">削除する</button>
   </v-container>
 </template>
 
