@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
+import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios, { type AxiosResponse } from "axios";
@@ -105,16 +105,6 @@ const onShow = () => {
   disabled_flg.value = true;
   setReview();
 };
-const dateFormat = (date, format) => {
-  format = format.replace(/YYYY/, date.getFullYear());
-  format = format.replace(/MM/, date.getMonth() + 1);
-  format = format.replace(/DD/, date.getDate());
-  return format;
-};
-
-const created_at = computed(() => {
-  return dateFormat(review_created, "YYY年MM月DD日");
-});
 
 async function updateReview(): Promise<void> {
   const data = {
@@ -169,7 +159,7 @@ async function updateReview(): Promise<void> {
         </v-card>
         <v-card class="mt-5">
           <v-list>
-            <v-list-item>{{ review_created }}</v-list-item>
+            <v-list-item>{{}}</v-list-item>
           </v-list>
           <v-table density="compact">
             <tbody>
