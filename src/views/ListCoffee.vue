@@ -22,6 +22,7 @@ const selected_store = reactive({
 });
 const categories = ref([]);
 const stores = ref([]);
+const load = ref(false);
 
 //apiで検索する際はwatchを使用
 // watch(search_word, () => {
@@ -86,6 +87,7 @@ async function setCoffee(): Promise<void> {
     })
     .then((response) => {
       index.coffees = response.data;
+      load.value = true;
       console.log(response.data);
     });
 }
@@ -179,7 +181,7 @@ const searchReset = () => {
         lg="3"
         xl="2"
       >
-        <v-card class="mx-auto" max-width="300">
+        <v-card class="mx-auto" max-width="300" color="#dbc9c1">
           <v-img src="" alt="" height="100" cover></v-img>
           <v-list-item>
             <v-list-item-title
@@ -207,7 +209,9 @@ const searchReset = () => {
         </v-card>
       </v-col>
     </v-row>
-    <template v-if="index.coffees.length === 0">
+    <template
+      v-if="index.coffees.length !== 0 && searchedCoffees == 0 && load == true"
+    >
       <v-row justify="center" align="center">
         <p class="coffee_txt">
           検索結果がありません。<br />検索条件を変更して下さい。

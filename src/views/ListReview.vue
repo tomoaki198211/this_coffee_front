@@ -5,6 +5,7 @@ import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import { mdiMagnify } from "@mdi/js";
 import { mdiAutorenew } from "@mdi/js";
+import { mdiCommentOutline } from "@mdi/js";
 import moment from "moment";
 
 const authStore = useAuthStore();
@@ -24,6 +25,7 @@ const selected_store = reactive({
 const categories = ref([]);
 const stores = ref([]);
 const whole: boolean = ref(false);
+const load = ref(false);
 const momentDate = (date) => {
   return moment(date).format("YYYY/MM/DD");
 };
@@ -97,6 +99,7 @@ async function setReview(): Promise<void> {
     .then((response) => {
       whole.value = false;
       index.reviews = response.data;
+      load.value = true;
       console.log(response.data);
     });
 }
@@ -193,6 +196,7 @@ async function setSearch(): Promise<void> {
         color="#7b5544"
         variant="plain"
         class="mx-auto"
+        size="large"
         @click="setAllReview()"
         ><v-icon :icon="mdiAutorenew"></v-icon>全体</v-btn
       ></template
@@ -202,6 +206,7 @@ async function setSearch(): Promise<void> {
         color="#7b5544"
         variant="plain"
         class="mx-auto"
+        size="large"
         @click="setReview()"
         ><v-icon :icon="mdiAutorenew"></v-icon>個人</v-btn
       >
@@ -217,20 +222,21 @@ async function setSearch(): Promise<void> {
         lg="3"
         xl="2"
       >
-        <v-card class="mx-auto" max-width="300">
+        <v-card class="mx-auto" max-width="300" style="border-width: 2px">
           <v-list-item>
-            <v-list-item-title
-              >{{ review.coffee.coffee_property.name }}
+            <v-list-item-title>
+              {{ review.coffee.coffee_property.name }}
             </v-list-item-title>
             <v-list-item-subtitle>{{
               review.coffee.coffee_property.store.name
             }}</v-list-item-subtitle>
           </v-list-item>
+          <v-divider></v-divider>
           <v-list-item>
             <v-row>
               <v-col>
                 <v-list-item-subtitle>
-                  from: {{ review.user.name }}
+                  {{ review.user.name }}
                 </v-list-item-subtitle>
               </v-col>
               <v-col>
@@ -259,6 +265,7 @@ async function setSearch(): Promise<void> {
             <v-btn
               class="mx-auto"
               color="#7b5544"
+              size="large"
               @click="
                 router.push({
                   path: `/review/${review.id}`,
@@ -271,7 +278,9 @@ async function setSearch(): Promise<void> {
         </v-card>
       </v-col>
     </v-row>
-    <template v-if="searchedReviews.length === 0">
+    <template
+      v-if="index.reviews !== 0 && searchedReviews.length === 0 && load == true"
+    >
       <v-row justify="center" align="center">
         <p class="coffee_txt">
           検索結果がありません。<br />検索条件を変更して下さい。

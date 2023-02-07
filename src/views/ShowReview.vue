@@ -5,6 +5,7 @@ import { useAuthStore } from "../stores/auth";
 import axios, { type AxiosResponse } from "axios";
 import RadarChart from "../components/RadarChart.vue";
 import moment from "moment";
+import { mdiArrowLeftThick } from "@mdi/js";
 
 interface Props {
   id: number;
@@ -156,7 +157,18 @@ async function updateReview(): Promise<void> {
 
 <template>
   <v-container fluid grid-list-xl class="container_out">
-    <v-row width="95%">
+    <v-row width="100%">
+      <v-col cols="12" sm="1">
+        <v-btn
+          color="#7b5544"
+          variant="plain"
+          class="mx-auto"
+          size="large"
+          icon
+          @click="router.push('/reviews')"
+          ><v-icon :icon="mdiArrowLeftThick" size="large"></v-icon
+        ></v-btn>
+      </v-col>
       <v-col cols="12" sm="5">
         <v-card class="mx-auto" max-width="320">
           <v-img src="" alt="" height="190" cover></v-img>
@@ -276,7 +288,7 @@ async function updateReview(): Promise<void> {
         </v-card>
       </v-col>
 
-      <v-col cols="12" sm="7">
+      <v-col cols="12" sm="6">
         <v-card class="mx-auto my-auto">
           <div class="d-flex justify-center">
             <RadarChart
@@ -401,7 +413,7 @@ async function updateReview(): Promise<void> {
 
 <style scoped>
 .container_out {
-  width: 95%;
+  width: 100%;
 }
 td {
   text-align: center;
