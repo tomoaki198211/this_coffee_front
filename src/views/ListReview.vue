@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import { mdiMagnify } from "@mdi/js";
+import { mdiAutorenew } from "@mdi/js";
 import moment from "moment";
 
 const authStore = useAuthStore();
@@ -11,7 +12,7 @@ const router = useRouter();
 const index = reactive({
   reviews: [],
 });
-const search_word = ref("");
+const search_word: string = ref("");
 const selected_category = reactive({
   id: "",
   name: "",
@@ -22,6 +23,16 @@ const selected_store = reactive({
 });
 const categories = ref([]);
 const stores = ref([]);
+const whole: boolean = ref(false);
+const momentDate = (date) => {
+  return moment(date).format("YYYY/MM/DD");
+};
+const searchReset = () => {
+  selected_category.id = "";
+  selected_store.id = "";
+  search_word.value = "";
+  // setReview();
+};
 
 //apiで検索する際はwatchを使用
 // watch(search_word, () => {
@@ -38,10 +49,6 @@ const stores = ref([]);
 
 setMaster();
 setReview();
-
-const momentDate = (date) => {
-  return moment(date).format("YYYY/MM/DD");
-};
 
 //front側で検索する際にcomputedを使用
 const searchedReviews = computed(() => {
@@ -62,6 +69,7 @@ const searchedReviews = computed(() => {
   return reviews;
 });
 //---------
+
 async function setMaster(): Promise<void> {
   await axios
     .get("http://localhost:3000/api/v1/coffees/mdata", {
@@ -87,6 +95,23 @@ async function setReview(): Promise<void> {
       },
     })
     .then((response) => {
+      whole.value = false;
+      index.reviews = response.data;
+      console.log(response.data);
+    });
+}
+
+async function setAllReview(): Promise<void> {
+  await axios
+    .get("http://localhost:3000/api/v1/reviews/all", {
+      headers: {
+        uid: authStore.uid,
+        "access-token": authStore.access_token,
+        client: authStore.client,
+      },
+    })
+    .then((response) => {
+      whole.value = true;
       index.reviews = response.data;
       console.log(response.data);
     });
@@ -111,12 +136,6 @@ async function setSearch(): Promise<void> {
       console.log(response.data);
     });
 }
-const searchReset = () => {
-  selected_category.id = "";
-  selected_store.id = "";
-  search_word.value = "";
-  setReview();
-};
 </script>
 
 <template>
@@ -169,6 +188,24 @@ const searchReset = () => {
         </v-btn>
       </v-col>
     </v-row>
+    <template v-if="whole == false">
+      <v-btn
+        color="#7b5544"
+        variant="plain"
+        class="mx-auto"
+        @click="setAllReview()"
+        ><v-icon :icon="mdiAutorenew"></v-icon>全体</v-btn
+      ></template
+    >
+    <template v-else>
+      <v-btn
+        color="#7b5544"
+        variant="plain"
+        class="mx-auto"
+        @click="setReview()"
+        ><v-icon :icon="mdiAutorenew"></v-icon>個人</v-btn
+      >
+    </template>
     <v-row>
       <v-col
         v-for="review in searchedReviews"
@@ -234,7 +271,7 @@ const searchReset = () => {
         </v-card>
       </v-col>
     </v-row>
-    <template v-if="index.reviews.length === 0">
+    <template v-if="searchedReviews.length === 0">
       <v-row justify="center" align="center">
         <p class="coffee_txt">
           検索結果がありません。<br />検索条件を変更して下さい。
