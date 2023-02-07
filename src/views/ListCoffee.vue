@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, watch } from "vue";
+import { ref, reactive, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios from "axios";
@@ -23,18 +23,38 @@ const selected_store = reactive({
 const categories = ref([]);
 const stores = ref([]);
 
-watch(search_word, () => {
-  setSearch();
-});
+//apiで検索する際はwatchを使用
+// watch(search_word, () => {
+//   setSearch();
+// });
 
-watch(selected_category, () => {
-  setSearch();
-});
+// watch(selected_category, () => {
+//   setSearch();
+// });
 
-watch(selected_store, () => {
-  setSearch();
-});
+// watch(selected_store, () => {
+//   setSearch();
+// });
 
+//front側で検索する際にcomputedを使用
+const searchedCoffees = computed(() => {
+  let coffees = [];
+  for (let i in index.coffees) {
+    let coffee = index.coffees[i];
+    if (
+      (coffee.coffee_property.name.indexOf(search_word.value) !== -1 ||
+        search_word.value == "") &&
+      (coffee.category.id === selected_category.id ||
+        selected_category.id == "") &&
+      (coffee.coffee_property.store.id === selected_store.id ||
+        selected_store.id == "")
+    ) {
+      coffees.push(coffee);
+    }
+  }
+  return coffees;
+});
+//---------
 setCoffee();
 setMaster();
 
@@ -70,7 +90,7 @@ async function setCoffee(): Promise<void> {
     });
 }
 
-//2 axios 検索結果を表示する
+// 2 axios 検索結果を表示する
 async function setSearch(): Promise<void> {
   await axios
     .post("http://localhost:3000/api/v1/coffees/search", {
@@ -150,7 +170,7 @@ const searchReset = () => {
     </v-row>
     <v-row>
       <v-col
-        v-for="coffee in index.coffees"
+        v-for="coffee in searchedCoffees"
         :key="coffee.id"
         cols="12"
         xs="1"

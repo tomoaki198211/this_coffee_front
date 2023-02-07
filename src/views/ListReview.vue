@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, watch } from "vue";
+import { reactive, ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios from "axios";
@@ -23,17 +23,18 @@ const selected_store = reactive({
 const categories = ref([]);
 const stores = ref([]);
 
-watch(search_word, () => {
-  setSearch();
-});
+//apiで検索する際はwatchを使用
+// watch(search_word, () => {
+//   setSearch();
+// });
 
-watch(selected_category, () => {
-  setSearch();
-});
+// watch(selected_category, () => {
+//   setSearch();
+// });
 
-watch(selected_store, () => {
-  setSearch();
-});
+// watch(selected_store, () => {
+//   setSearch();
+// });
 
 setMaster();
 setReview();
@@ -42,6 +43,25 @@ const momentDate = (date) => {
   return moment(date).format("YYYY/MM/DD");
 };
 
+//front側で検索する際にcomputedを使用
+const searchedReviews = computed(() => {
+  let reviews = [];
+  for (let i in index.reviews) {
+    let review = index.reviews[i];
+    if (
+      (review.coffee.coffee_property.name.indexOf(search_word.value) !== -1 ||
+        search_word.value == "") &&
+      (review.coffee.category.id === selected_category.id ||
+        selected_category.id == "") &&
+      (review.coffee.coffee_property.store.id === selected_store.id ||
+        selected_store.id == "")
+    ) {
+      reviews.push(review);
+    }
+  }
+  return reviews;
+});
+//---------
 async function setMaster(): Promise<void> {
   await axios
     .get("http://localhost:3000/api/v1/coffees/mdata", {
@@ -151,7 +171,7 @@ const searchReset = () => {
     </v-row>
     <v-row>
       <v-col
-        v-for="review in index.reviews"
+        v-for="review in searchedReviews"
         :key="review.id"
         cols="12"
         xs="1"
@@ -192,7 +212,7 @@ const searchReset = () => {
           <v-list-item>
             <v-textarea
               :placeholder="review.remarks"
-              variant="outlined"
+              variant="underlined"
               rows="2"
               class=""
               readonly
