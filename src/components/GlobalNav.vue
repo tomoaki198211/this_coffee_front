@@ -21,14 +21,14 @@ const onLogout = (): void => {
 </script>
 
 <template>
-  <v-app-bar :elevation="2">
+  <v-app-bar :elevation="2" color="#fff4ea">
+    <v-app-bar-title color="#7b5544">this Coffee!</v-app-bar-title>
     <v-app-bar-nav-icon
       variant="text"
       @click.stop="drawer = !drawer"
     ></v-app-bar-nav-icon>
-    <v-app-bar-title color="#7b5544">this Coffee!</v-app-bar-title>
   </v-app-bar>
-  <v-navigation-drawer v-model="drawer" location="left" temporary>
+  <v-navigation-drawer v-model="drawer" location="right" temporary>
     <template v-if="!authStore.isAuthencated()">
       <v-list
         ><v-btn variant="plain" @click="router.push('/')">

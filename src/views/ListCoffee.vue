@@ -121,104 +121,117 @@ const searchReset = () => {
 </script>
 
 <template>
-  <v-container fluid grid-list-xl class="container_out">
-    <v-row>
-      <v-col cols="12" sm="5">
-        <v-text-field
-          v-model="search_word"
-          label="商品名"
-          variant="underlined"
-          :prepend-icon="mdiMagnify"
-        ></v-text-field>
-      </v-col>
-      <v-col cols="12" sm="3">
-        <v-select
-          v-model="selected_category.id"
-          :prepend-icon="mdiMagnify"
-          label="分類"
-          :hint="`${selected_category.id},${selected_category.name}`"
-          :items="categories"
-          item-title="name"
-          item-value="id"
-          variant="underlined"
-          class="text-center"
-        >
-        </v-select>
-      </v-col>
-      <v-col cols="12" sm="3">
-        <v-select
-          v-model="selected_store.id"
-          :prepend-icon="mdiMagnify"
-          label="販売店"
-          :hint="`${selected_store.id},${selected_store.name}`"
-          :items="stores"
-          item-title="name"
-          item-value="id"
-          variant="underlined"
-          class="text-center"
-        >
-        </v-select>
-      </v-col>
-      <v-col cols="12" sm="1">
-        <v-btn
-          icon
-          color="#7b5544"
-          variant="plain"
-          class="mx-auto ml-3"
-          @click="searchReset()"
-          ><p>検索リセット</p>
-        </v-btn>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-        v-for="coffee in searchedCoffees"
-        :key="coffee.id"
-        cols="12"
-        xs="1"
-        sm="6"
-        md="4"
-        lg="3"
-        xl="2"
-      >
-        <v-card class="mx-auto" max-width="300" color="#dbc9c1">
-          <v-img src="" alt="" height="100" cover></v-img>
-          <v-list-item>
-            <v-list-item-title
-              >{{ coffee.coffee_property.name }}
-            </v-list-item-title>
-            <v-list-item-subtitle>{{
-              coffee.coffee_property.store.name
-            }}</v-list-item-subtitle>
-          </v-list-item>
-          <v-card-actions>
-            <v-btn
-              class="mx-auto"
-              color="#7b5544"
-              @click="
-                router.push({
-                  path: `/review/post/${coffee.id}`,
-                })
-              "
-              >レビューを書く
-            </v-btn>
-            <v-btn class="mx-auto" color="#7b5544">詳細 </v-btn>
-            <FavoriteButton v-bind:coffee_id="coffee.id" />
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
-    <template
-      v-if="index.coffees.length !== 0 && searchedCoffees == 0 && load == true"
-    >
-      <v-row justify="center" align="center">
-        <p class="coffee_txt">
-          検索結果がありません。<br />検索条件を変更して下さい。
-        </p>
+  <div>
+    <v-container fluid grid-list-xl class="container_out">
+      <v-row>
+        <v-col cols="12" sm="5">
+          <v-text-field
+            v-model="search_word"
+            label="商品名"
+            variant="underlined"
+            :prepend-icon="mdiMagnify"
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" sm="3">
+          <v-select
+            v-model="selected_category.id"
+            :prepend-icon="mdiMagnify"
+            label="分類"
+            :hint="`${selected_category.id},${selected_category.name}`"
+            :items="categories"
+            item-title="name"
+            item-value="id"
+            variant="underlined"
+            class="text-center"
+          >
+          </v-select>
+        </v-col>
+        <v-col cols="12" sm="3">
+          <v-select
+            v-model="selected_store.id"
+            :prepend-icon="mdiMagnify"
+            label="販売店"
+            :hint="`${selected_store.id},${selected_store.name}`"
+            :items="stores"
+            item-title="name"
+            item-value="id"
+            variant="underlined"
+            class="text-center"
+          >
+          </v-select>
+        </v-col>
+        <v-col cols="12" sm="1">
+          <v-btn
+            icon
+            color="#7b5544"
+            variant="plain"
+            class="mx-auto ml-3"
+            @click="searchReset()"
+            ><p>検索リセット</p>
+          </v-btn>
+        </v-col>
       </v-row>
-    </template>
-  </v-container>
+      <v-row>
+        <v-col
+          v-for="coffee in searchedCoffees"
+          :key="coffee.id"
+          cols="12"
+          xs="1"
+          sm="6"
+          md="4"
+          lg="3"
+          xl="2"
+        >
+          <v-hover v-slot="{ isHovering, props }">
+            <v-card
+              class="mx-auto"
+              max-width="300"
+              :elevation="isHovering ? 16 : 2"
+              :class="{ 'on-hover': isHovering }"
+              :color="isHovering ? '#fff4ea' : undefined"
+              v-bind="props"
+            >
+              <v-img src="" alt="" height="100" cover></v-img>
+              <v-list-item>
+                <v-list-item-title
+                  >{{ coffee.coffee_property.name }}
+                </v-list-item-title>
+                <v-list-item-subtitle>{{
+                  coffee.coffee_property.store.name
+                }}</v-list-item-subtitle>
+              </v-list-item>
+              <v-card-actions>
+                <v-btn
+                  class="mx-auto"
+                  color="#7b5544"
+                  @click="
+                    router.push({
+                      path: `/review/post/${coffee.id}`,
+                    })
+                  "
+                  >レビューを書く
+                </v-btn>
+                <v-btn class="mx-auto" color="#7b5544">詳細 </v-btn>
+                <FavoriteButton v-bind:coffee_id="coffee.id" />
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-hover>
+        </v-col>
+      </v-row>
+      <template
+        v-if="
+          index.coffees.length !== 0 && searchedCoffees == 0 && load == true
+        "
+      >
+        <v-row justify="center" align="center">
+          <p class="coffee_txt">
+            検索結果がありません。<br />検索条件を変更して下さい。
+          </p>
+        </v-row>
+      </template>
+    </v-container>
+  </div>
 </template>
 
 <style scoped>

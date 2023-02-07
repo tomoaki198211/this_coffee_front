@@ -222,60 +222,70 @@ async function setSearch(): Promise<void> {
         lg="3"
         xl="2"
       >
-        <v-card class="mx-auto" max-width="300" style="border-width: 2px">
-          <v-list-item>
-            <v-list-item-title>
-              {{ review.coffee.coffee_property.name }}
-            </v-list-item-title>
-            <v-list-item-subtitle>{{
-              review.coffee.coffee_property.store.name
-            }}</v-list-item-subtitle>
-          </v-list-item>
-          <v-divider></v-divider>
-          <v-list-item>
-            <v-row>
-              <v-col>
-                <v-list-item-subtitle>
-                  {{ review.user.name }}
-                </v-list-item-subtitle>
-              </v-col>
-              <v-col>
-                <v-list-item-subtitle>
-                  {{ momentDate(review.created_at) }}
-                </v-list-item-subtitle>
-              </v-col>
-            </v-row>
-            <v-list-item-title>
-              直感的な評価:{{ review.intuition }}
-            </v-list-item-title>
-            <v-list-item-title>
-              コストパフォーマンス:{{ review.efficiency }}
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-textarea
-              :placeholder="review.remarks"
-              variant="underlined"
-              rows="2"
-              class=""
-              readonly
-            />
-          </v-list-item>
-          <v-card-actions>
-            <v-btn
-              class="mx-auto"
-              color="#7b5544"
-              size="large"
-              @click="
-                router.push({
-                  path: `/review/${review.id}`,
-                })
-              "
-              >詳細
-            </v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-card>
+        <v-hover v-slot="{ isHovering, props }">
+          <v-card
+            class="mx-auto"
+            max-width="300"
+            style="border-width: 2px"
+            :elevation="isHovering ? 16 : 2"
+            :class="{ 'on-hover': isHovering }"
+            :color="isHovering ? '#fff4ea' : undefined"
+            v-bind="props"
+          >
+            <v-list-item>
+              <v-list-item-title>
+                {{ review.coffee.coffee_property.name }}
+              </v-list-item-title>
+              <v-list-item-subtitle>{{
+                review.coffee.coffee_property.store.name
+              }}</v-list-item-subtitle>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item>
+              <v-row>
+                <v-col>
+                  <v-list-item-subtitle>
+                    {{ review.user.name }}
+                  </v-list-item-subtitle>
+                </v-col>
+                <v-col>
+                  <v-list-item-subtitle>
+                    {{ momentDate(review.created_at) }}
+                  </v-list-item-subtitle>
+                </v-col>
+              </v-row>
+              <v-list-item-title class="mt-2">
+                直感的な評価:{{ review.intuition }}
+              </v-list-item-title>
+              <v-list-item-title>
+                コストパフォーマンス:{{ review.efficiency }}
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-textarea
+                :placeholder="review.remarks"
+                variant="underlined"
+                rows="2"
+                class=""
+                readonly
+              />
+            </v-list-item>
+            <v-card-actions>
+              <v-btn
+                class="mx-auto"
+                color="#7b5544"
+                size="large"
+                @click="
+                  router.push({
+                    path: `/review/${review.id}`,
+                  })
+                "
+                >詳細
+              </v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-hover>
       </v-col>
     </v-row>
     <template
