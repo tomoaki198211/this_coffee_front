@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { reactive, computed } from "vue";
+import { reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
+import { mdiEmailOutline } from "@mdi/js";
+import { mdiLockOutline } from "@mdi/js";
 
 type userLoginObj = {
   email: string;
@@ -32,22 +34,62 @@ const guestAdminLogin = (): void => {
 };
 </script>
 <template>
-  <div>
-    <div>
-      <label for="email"> Email </label>
-      <input v-model="user.email" id="Email" type="text" placeholder="Email" />
-    </div>
-    <div>
-      <label for="password"> Password </label>
-      <input
+  <v-card class="mt-10 mb-8 mx-auto" width="400px">
+    <v-container class="">
+      <v-text-field
+        :prepend-icon="mdiEmailOutline"
+        v-model="user.email"
+        label="Email"
+        density="compact"
+        variant="outlined"
+      ></v-text-field>
+      <v-text-field
+        :prepend-icon="mdiLockOutline"
         v-model="user.password"
-        id="password"
+        label="Password"
+        density="compact"
         type="password"
-        placeholder="******************"
-      />
-    </div>
-    <button @click="onLogin">ログイン</button>
-    <button @click="guestLogin">ゲストログイン</button>
-    <button @click="guestAdminLogin">ゲスト管理者ログイン</button>
-  </div>
+        variant="outlined"
+      ></v-text-field>
+      <v-card-actions>
+        <v-btn
+          class="mx-auto"
+          variant="flat"
+          color="#7b5544"
+          width="200px"
+          @click="onLogin"
+        >
+          <p class="font-weight-bold btn-txt">ログイン</p>
+        </v-btn>
+      </v-card-actions>
+      <v-card-actions>
+        <v-btn
+          class="mx-auto"
+          variant="flat"
+          color="#7b5544"
+          width="200px"
+          @click="guestLogin"
+        >
+          <p class="font-weight-bold btn-txt">ゲストログイン</p>
+        </v-btn>
+      </v-card-actions>
+      <v-card-actions>
+        <v-btn
+          class="mx-auto"
+          variant="flat"
+          color="#7b5544"
+          width="200px"
+          @click="guestAdminLogin"
+        >
+          <p class="font-weight-bold btn-txt">ゲスト管理者ログイン</p>
+        </v-btn>
+      </v-card-actions>
+    </v-container>
+  </v-card>
 </template>
+
+<style scoped>
+.btn-txt {
+  color: white;
+}
+</style>

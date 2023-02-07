@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
-import axios, { type AxiosResponse } from "axios";
+import axios from "axios";
 import { RouterLink } from "vue-router";
 
 const authStore = useAuthStore();

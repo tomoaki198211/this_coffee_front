@@ -68,20 +68,20 @@ const router = createRouter({
         };
       },
     },
-    {
-      path: "/review/edit/:id",
-      name: "edit_review",
-      //動的インポート
-      component: () => {
-        return import("../views/EditReview.vue");
-      },
-      props: (routes) => {
-        const idNum = Number(routes.params.id);
-        return {
-          id: idNum,
-        };
-      },
-    },
+    // {
+    //   path: "/review/edit/:id",
+    //   name: "edit_review",
+    //   //動的インポート
+    //   component: () => {
+    //     return import("../views/EditReview.vue");
+    //   },
+    //   props: (routes) => {
+    //     const idNum = Number(routes.params.id);
+    //     return {
+    //       id: idNum,
+    //     };
+    //   },
+    // },
   ],
 });
 

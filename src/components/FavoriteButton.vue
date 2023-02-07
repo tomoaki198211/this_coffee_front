@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
+import { reactive, computed } from "vue";
 import { useAuthStore } from "../stores/auth";
 import { useMessageStore } from "@/stores/message";
 import axios from "axios";
+import { mdiHeart } from "@mdi/js";
+import { mdiHeartOutline } from "@mdi/js";
 
 interface Props {
   coffee_id: number;
@@ -109,9 +111,12 @@ async function deleteFavorite(): Promise<void> {
 </script>
 
 <template>
-  <button v-if="isFavorited" @click="deleteFavorite()">
-    お気に入りを取り消す
-  </button>
-  <button v-else @click="registerFavorite()">お気に入りする</button>
-  {{ count }}
+  <v-btn class="mx-auto" v-if="isFavorited" @click="deleteFavorite()">
+    <v-icon :icon="mdiHeart"></v-icon>
+    <p class="ml-3">{{ count }}</p>
+  </v-btn>
+  <v-btn class="mx-auto" v-else @click="registerFavorite()">
+    <v-icon :icon="mdiHeartOutline"></v-icon>
+    <p class="ml-3">{{ count }}</p>
+  </v-btn>
 </template>
