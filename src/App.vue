@@ -12,7 +12,7 @@ const authStore = useAuthStore();
 <template>
   <v-app>
     <GlobalNav />
-    <v-main>
+    <v-main class="wrapper">
       <GlobalMessage />
       <RouterView />
     </v-main>
@@ -20,4 +20,8 @@ const authStore = useAuthStore();
   </v-app>
 </template>
 
-<style scoped></style>
+<style scoped>
+.wrapper {
+  padding-bottom: 50px;
+}
+</style>

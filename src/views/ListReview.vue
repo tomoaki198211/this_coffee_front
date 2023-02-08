@@ -26,6 +26,9 @@ const categories = ref([]);
 const stores = ref([]);
 const whole: boolean = ref(false);
 const load = ref(false);
+const page = ref(1);
+const result = ref();
+const itemsPerPage = 8;
 const momentDate = (date) => {
   return moment(date).format("YYYY/MM/DD");
 };
@@ -35,6 +38,13 @@ const searchReset = () => {
   search_word.value = "";
   // setReview();
 };
+
+// const goToPage = (page) => {
+//   searchedReviews.value = searchedReviews.value.slice(
+//     itemsPerPage * (page - 1),
+//     itemsPerPage * page
+//   );
+// };
 
 //apiで検索する際はwatchを使用
 // watch(search_word, () => {
@@ -68,9 +78,18 @@ const searchedReviews = computed(() => {
       reviews.push(review);
     }
   }
+  getResult(reviews.length);
+  reviews = reviews.slice(
+    itemsPerPage * (page.value - 1),
+    itemsPerPage * page.value
+  );
   return reviews;
 });
 //---------
+
+const getResult = (length) => {
+  result.value = length;
+};
 
 async function setMaster(): Promise<void> {
   await axios
@@ -265,7 +284,7 @@ async function setSearch(): Promise<void> {
               <v-textarea
                 :placeholder="review.remarks"
                 variant="underlined"
-                rows="2"
+                rows="1"
                 class=""
                 readonly
               />
@@ -297,12 +316,18 @@ async function setSearch(): Promise<void> {
         </p>
       </v-row>
     </template>
+    <v-pagination
+      v-model="page"
+      :length="Math.ceil(result / itemsPerPage)"
+      rounded="circle"
+      class="mt-2"
+    ></v-pagination>
   </v-container>
 </template>
 
 <style scoped>
 .container_out {
-  width: 95%;
+  width: 100%;
 }
 .coffee_txt {
   color: #7b5544;

@@ -23,6 +23,9 @@ const selected_store = reactive({
 const categories = ref([]);
 const stores = ref([]);
 const load = ref(false);
+const page = ref(1);
+const result = ref();
+const itemsPerPage = 8;
 
 //apiで検索する際はwatchを使用
 // watch(search_word, () => {
@@ -53,9 +56,19 @@ const searchedCoffees = computed(() => {
       coffees.push(coffee);
     }
   }
+  getResult(coffees.length);
+  coffees = coffees.slice(
+    itemsPerPage * (page.value - 1),
+    itemsPerPage * page.value
+  );
   return coffees;
 });
 //---------
+
+const getResult = (length) => {
+  result.value = length;
+};
+
 setCoffee();
 setMaster();
 
@@ -230,13 +243,19 @@ const searchReset = () => {
           </p>
         </v-row>
       </template>
+      <v-pagination
+        v-model="page"
+        :length="Math.ceil(result / itemsPerPage)"
+        rounded="circle"
+        class="mt-2"
+      ></v-pagination>
     </v-container>
   </div>
 </template>
 
 <style scoped>
 .container_out {
-  width: 95%;
+  width: 100%;
 }
 .coffee_txt {
   color: #7b5544;
