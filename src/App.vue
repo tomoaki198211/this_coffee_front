@@ -10,7 +10,7 @@ const authStore = useAuthStore();
 </script>
 
 <template>
-  <v-app>
+  <v-app class="top">
     <GlobalNav />
     <v-main class="wrapper">
       <GlobalMessage />
@@ -22,6 +22,11 @@ const authStore = useAuthStore();
 
 <style scoped>
 .wrapper {
+  width: 100%;
   padding-bottom: 50px;
+}
+.top {
+  background: #ebdecc url("@/assets/bg-2.png") no-repeat center center;
+  background-size: contain;
 }
 </style>

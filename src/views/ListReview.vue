@@ -5,7 +5,6 @@ import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import { mdiMagnify } from "@mdi/js";
 import { mdiAutorenew } from "@mdi/js";
-import { mdiCommentOutline } from "@mdi/js";
 import moment from "moment";
 
 const authStore = useAuthStore();
@@ -163,7 +162,7 @@ async function setSearch(): Promise<void> {
 <template>
   <v-container fluid grid-list-xl class="container_out">
     <v-row>
-      <v-col cols="12" sm="5">
+      <v-col cols="12" sm="4">
         <v-text-field
           v-model="search_word"
           label="商品名"
@@ -199,13 +198,14 @@ async function setSearch(): Promise<void> {
         >
         </v-select>
       </v-col>
-      <v-col cols="12" sm="1">
+      <v-col cols="12" sm="2">
         <v-btn
           icon
           color="#7b5544"
           variant="plain"
           class="mx-auto ml-3"
           @click="searchReset()"
+          size="x-large"
           ><p>検索リセット</p>
         </v-btn>
       </v-col>
@@ -215,7 +215,7 @@ async function setSearch(): Promise<void> {
         color="#7b5544"
         variant="plain"
         class="mx-auto"
-        size="large"
+        size="x-large"
         @click="setAllReview()"
         ><v-icon :icon="mdiAutorenew"></v-icon>全体</v-btn
       ></template
@@ -225,7 +225,7 @@ async function setSearch(): Promise<void> {
         color="#7b5544"
         variant="plain"
         class="mx-auto"
-        size="large"
+        size="x-large"
         @click="setReview()"
         ><v-icon :icon="mdiAutorenew"></v-icon>個人</v-btn
       >
@@ -248,10 +248,10 @@ async function setSearch(): Promise<void> {
             style="border-width: 2px"
             :elevation="isHovering ? 16 : 2"
             :class="{ 'on-hover': isHovering }"
-            :color="isHovering ? '#fff4ea' : undefined"
+            :color="isHovering ? '#ffe5cc' : undefined"
             v-bind="props"
           >
-            <v-list-item>
+            <v-list-item class="mb-1">
               <v-list-item-title>
                 {{ review.coffee.coffee_property.name }}
               </v-list-item-title>
@@ -261,7 +261,7 @@ async function setSearch(): Promise<void> {
             </v-list-item>
             <v-divider></v-divider>
             <v-list-item>
-              <v-row>
+              <v-row class="">
                 <v-col>
                   <v-list-item-subtitle>
                     {{ review.user.name }}
@@ -273,12 +273,12 @@ async function setSearch(): Promise<void> {
                   </v-list-item-subtitle>
                 </v-col>
               </v-row>
-              <v-list-item-title class="mt-2">
+              <v-list-item-subtitle class="mt-1">
                 直感的な評価:{{ review.intuition }}
-              </v-list-item-title>
-              <v-list-item-title>
+              </v-list-item-subtitle>
+              <v-list-item-subtitle class="mt-1">
                 コストパフォーマンス:{{ review.efficiency }}
-              </v-list-item-title>
+              </v-list-item-subtitle>
             </v-list-item>
             <v-list-item>
               <v-textarea
@@ -287,6 +287,7 @@ async function setSearch(): Promise<void> {
                 rows="1"
                 class=""
                 readonly
+                width="100%"
               />
             </v-list-item>
             <v-card-actions>

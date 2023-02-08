@@ -137,7 +137,7 @@ const searchReset = () => {
   <div>
     <v-container fluid grid-list-xl class="container_out">
       <v-row>
-        <v-col cols="12" sm="5">
+        <v-col cols="12" sm="4">
           <v-text-field
             v-model="search_word"
             label="商品名"
@@ -173,12 +173,13 @@ const searchReset = () => {
           >
           </v-select>
         </v-col>
-        <v-col cols="12" sm="1">
+        <v-col cols="12" sm="2">
           <v-btn
             icon
             color="#7b5544"
             variant="plain"
             class="mx-auto ml-3"
+            size="x-large"
             @click="searchReset()"
             ><p>検索リセット</p>
           </v-btn>
@@ -201,7 +202,7 @@ const searchReset = () => {
               max-width="300"
               :elevation="isHovering ? 16 : 2"
               :class="{ 'on-hover': isHovering }"
-              :color="isHovering ? '#fff4ea' : undefined"
+              :color="isHovering ? '#ffe5cc' : undefined"
               v-bind="props"
             >
               <v-img src="" alt="" height="100" cover></v-img>

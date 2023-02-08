@@ -21,11 +21,12 @@ const onLogout = (): void => {
 </script>
 
 <template>
-  <v-app-bar :elevation="2" color="#fff4ea">
-    <v-app-bar-title color="#7b5544">this Coffee!</v-app-bar-title>
+  <v-app-bar :elevation="2" color="#7b5544">
+    <v-app-bar-title><p class="title">this Coffee!</p></v-app-bar-title>
     <v-app-bar-nav-icon
       variant="text"
       @click.stop="drawer = !drawer"
+      color="white"
     ></v-app-bar-nav-icon>
   </v-app-bar>
   <v-navigation-drawer v-model="drawer" location="right" temporary>
@@ -70,4 +71,8 @@ const onLogout = (): void => {
   </v-navigation-drawer>
 </template>
 
-<style scoped></style>
+<style scoped>
+.title {
+  color: white;
+}
+</style>
