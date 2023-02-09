@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, watch, computed } from "vue";
+import { reactive, ref, watch, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios from "axios";
@@ -27,7 +27,27 @@ const whole: boolean = ref(false);
 const load = ref(false);
 const page = ref(1);
 const result = ref();
-const itemsPerPage = 8;
+let itemsPerPage = 8;
+const screenWidth = ref(window.innerWidth);
+onMounted(() => {
+  window.addEventListener("resize", resize);
+});
+const resize = () => {
+  screenWidth.value = window.innerWidth;
+  if (screenWidth.value > 1920) {
+    itemsPerPage = 18;
+  } else if (screenWidth.value > 1280) {
+    itemsPerPage = 12;
+  } else if (screenWidth.value > 768) {
+    itemsPerPage = 8;
+  } else if (screenWidth.value > 600) {
+    itemsPerPage = 6;
+  } else if (screenWidth.value > 400) {
+    itemsPerPage = 4;
+  } else {
+    itemsPerPage = 3;
+  }
+};
 const momentDate = (date) => {
   return moment(date).format("YYYY/MM/DD");
 };
@@ -322,6 +342,7 @@ async function setSearch(): Promise<void> {
       :length="Math.ceil(result / itemsPerPage)"
       rounded="circle"
       class="mt-2"
+      size="x-large"
     ></v-pagination>
   </v-container>
 </template>
