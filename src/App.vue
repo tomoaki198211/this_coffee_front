@@ -4,20 +4,29 @@ import { useAuthStore } from "./stores/auth";
 import { useMessageStore } from "./stores/message";
 import GlobalNav from "./components/GlobalNav.vue";
 import GlobalMessage from "./components/GlobalMessage.vue";
-import WaveCoffee from "./components/WaveCoffee.vue";
+import FooterNav from "./components/FooterNav.vue";
 
 const authStore = useAuthStore();
 </script>
 
 <template>
-  <v-app>
+  <v-app class="top">
     <GlobalNav />
-    <GlobalMessage />
-    <v-main>
+    <v-main class="wrapper">
+      <GlobalMessage />
       <RouterView />
     </v-main>
+    <FooterNav />
   </v-app>
-  <!-- <WaveCoffee /> -->
 </template>
 
-<style scoped></style>
+<style scoped>
+.wrapper {
+  width: 100%;
+  padding-bottom: 50px;
+}
+.top {
+  background: #ebdecc url("@/assets/bg-2.png") no-repeat center center;
+  background-size: contain;
+}
+</style>

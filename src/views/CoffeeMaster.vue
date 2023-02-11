@@ -3,8 +3,8 @@ import { ref, reactive, watch, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios from "axios";
-import FavoriteButton from "../components/FavoriteButton.vue";
 import { mdiMagnify } from "@mdi/js";
+import { mdiFileEditOutline } from "@mdi/js";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -33,17 +33,17 @@ onMounted(() => {
 const resize = () => {
   screenWidth.value = window.innerWidth;
   if (screenWidth.value > 1920) {
-    itemsPerPage = 18;
+    itemsPerPage = 20;
   } else if (screenWidth.value > 1280) {
-    itemsPerPage = 12;
+    itemsPerPage = 16;
   } else if (screenWidth.value > 768) {
-    itemsPerPage = 8;
+    itemsPerPage = 10;
   } else if (screenWidth.value > 600) {
-    itemsPerPage = 6;
+    itemsPerPage = 10;
   } else if (screenWidth.value > 400) {
-    itemsPerPage = 4;
+    itemsPerPage = 8;
   } else {
-    itemsPerPage = 3;
+    itemsPerPage = 6;
   }
 };
 
@@ -205,61 +205,42 @@ const searchReset = () => {
           </v-btn>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col
-          v-for="coffee in searchedCoffees"
-          :key="coffee.id"
-          cols="12"
-          xs="1"
-          sm="6"
-          md="4"
-          lg="3"
-          xl="2"
-        >
-          <v-hover v-slot="{ isHovering, props }">
-            <v-card
-              class="mx-auto"
-              max-width="300"
-              :elevation="isHovering ? 16 : 2"
-              :class="{ 'on-hover': isHovering }"
-              :color="isHovering ? '#ffe5cc' : undefined"
-              v-bind="props"
-            >
-              <v-img src="" alt="" height="100" cover></v-img>
-              <v-list-item>
-                <v-list-item-title
-                  >{{ coffee.coffee_property.name }}
-                </v-list-item-title>
-                <v-list-item-subtitle>{{
-                  coffee.coffee_property.store.name
-                }}</v-list-item-subtitle>
-              </v-list-item>
-              <v-card-actions>
-                <v-btn
-                  class="mx-auto"
-                  color="#7b5544"
-                  @click="
-                    router.push({
-                      path: `/review/post/${coffee.id}`,
-                    })
-                  "
-                  >レビューを書く
-                </v-btn>
-                <v-btn class="mx-auto" color="#7b5544">詳細 </v-btn>
-                <FavoriteButton v-bind:coffee_id="coffee.id" />
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-hover>
-        </v-col>
-      </v-row>
+      <v-table density="compact">
+        <thead>
+          <tr>
+            <th>商品名</th>
+            <th>分類</th>
+            <th>販売店名</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="coffee in searchedCoffees" :key="coffee.id">
+            <td>{{ coffee.coffee_property.name }}</td>
+            <td>{{ coffee.category.name }}</td>
+            <td>{{ coffee.coffee_property.store.name }}</td>
+            <td>
+              <v-btn
+                variant="plain"
+                @click="
+                  router.push({
+                    path: `/coffees/master/${coffee.id}`,
+                  })
+                "
+              >
+                <v-icon :icon="mdiFileEditOutline"> </v-icon>編集
+              </v-btn>
+            </td>
+          </tr>
+        </tbody>
+      </v-table>
       <template
         v-if="
           index.coffees.length !== 0 && searchedCoffees == 0 && load == true
         "
       >
         <v-row justify="center" align="center">
-          <p class="coffee_txt">
+          <p class="coffee_txt mt-5">
             検索結果がありません。<br />検索条件を変更して下さい。
           </p>
         </v-row>
@@ -281,5 +262,9 @@ const searchReset = () => {
 }
 .coffee_txt {
   color: #7b5544;
+}
+td,
+th {
+  font-size: 12px;
 }
 </style>

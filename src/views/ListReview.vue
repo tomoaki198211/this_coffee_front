@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { reactive, ref, watch, computed } from "vue";
+import { reactive, ref, watch, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import { mdiMagnify } from "@mdi/js";
+import { mdiAutorenew } from "@mdi/js";
 import moment from "moment";
 
 const authStore = useAuthStore();
@@ -11,7 +12,7 @@ const router = useRouter();
 const index = reactive({
   reviews: [],
 });
-const search_word = ref("");
+const search_word: string = ref("");
 const selected_category = reactive({
   id: "",
   name: "",
@@ -22,6 +23,47 @@ const selected_store = reactive({
 });
 const categories = ref([]);
 const stores = ref([]);
+const whole: boolean = ref(false);
+const load = ref(false);
+const page = ref(1);
+const result = ref();
+let itemsPerPage = 8;
+const screenWidth = ref(window.innerWidth);
+onMounted(() => {
+  window.addEventListener("resize", resize);
+});
+const resize = () => {
+  screenWidth.value = window.innerWidth;
+  if (screenWidth.value > 1920) {
+    itemsPerPage = 18;
+  } else if (screenWidth.value > 1280) {
+    itemsPerPage = 12;
+  } else if (screenWidth.value > 768) {
+    itemsPerPage = 8;
+  } else if (screenWidth.value > 600) {
+    itemsPerPage = 6;
+  } else if (screenWidth.value > 400) {
+    itemsPerPage = 4;
+  } else {
+    itemsPerPage = 3;
+  }
+};
+const momentDate = (date) => {
+  return moment(date).format("YYYY/MM/DD");
+};
+const searchReset = () => {
+  selected_category.id = "";
+  selected_store.id = "";
+  search_word.value = "";
+  // setReview();
+};
+
+// const goToPage = (page) => {
+//   searchedReviews.value = searchedReviews.value.slice(
+//     itemsPerPage * (page - 1),
+//     itemsPerPage * page
+//   );
+// };
 
 //apiで検索する際はwatchを使用
 // watch(search_word, () => {
@@ -39,10 +81,6 @@ const stores = ref([]);
 setMaster();
 setReview();
 
-const momentDate = (date) => {
-  return moment(date).format("YYYY/MM/DD");
-};
-
 //front側で検索する際にcomputedを使用
 const searchedReviews = computed(() => {
   let reviews = [];
@@ -59,9 +97,19 @@ const searchedReviews = computed(() => {
       reviews.push(review);
     }
   }
+  getResult(reviews.length);
+  reviews = reviews.slice(
+    itemsPerPage * (page.value - 1),
+    itemsPerPage * page.value
+  );
   return reviews;
 });
 //---------
+
+const getResult = (length) => {
+  result.value = length;
+};
+
 async function setMaster(): Promise<void> {
   await axios
     .get("http://localhost:3000/api/v1/coffees/mdata", {
@@ -87,6 +135,24 @@ async function setReview(): Promise<void> {
       },
     })
     .then((response) => {
+      whole.value = false;
+      index.reviews = response.data;
+      load.value = true;
+      console.log(response.data);
+    });
+}
+
+async function setAllReview(): Promise<void> {
+  await axios
+    .get("http://localhost:3000/api/v1/reviews/all", {
+      headers: {
+        uid: authStore.uid,
+        "access-token": authStore.access_token,
+        client: authStore.client,
+      },
+    })
+    .then((response) => {
+      whole.value = true;
       index.reviews = response.data;
       console.log(response.data);
     });
@@ -111,18 +177,12 @@ async function setSearch(): Promise<void> {
       console.log(response.data);
     });
 }
-const searchReset = () => {
-  selected_category.id = "";
-  selected_store.id = "";
-  search_word.value = "";
-  setReview();
-};
 </script>
 
 <template>
   <v-container fluid grid-list-xl class="container_out">
     <v-row>
-      <v-col cols="12" sm="5">
+      <v-col cols="12" sm="4">
         <v-text-field
           v-model="search_word"
           label="商品名"
@@ -158,17 +218,38 @@ const searchReset = () => {
         >
         </v-select>
       </v-col>
-      <v-col cols="12" sm="1">
+      <v-col cols="12" sm="2">
         <v-btn
           icon
           color="#7b5544"
           variant="plain"
           class="mx-auto ml-3"
           @click="searchReset()"
+          size="x-large"
           ><p>検索リセット</p>
         </v-btn>
       </v-col>
     </v-row>
+    <template v-if="whole == false">
+      <v-btn
+        color="#7b5544"
+        variant="plain"
+        class="mx-auto"
+        size="x-large"
+        @click="setAllReview()"
+        ><v-icon :icon="mdiAutorenew"></v-icon>全体</v-btn
+      ></template
+    >
+    <template v-else>
+      <v-btn
+        color="#7b5544"
+        variant="plain"
+        class="mx-auto"
+        size="x-large"
+        @click="setReview()"
+        ><v-icon :icon="mdiAutorenew"></v-icon>個人</v-btn
+      >
+    </template>
     <v-row>
       <v-col
         v-for="review in searchedReviews"
@@ -180,73 +261,95 @@ const searchReset = () => {
         lg="3"
         xl="2"
       >
-        <v-card class="mx-auto" max-width="300">
-          <v-list-item>
-            <v-list-item-title
-              >{{ review.coffee.coffee_property.name }}
-            </v-list-item-title>
-            <v-list-item-subtitle>{{
-              review.coffee.coffee_property.store.name
-            }}</v-list-item-subtitle>
-          </v-list-item>
-          <v-list-item>
-            <v-row>
-              <v-col>
-                <v-list-item-subtitle>
-                  from: {{ review.user.name }}
-                </v-list-item-subtitle>
-              </v-col>
-              <v-col>
-                <v-list-item-subtitle>
-                  {{ momentDate(review.created_at) }}
-                </v-list-item-subtitle>
-              </v-col>
-            </v-row>
-            <v-list-item-title>
-              直感的な評価:{{ review.intuition }}
-            </v-list-item-title>
-            <v-list-item-title>
-              コストパフォーマンス:{{ review.efficiency }}
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-textarea
-              :placeholder="review.remarks"
-              variant="underlined"
-              rows="2"
-              class=""
-              readonly
-            />
-          </v-list-item>
-          <v-card-actions>
-            <v-btn
-              class="mx-auto"
-              color="#7b5544"
-              @click="
-                router.push({
-                  path: `/review/${review.id}`,
-                })
-              "
-              >詳細
-            </v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
-        </v-card>
+        <v-hover v-slot="{ isHovering, props }">
+          <v-card
+            class="mx-auto"
+            max-width="300"
+            style="border-width: 2px"
+            :elevation="isHovering ? 16 : 2"
+            :class="{ 'on-hover': isHovering }"
+            :color="isHovering ? '#ffe5cc' : undefined"
+            v-bind="props"
+          >
+            <v-list-item class="mb-1">
+              <v-list-item-title>
+                {{ review.coffee.coffee_property.name }}
+              </v-list-item-title>
+              <v-list-item-subtitle>{{
+                review.coffee.coffee_property.store.name
+              }}</v-list-item-subtitle>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item>
+              <v-row class="">
+                <v-col>
+                  <v-list-item-subtitle>
+                    {{ review.user.name }}
+                  </v-list-item-subtitle>
+                </v-col>
+                <v-col>
+                  <v-list-item-subtitle>
+                    {{ momentDate(review.created_at) }}
+                  </v-list-item-subtitle>
+                </v-col>
+              </v-row>
+              <v-list-item-subtitle class="mt-1">
+                直感的な評価:{{ review.intuition }}
+              </v-list-item-subtitle>
+              <v-list-item-subtitle class="mt-1">
+                コストパフォーマンス:{{ review.efficiency }}
+              </v-list-item-subtitle>
+            </v-list-item>
+            <v-list-item>
+              <v-textarea
+                :placeholder="review.remarks"
+                variant="underlined"
+                rows="1"
+                class=""
+                readonly
+                width="100%"
+              />
+            </v-list-item>
+            <v-card-actions>
+              <v-btn
+                class="mx-auto"
+                color="#7b5544"
+                size="large"
+                @click="
+                  router.push({
+                    path: `/review/${review.id}`,
+                  })
+                "
+                >詳細
+              </v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-hover>
       </v-col>
     </v-row>
-    <template v-if="index.reviews.length === 0">
+    <template
+      v-if="index.reviews !== 0 && searchedReviews.length === 0 && load == true"
+    >
       <v-row justify="center" align="center">
         <p class="coffee_txt">
           検索結果がありません。<br />検索条件を変更して下さい。
         </p>
       </v-row>
     </template>
+    <v-pagination
+      v-model="page"
+      :length="Math.ceil(result / itemsPerPage)"
+      rounded="circle"
+      class="mt-2"
+      size="x-large"
+    ></v-pagination>
   </v-container>
 </template>
 
 <style scoped>
 .container_out {
-  width: 95%;
+  width: 100%;
 }
 .coffee_txt {
   color: #7b5544;
