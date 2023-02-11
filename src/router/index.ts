@@ -6,6 +6,7 @@ import SignupView from "../views/SignupView.vue";
 import ListReview from "../views/ListReview.vue";
 import ListCoffee from "@/views/ListCoffee.vue";
 import ListUser from "@/views/ListUser.vue";
+import CoffeeMaster from "@/views/CoffeeMaster.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +37,11 @@ const router = createRouter({
       component: ListCoffee,
     },
     {
+      path: "/coffees/master",
+      name: "coffees_master",
+      component: CoffeeMaster,
+    },
+    {
       path: "/reviews",
       name: "reviews",
       component: ListReview,
@@ -60,6 +66,20 @@ const router = createRouter({
       //動的インポート
       component: () => {
         return import("../views/ShowReview.vue");
+      },
+      props: (routes) => {
+        const idNum = Number(routes.params.id);
+        return {
+          id: idNum,
+        };
+      },
+    },
+    {
+      path: "/coffees/master/:id",
+      name: "master_edit",
+      //動的インポート
+      component: () => {
+        return import("../views/EditCoffee.vue");
       },
       props: (routes) => {
         const idNum = Number(routes.params.id);
