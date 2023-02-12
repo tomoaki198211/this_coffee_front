@@ -65,7 +65,7 @@ const onLogout = (): void => {
         </v-btn>
       </v-list>
       <v-list>
-        <v-btn variant="plain" @click="router.push('/coffees/master')">
+        <v-btn variant="plain" @click="router.push('/coffees/admin/index')">
           <v-icon :icon="mdiDatabaseEdit"></v-icon>マスタ管理
         </v-btn>
       </v-list>

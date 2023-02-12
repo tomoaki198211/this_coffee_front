@@ -6,7 +6,8 @@ import SignupView from "../views/SignupView.vue";
 import ListReview from "../views/ListReview.vue";
 import ListCoffee from "@/views/ListCoffee.vue";
 import ListUser from "@/views/ListUser.vue";
-import CoffeeMaster from "@/views/CoffeeMaster.vue";
+import ListAdminCoffee from "@/views/ListAdminCoffee.vue";
+import PostCoffee from "@/views/PostCoffee.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,9 +38,28 @@ const router = createRouter({
       component: ListCoffee,
     },
     {
-      path: "/coffees/master",
-      name: "coffees_master",
-      component: CoffeeMaster,
+      path: "/coffees/admin/index",
+      name: "coffees_admin_index",
+      component: ListAdminCoffee,
+    },
+    {
+      path: "/coffees/admin/post",
+      name: "post_coffee",
+      component: PostCoffee,
+    },
+    {
+      path: "/coffees/admin/edit/:id",
+      name: "master_edit",
+      //動的インポート
+      component: () => {
+        return import("../views/EditCoffee.vue");
+      },
+      props: (routes) => {
+        const idNum = Number(routes.params.id);
+        return {
+          id: idNum,
+        };
+      },
     },
     {
       path: "/reviews",
@@ -74,34 +94,6 @@ const router = createRouter({
         };
       },
     },
-    {
-      path: "/coffees/master/:id",
-      name: "master_edit",
-      //動的インポート
-      component: () => {
-        return import("../views/EditCoffee.vue");
-      },
-      props: (routes) => {
-        const idNum = Number(routes.params.id);
-        return {
-          id: idNum,
-        };
-      },
-    },
-    // {
-    //   path: "/review/edit/:id",
-    //   name: "edit_review",
-    //   //動的インポート
-    //   component: () => {
-    //     return import("../views/EditReview.vue");
-    //   },
-    //   props: (routes) => {
-    //     const idNum = Number(routes.params.id);
-    //     return {
-    //       id: idNum,
-    //     };
-    //   },
-    // },
   ],
 });
 

@@ -224,7 +224,7 @@ const searchReset = () => {
                 variant="plain"
                 @click="
                   router.push({
-                    path: `/coffees/master/${coffee.id}`,
+                    path: `/coffees/admin/edit/${coffee.id}`,
                   })
                 "
               >
