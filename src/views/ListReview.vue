@@ -271,15 +271,14 @@ async function setSearch(): Promise<void> {
             :color="isHovering ? '#fff7ef' : undefined"
             v-bind="props"
           >
-            <v-list-item class="mb-1">
+            <v-list-item class="mb-1 head_bg txt_white">
               <v-list-item-title>
                 {{ review.coffee.coffee_property.name }}
               </v-list-item-title>
-              <v-list-item-subtitle>{{
+              <v-list-item-title>{{
                 review.coffee.coffee_property.store.name
-              }}</v-list-item-subtitle>
+              }}</v-list-item-title>
             </v-list-item>
-            <v-divider></v-divider>
             <v-card-text>
               <v-row class="">
                 <v-col>
@@ -334,5 +333,12 @@ async function setSearch(): Promise<void> {
 }
 .coffee_txt {
   color: #7b5544;
+}
+.head_bg {
+  background-color: #7b5544;
+}
+.txt_white {
+  color: #fff;
+  font-weight: bold;
 }
 </style>
