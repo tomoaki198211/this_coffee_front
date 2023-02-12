@@ -144,6 +144,7 @@ async function postCoffeeMaster(): Promise<void> {
           </v-list-item>
           <v-card-actions>
             <v-btn
+              block
               class="mx-auto"
               variant="flat"
               color="#7b5544"

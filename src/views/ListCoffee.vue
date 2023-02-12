@@ -24,7 +24,7 @@ const categories = ref([]);
 const stores = ref([]);
 const load = ref(false);
 const page = ref(1);
-const result = ref();
+const result = ref(1);
 let itemsPerPage = 8;
 const screenWidth = ref(window.innerWidth);
 onMounted(() => {
@@ -198,7 +198,7 @@ const searchReset = () => {
             icon
             color="#7b5544"
             variant="plain"
-            class="mx-auto ml-3"
+            class="ml-5"
             size="x-large"
             @click="searchReset()"
             ><p>検索リセット</p>
@@ -222,7 +222,7 @@ const searchReset = () => {
               max-width="300"
               :elevation="isHovering ? 16 : 2"
               :class="{ 'on-hover': isHovering }"
-              :color="isHovering ? '#ffe5cc' : undefined"
+              :color="isHovering ? '#fff7ef' : undefined"
               v-bind="props"
             >
               <v-img src="" alt="" height="100" cover></v-img>

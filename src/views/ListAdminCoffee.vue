@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import { mdiMagnify } from "@mdi/js";
-import { mdiFileEditOutline } from "@mdi/js";
+import { mdiPlus } from "@mdi/js";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -24,7 +24,7 @@ const categories = ref([]);
 const stores = ref([]);
 const load = ref(false);
 const page = ref(1);
-const result = ref();
+const result = ref(1);
 let itemsPerPage = 8;
 const screenWidth = ref(window.innerWidth);
 onMounted(() => {
@@ -198,39 +198,51 @@ const searchReset = () => {
             icon
             color="#7b5544"
             variant="plain"
-            class="mx-auto ml-3"
+            class="ml-5"
             size="x-large"
             @click="searchReset()"
             ><p>検索リセット</p>
           </v-btn>
         </v-col>
       </v-row>
+
+      <v-btn
+        color="#7b5544"
+        variant="plain"
+        class="mx-auto"
+        size="large"
+        @click="
+          router.push({
+            path: '/coffees/admin/post',
+          })
+        "
+        ><v-icon :icon="mdiPlus"></v-icon>新規作成
+      </v-btn>
       <v-table density="compact">
         <thead>
           <tr>
-            <th>商品名</th>
+            <th>---商品名---</th>
             <th>分類</th>
             <th>販売店名</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="coffee in searchedCoffees" :key="coffee.id">
-            <td>{{ coffee.coffee_property.name }}</td>
-            <td>{{ coffee.category.name }}</td>
-            <td>{{ coffee.coffee_property.store.name }}</td>
             <td>
               <v-btn
-                variant="plain"
+                variant="text"
+                size="small"
                 @click="
                   router.push({
                     path: `/coffees/admin/edit/${coffee.id}`,
                   })
                 "
               >
-                <v-icon :icon="mdiFileEditOutline"> </v-icon>編集
+                {{ coffee.coffee_property.name }}
               </v-btn>
             </td>
+            <td>{{ coffee.category.name }}</td>
+            <td>{{ coffee.coffee_property.store.name }}</td>
           </tr>
         </tbody>
       </v-table>
@@ -265,6 +277,6 @@ const searchReset = () => {
 }
 td,
 th {
-  font-size: 12px;
+  font-size: 13px;
 }
 </style>

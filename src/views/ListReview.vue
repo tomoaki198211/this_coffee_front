@@ -223,7 +223,7 @@ async function setSearch(): Promise<void> {
           icon
           color="#7b5544"
           variant="plain"
-          class="mx-auto ml-3"
+          class="ml-5"
           @click="searchReset()"
           size="x-large"
           ><p>検索リセット</p>
@@ -268,7 +268,7 @@ async function setSearch(): Promise<void> {
             style="border-width: 2px"
             :elevation="isHovering ? 16 : 2"
             :class="{ 'on-hover': isHovering }"
-            :color="isHovering ? '#ffe5cc' : undefined"
+            :color="isHovering ? '#fff7ef' : undefined"
             v-bind="props"
           >
             <v-list-item class="mb-1">
@@ -280,36 +280,17 @@ async function setSearch(): Promise<void> {
               }}</v-list-item-subtitle>
             </v-list-item>
             <v-divider></v-divider>
-            <v-list-item>
+            <v-card-text>
               <v-row class="">
                 <v-col>
-                  <v-list-item-subtitle>
-                    {{ review.user.name }}
-                  </v-list-item-subtitle>
-                </v-col>
-                <v-col>
-                  <v-list-item-subtitle>
-                    {{ momentDate(review.created_at) }}
-                  </v-list-item-subtitle>
+                  {{ review.user.name }}
+                  {{ momentDate(review.created_at) }}
                 </v-col>
               </v-row>
-              <v-list-item-subtitle class="mt-1">
-                直感的な評価:{{ review.intuition }}
-              </v-list-item-subtitle>
-              <v-list-item-subtitle class="mt-1">
-                コストパフォーマンス:{{ review.efficiency }}
-              </v-list-item-subtitle>
-            </v-list-item>
-            <v-list-item>
-              <v-textarea
-                :placeholder="review.remarks"
-                variant="underlined"
-                rows="1"
-                class=""
-                readonly
-                width="100%"
-              />
-            </v-list-item>
+              直感的な評価:{{ review.intuition }}<br />
+              コストパフォーマンス:{{ review.efficiency }}<br />
+              感想:{{ review.remarks }}
+            </v-card-text>
             <v-card-actions>
               <v-btn
                 class="mx-auto"
