@@ -28,8 +28,8 @@ const router = createRouter({
       component: SignupView,
     },
     {
-      path: "/users",
-      name: "users",
+      path: "/users/admin/index",
+      name: "users_admin_index",
       component: ListUser,
     },
     {

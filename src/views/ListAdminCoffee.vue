@@ -219,11 +219,11 @@ const searchReset = () => {
         ><v-icon :icon="mdiPlus"></v-icon>新規作成
       </v-btn>
       <v-table density="compact">
-        <thead>
+        <thead class="head_bg">
           <tr>
-            <th>---商品名---</th>
-            <th>分類</th>
-            <th>販売店名</th>
+            <th><p class="txt-color">商品名</p></th>
+            <th><p class="txt-color">分類</p></th>
+            <th><p class="txt-color">販売店名</p></th>
           </tr>
         </thead>
         <tbody>
@@ -275,8 +275,13 @@ const searchReset = () => {
 .coffee_txt {
   color: #7b5544;
 }
-td,
-th {
+td {
   font-size: 13px;
+}
+.head_bg {
+  background-color: #7b5544;
+}
+.txt-color {
+  color: #fff;
 }
 </style>
