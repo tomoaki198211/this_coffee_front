@@ -221,9 +221,9 @@ const searchReset = () => {
       <v-table density="compact">
         <thead class="head_bg">
           <tr>
-            <th><p class="txt-color">商品名</p></th>
-            <th><p class="txt-color">分類</p></th>
-            <th><p class="txt-color">販売店名</p></th>
+            <th><p class="txt_white">商品名</p></th>
+            <th><p class="txt_white">分類</p></th>
+            <th><p class="txt_white">販売店名</p></th>
           </tr>
         </thead>
         <tbody>
@@ -281,7 +281,7 @@ td {
 .head_bg {
   background-color: #7b5544;
 }
-.txt-color {
+.txt_white {
   color: #fff;
 }
 </style>

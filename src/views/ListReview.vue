@@ -5,6 +5,7 @@ import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import { mdiMagnify } from "@mdi/js";
 import { mdiAutorenew } from "@mdi/js";
+import { mdiCommentOutline } from "@mdi/js";
 import moment from "moment";
 
 const authStore = useAuthStore();
@@ -271,7 +272,7 @@ async function setSearch(): Promise<void> {
             :color="isHovering ? '#fff7ef' : undefined"
             v-bind="props"
           >
-            <v-list-item class="mb-1 head_bg txt_white">
+            <v-list-item class="mb-1 txt_white head_bg">
               <v-list-item-title>
                 {{ review.coffee.coffee_property.name }}
               </v-list-item-title>
