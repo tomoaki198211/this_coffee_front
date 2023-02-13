@@ -9,6 +9,7 @@ import { mdiLogout } from "@mdi/js";
 import { mdiCoffee } from "@mdi/js";
 import { mdiComment } from "@mdi/js";
 import { mdiDatabaseEdit } from "@mdi/js";
+import { mdiAccountCircleOutline } from "@mdi/js";
 
 const drawer = ref(false);
 const authStore = useAuthStore();
@@ -60,6 +61,14 @@ const onLogout = (): void => {
         </v-btn>
       </v-list>
       <v-list>
+        <v-btn
+          variant="plain"
+          @click="router.push(`/auth/account/${authStore.user_id}`)"
+        >
+          <v-icon :icon="mdiAccountCircleOutline"></v-icon>アカウント
+        </v-btn>
+      </v-list>
+      <v-list>
         <v-btn variant="plain" @click="onLogout()">
           <v-icon :icon="mdiLogout"></v-icon>ログアウト
         </v-btn>
@@ -77,7 +86,7 @@ const onLogout = (): void => {
       </v-list>
       <v-divider></v-divider>
       <v-list>
-        <p class="ml-3 overflow-x-auto">{{ authStore.uid }}</p>
+        <p class="ml-3 overflow-x-auto">{{ authStore.user_name }}</p>
       </v-list>
     </template>
   </v-navigation-drawer>

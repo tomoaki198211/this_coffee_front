@@ -28,6 +28,20 @@ const router = createRouter({
       component: SignupView,
     },
     {
+      path: "/auth/account/:id",
+      name: "account",
+      //動的インポート
+      component: () => {
+        return import("../views/MyAccount.vue");
+      },
+      props: (routes) => {
+        const idNum = Number(routes.params.id);
+        return {
+          id: idNum,
+        };
+      },
+    },
+    {
       path: "/users/admin/index",
       name: "users_admin_index",
       component: ListUser,

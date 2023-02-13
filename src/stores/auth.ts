@@ -8,6 +8,7 @@ type User = {
   access_token?: string | null;
   client?: string | null;
   user_id?: string | null;
+  user_name?: string | null;
 };
 
 export const useAuthStore = defineStore({
@@ -17,6 +18,7 @@ export const useAuthStore = defineStore({
     access_token: localStorage.getItem("access-token"),
     client: localStorage.getItem("client"),
     user_id: localStorage.getItem("user-id"),
+    user_name: localStorage.getItem("user-name"),
   }),
 
   actions: {
@@ -41,10 +43,12 @@ export const useAuthStore = defineStore({
             localStorage["uid"] = response.headers["uid"];
             localStorage["access-token"] = response.headers["access-token"];
             localStorage["user-id"] = response.data.data.id;
+            localStorage["user-name"] = response.data.data.name;
             this.access_token = response.headers["access-token"];
             this.client = response.headers["client"];
             this.uid = response.headers["uid"];
             this.user_id = response.data.data.id;
+            this.user_name = response.data.data.name;
             console.log("status:", response.status);
             messageStore.flash("アカウントを作成してログインしました");
             router.push({ path: "/reviews" });
@@ -70,10 +74,12 @@ export const useAuthStore = defineStore({
             localStorage["uid"] = response.headers["uid"];
             localStorage["access-token"] = response.headers["access-token"];
             localStorage["user-id"] = response.data.data.id;
+            localStorage["user-name"] = response.data.data.name;
             this.access_token = response.headers["access-token"];
             this.client = response.headers["client"];
             this.uid = response.headers["uid"];
             this.user_id = response.data.data.id;
+            this.user_name = response.data.data.name;
             console.log("status:", response.status);
             messageStore.flash("ログインしました");
             router.push({ path: "/reviews" });
@@ -95,10 +101,12 @@ export const useAuthStore = defineStore({
             localStorage["uid"] = response.headers["uid"];
             localStorage["access-token"] = response.headers["access-token"];
             localStorage["user-id"] = response.data.data.id;
+            localStorage["user-name"] = response.data.data.name;
             this.access_token = response.headers["access-token"];
             this.client = response.headers["client"];
             this.uid = response.headers["uid"];
             this.user_id = response.data.data.id;
+            this.user_name = response.data.data.name;
             console.log("status:", response.status);
             messageStore.flash("ログインしました");
             router.push({ path: "/reviews" });
@@ -120,10 +128,12 @@ export const useAuthStore = defineStore({
             localStorage["uid"] = response.headers["uid"];
             localStorage["access-token"] = response.headers["access-token"];
             localStorage["user-id"] = response.data.data.id;
+            localStorage["user-name"] = response.data.data.name;
             this.access_token = response.headers["access-token"];
             this.client = response.headers["client"];
             this.uid = response.headers["uid"];
             this.user_id = response.data.data.id;
+            this.user_name = response.data.data.name;
             console.log("status:", response.status);
             messageStore.flash("ログインしました");
             router.push({ path: "/reviews" });
@@ -148,10 +158,12 @@ export const useAuthStore = defineStore({
       localStorage.removeItem("uid");
       localStorage.removeItem("client");
       localStorage.removeItem("user-id");
+      localStorage.removeItem("user-name");
       this.access_token = null;
       this.client = null;
       this.uid = null;
       this.user_id = null;
+      this.user_name = null;
       messageStore.flash("ログアウトしました");
     },
 
@@ -169,26 +181,29 @@ export const useAuthStore = defineStore({
       localStorage.removeItem("uid");
       localStorage.removeItem("client");
       localStorage.removeItem("user-id");
+      localStorage.removeItem("user-name");
       this.access_token = null;
       this.client = null;
       this.uid = null;
       this.user_id = null;
-      messageStore.flash("ログアウトしました");
+      this.user_name = null;
+      messageStore.flash("アカウントを削除しました");
     },
 
     async account_update(
       email: string,
       password: string,
-      password_confirmation: string,
       name: string
     ): Promise<void> {
       const messageStore = useMessageStore();
       try {
         await axios
-          .patch("http://localhost:3000/api/v1/auth", {
+          .put("http://localhost:3000/api/v1/auth", {
+            uid: this.uid,
+            "access-token": this.access_token,
+            client: this.client,
             email: email,
             password: password,
-            password_confirmation: password_confirmation,
             name: name,
           })
           .then((response: AxiosResponse<any>) => {
@@ -196,10 +211,12 @@ export const useAuthStore = defineStore({
             localStorage["uid"] = response.headers["uid"];
             localStorage["access-token"] = response.headers["access-token"];
             localStorage["user-id"] = response.data.data.id;
+            localStorage["user-name"] = response.data.data.name;
             this.access_token = response.headers["access-token"];
             this.client = response.headers["client"];
             this.uid = response.headers["uid"];
             this.user_id = response.data.data.id;
+            this.user_name = response.data.data.name;
             console.log("status:", response.status);
             messageStore.flash("アカウントを更新しました");
             router.push({ path: "/reviews" });

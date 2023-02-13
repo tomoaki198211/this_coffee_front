@@ -34,7 +34,7 @@ const guestAdminLogin = (): void => {
 };
 </script>
 <template>
-  <v-card class="mt-10 mb-8 mx-auto" width="400px">
+  <v-card class="mt-10 mb-8 mx-auto" max-width="400px">
     <v-container class="">
       <v-text-field
         :prepend-icon="mdiEmailOutline"

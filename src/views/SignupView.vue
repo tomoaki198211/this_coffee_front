@@ -29,7 +29,7 @@ const onSignup = (): void => {
 </script>
 
 <template>
-  <v-card class="mt-10 mb-8 mx-auto" width="400px">
+  <v-card class="mt-10 mb-8 mx-auto" max-width="400px">
     <v-container class="">
       <v-text-field
         :prepend-icon="mdiEmailOutline"
@@ -48,6 +48,14 @@ const onSignup = (): void => {
       <v-text-field
         :prepend-icon="mdiLockOutline"
         v-model="user.password"
+        label="Password"
+        density="compact"
+        type="password"
+        variant="outlined"
+      ></v-text-field>
+      <v-text-field
+        :prepend-icon="mdiLockOutline"
+        v-model="user.password_confirmation"
         label="Password"
         density="compact"
         type="password"
