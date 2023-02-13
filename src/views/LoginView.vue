@@ -34,58 +34,60 @@ const guestAdminLogin = (): void => {
 };
 </script>
 <template>
-  <v-card class="mt-10 mb-8 mx-auto" max-width="400px">
-    <v-container class="">
-      <v-text-field
-        :prepend-icon="mdiEmailOutline"
-        v-model="user.email"
-        label="Email"
-        density="compact"
-        variant="outlined"
-      ></v-text-field>
-      <v-text-field
-        :prepend-icon="mdiLockOutline"
-        v-model="user.password"
-        label="Password"
-        density="compact"
-        type="password"
-        variant="outlined"
-      ></v-text-field>
-      <v-card-actions>
-        <v-btn
-          class="mx-auto"
-          variant="flat"
-          color="#7b5544"
-          width="200px"
-          @click="onLogin"
-        >
-          <p class="font-weight-bold btn-txt">ログイン</p>
-        </v-btn>
-      </v-card-actions>
-      <v-card-actions>
-        <v-btn
-          class="mx-auto"
-          variant="flat"
-          color="#7b5544"
-          width="200px"
-          @click="guestLogin"
-        >
-          <p class="font-weight-bold btn-txt">ゲストログイン</p>
-        </v-btn>
-      </v-card-actions>
-      <v-card-actions>
-        <v-btn
-          class="mx-auto"
-          variant="flat"
-          color="#7b5544"
-          width="200px"
-          @click="guestAdminLogin"
-        >
-          <p class="font-weight-bold btn-txt">ゲスト管理者ログイン</p>
-        </v-btn>
-      </v-card-actions>
-    </v-container>
-  </v-card>
+  <v-container>
+    <v-card class="mt-10 mb-8 mx-auto" max-width="400px">
+      <v-container class="">
+        <v-text-field
+          :prepend-icon="mdiEmailOutline"
+          v-model="user.email"
+          label="Email"
+          density="compact"
+          variant="outlined"
+        ></v-text-field>
+        <v-text-field
+          :prepend-icon="mdiLockOutline"
+          v-model="user.password"
+          label="Password"
+          density="compact"
+          type="password"
+          variant="outlined"
+        ></v-text-field>
+        <v-card-actions>
+          <v-btn
+            class="mx-auto"
+            variant="flat"
+            color="#7b5544"
+            width="200px"
+            @click="onLogin"
+          >
+            <p class="font-weight-bold btn-txt">ログイン</p>
+          </v-btn>
+        </v-card-actions>
+        <v-card-actions>
+          <v-btn
+            class="mx-auto"
+            variant="flat"
+            color="#7b5544"
+            width="200px"
+            @click="guestLogin"
+          >
+            <p class="font-weight-bold btn-txt">ゲストログイン</p>
+          </v-btn>
+        </v-card-actions>
+        <v-card-actions>
+          <v-btn
+            class="mx-auto"
+            variant="flat"
+            color="#7b5544"
+            width="200px"
+            @click="guestAdminLogin"
+          >
+            <p class="font-weight-bold btn-txt">ゲスト管理者ログイン</p>
+          </v-btn>
+        </v-card-actions>
+      </v-container>
+    </v-card>
+  </v-container>
 </template>
 
 <style scoped>

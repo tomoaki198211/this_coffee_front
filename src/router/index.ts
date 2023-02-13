@@ -8,6 +8,7 @@ import ListCoffee from "@/views/ListCoffee.vue";
 import ListUser from "@/views/ListUser.vue";
 import ListAdminCoffee from "@/views/ListAdminCoffee.vue";
 import PostCoffee from "@/views/PostCoffee.vue";
+import NotFound from "@/views/NotFound.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,7 +30,7 @@ const router = createRouter({
     },
     {
       path: "/auth/account/:id",
-      name: "account",
+      name: "my_account",
       //動的インポート
       component: () => {
         return import("../views/MyAccount.vue");
@@ -43,7 +44,7 @@ const router = createRouter({
     },
     {
       path: "/users/admin/edit/:id",
-      name: "users_admin_edit",
+      name: "edit_user",
       //動的インポート
       component: () => {
         return import("../views/EditUser.vue");
@@ -57,7 +58,7 @@ const router = createRouter({
     },
     {
       path: "/users/admin/index",
-      name: "users_admin_index",
+      name: "index_user",
       component: ListUser,
     },
     {
@@ -67,7 +68,7 @@ const router = createRouter({
     },
     {
       path: "/coffees/admin/index",
-      name: "coffees_admin_index",
+      name: "index_coffee",
       component: ListAdminCoffee,
     },
     {
@@ -77,7 +78,7 @@ const router = createRouter({
     },
     {
       path: "/coffees/admin/edit/:id",
-      name: "master_edit",
+      name: "edit_coffee",
       //動的インポート
       component: () => {
         return import("../views/EditCoffee.vue");
@@ -122,23 +123,65 @@ const router = createRouter({
         };
       },
     },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "NotFound",
+      component: NotFound,
+    },
   ],
 });
 
+//ログインしていない状態ではloginとsignupにしか移動出来ない
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   if (to.name !== "login" && to.name !== "signup" && !authStore.isAuthencated())
     next({ name: "login" });
   else next();
 });
+
+//レビューは直接閲覧出来ない。レビュー一覧からのみ移動出来る
+router.beforeEach((to, from, next) => {
+  if (to.name === "review" && from.name !== "reviews")
+    next({ name: "reviews" });
+  else next();
+});
+
+//レビュー投稿は直接入力では投稿画面に行けない。
+router.beforeEach((to, from, next) => {
+  if (to.name === "post_review" && from.name !== "coffees")
+    next({ name: "coffees" });
+  else next();
+});
+
+//他ユーザーを管理するadminユーザーは一覧からのみエディット画面に行くことが出来る。
+router.beforeEach((to, from, next) => {
+  if (to.name === "edit_user" && from.name !== "index_user")
+    next({ name: "reviews" });
+  else next();
+});
+
+//コーヒーマスターの編集はコーヒーマスター一覧からのみいくことが出来る
+router.beforeEach((to, from, next) => {
+  if (to.name === "edit_coffee" && from.name !== "index_coffee")
+    next({ name: "coffees" });
+  else next();
+});
+
+//コーヒーマスターの投稿はコーヒーマスター一覧からのみいくことが出来る
+router.beforeEach((to, from, next) => {
+  if (to.name === "post_coffee" && from.name !== "index_coffee")
+    next({ name: "coffees" });
+  else next();
+});
+
+//ログイン中はログイン、アカウント登録画面に行けない
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   if (
-    to.name == "review" &&
-    from.name !== "reviews" &&
-    !authStore.isAuthencated()
+    (to.name === "login" || to.name === "sign_up") &&
+    authStore.isAuthencated()
   )
-    next({ name: "reviews" });
+    next(false);
   else next();
 });
 
