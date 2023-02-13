@@ -42,6 +42,20 @@ const router = createRouter({
       },
     },
     {
+      path: "/users/admin/edit/:id",
+      name: "users_admin_edit",
+      //動的インポート
+      component: () => {
+        return import("../views/EditUser.vue");
+      },
+      props: (routes) => {
+        const idNum = Number(routes.params.id);
+        return {
+          id: idNum,
+        };
+      },
+    },
+    {
       path: "/users/admin/index",
       name: "users_admin_index",
       component: ListUser,

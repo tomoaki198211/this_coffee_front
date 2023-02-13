@@ -51,7 +51,11 @@ async function indexUsers(): Promise<void> {
         <tbody>
           <tr v-for="user in index.users" :key="user.id">
             <td>
-              <v-btn variant="text" size="small">
+              <v-btn
+                variant="text"
+                size="small"
+                @click="router.push(`/users/admin/edit/${user.id}`)"
+              >
                 {{ user.name }}
               </v-btn>
             </td>
