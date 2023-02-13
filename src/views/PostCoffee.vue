@@ -32,7 +32,7 @@ setMaster();
 
 async function setMaster(): Promise<void> {
   await axios
-    .get("http://localhost:3000/api/v1/coffees/mdata", {
+    .get("/api/v1/coffees/option", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -65,15 +65,13 @@ async function postCoffeeMaster(): Promise<void> {
       client: authStore.client,
     },
   };
-  await axios
-    .post("http://localhost:3000/api/v1/coffees", data, config)
-    .then((response) => {
-      messageStore.flash("作成しました");
-      router.push({
-        path: "/coffees/admin/index",
-      });
-      console.log(response.data);
+  await axios.post("/api/v1/coffees", data, config).then((response) => {
+    messageStore.flash("作成しました");
+    router.push({
+      path: "/coffees/admin/index",
     });
+    console.log(response.data);
+  });
 }
 </script>
 <template>

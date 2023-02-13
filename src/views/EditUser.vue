@@ -32,7 +32,7 @@ setUser();
 
 async function setUser(): Promise<void> {
   await axios
-    .get(`http://localhost:3000/api/v1/admin/users/${props.id}`, {
+    .get(`/api/v1/admin/users/${props.id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -47,7 +47,7 @@ async function setUser(): Promise<void> {
 }
 async function updateUser(): Promise<void> {
   await axios
-    .put(`http://localhost:3000/api/v1/admin/users/${props.id}`, {
+    .put(`/api/v1/admin/users/${props.id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -63,7 +63,7 @@ async function updateUser(): Promise<void> {
 }
 async function destroyUser(): Promise<void> {
   await axios
-    .delete(`http://localhost:3000/api/v1/admin/users/${props.id}`, {
+    .delete(`/api/v1/admin/users/${props.id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,

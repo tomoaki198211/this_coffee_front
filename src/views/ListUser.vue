@@ -20,7 +20,7 @@ indexUsers();
 
 async function indexUsers(): Promise<void> {
   await axios
-    .get("http://localhost:3000/api/v1/admin/users", {
+    .get("/api/v1/admin/users", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,

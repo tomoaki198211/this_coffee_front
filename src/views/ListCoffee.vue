@@ -95,7 +95,7 @@ setMaster();
 //0マスター取得用
 async function setMaster(): Promise<void> {
   await axios
-    .get("http://localhost:3000/api/v1/coffees/mdata", {
+    .get("/api/v1/coffees/option", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -111,7 +111,7 @@ async function setMaster(): Promise<void> {
 //1 axios コーヒーは直近1０件ほどに制限
 async function setCoffee(): Promise<void> {
   await axios
-    .get("http://localhost:3000/api/v1/coffees", {
+    .get("/api/v1/coffees", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -128,7 +128,7 @@ async function setCoffee(): Promise<void> {
 // 2 axios 検索結果を表示する
 async function setSearch(): Promise<void> {
   await axios
-    .post("http://localhost:3000/api/v1/coffees/search", {
+    .post("/api/v1/coffees/search", {
       search: {
         word: search_word.value,
         category: selected_category.id,

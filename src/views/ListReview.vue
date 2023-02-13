@@ -113,7 +113,7 @@ const getResult = (length) => {
 
 async function setMaster(): Promise<void> {
   await axios
-    .get("http://localhost:3000/api/v1/coffees/mdata", {
+    .get("/api/v1/coffees/option", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -128,7 +128,7 @@ async function setMaster(): Promise<void> {
 
 async function setReview(): Promise<void> {
   await axios
-    .get("http://localhost:3000/api/v1/reviews", {
+    .get("/api/v1/reviews", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -145,7 +145,7 @@ async function setReview(): Promise<void> {
 
 async function setAllReview(): Promise<void> {
   await axios
-    .get("http://localhost:3000/api/v1/reviews/all", {
+    .get("/api/v1/reviews/all", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -161,7 +161,7 @@ async function setAllReview(): Promise<void> {
 
 async function setSearch(): Promise<void> {
   await axios
-    .post("http://localhost:3000/api/v1/reviews/search", {
+    .post("/api/v1/reviews/search", {
       search: {
         word: search_word.value,
         category: selected_category.id,
