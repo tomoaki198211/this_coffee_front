@@ -6,7 +6,6 @@ import axios from "axios";
 import { mdiMagnify } from "@mdi/js";
 import { mdiAutorenew } from "@mdi/js";
 import { mdiCommentTextOutline } from "@mdi/js";
-import { mdiLockOutline } from "@mdi/js";
 import moment from "moment";
 
 const authStore = useAuthStore();
@@ -237,10 +236,9 @@ setMaster();
         </v-btn>
       </v-col>
     </v-row>
-    <v-chip class="ma-2" color="#7b5544" label size="large"
+    <v-chip class="ma-2" color="#7b5544" variant="text" size="large"
       ><v-icon start :icon="mdiCommentTextOutline"></v-icon> レビュー一覧画面
     </v-chip>
-
     <template v-if="isAll == false">
       <v-btn
         color="#7b5544"
@@ -284,21 +282,17 @@ setMaster();
             :color="isHovering ? '#fff7ef' : undefined"
             v-bind="props"
           >
-            <v-list-item class="mb-1 txt_white head_bg">
-              <v-list-item-title>
-                {{ review.coffee.coffee_property.name }}
-              </v-list-item-title>
-              <v-list-item-title>{{
-                review.coffee.coffee_property.store.name
-              }}</v-list-item-title>
-            </v-list-item>
+            <v-card-title>
+              {{ review.coffee.coffee_property.name }}
+            </v-card-title>
+            <v-card-subtitle>{{
+              review.coffee.coffee_property.store.name
+            }}</v-card-subtitle>
             <v-card-text>
-              <v-row class="">
-                <v-col>
-                  {{ review.user.name }}
-                  {{ momentDate(review.created_at) }}
-                </v-col>
-              </v-row>
+              {{ review.user.name }}
+              {{ momentDate(review.created_at) }}
+            </v-card-text>
+            <v-card-text>
               直感的な評価:{{ review.intuition }}<br />
               コストパフォーマンス:{{ review.efficiency }}<br />
               感想:{{ review.remarks }}
@@ -318,7 +312,7 @@ setMaster();
               <v-spacer></v-spacer>
               <template v-if="!isAll">
                 <template v-if="!review.setting">
-                  <v-icon :icon="mdiLockOutline" size="large"></v-icon>
+                  <v-btn color="#7b5544" size="large" disabled> 非公開 </v-btn>
                 </template>
               </template>
             </v-card-actions>

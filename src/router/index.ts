@@ -187,7 +187,7 @@ router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   if (
     authStore.isAuthencated() &&
-    (to.name === "login" || to.name === "sign_up")
+    (to.name === "login" || to.name === "signup")
   )
     next({ name: "my_account" });
   else next();

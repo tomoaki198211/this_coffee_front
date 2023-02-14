@@ -46,7 +46,7 @@ const onShow = () => {
 <template>
   <v-container>
     <v-card class="mt-10 mb-8 mx-auto" max-width="400px">
-      <v-chip class="ma-2" color="#7b5544" label size="large"
+      <v-chip class="ma-2" color="#7b5544" variant="text" size="large"
         ><v-icon start :icon="mdiAccountCircleOutline"></v-icon>
         アカウント管理画面
       </v-chip>
@@ -54,7 +54,7 @@ const onShow = () => {
         <v-text-field
           :prepend-icon="mdiEmailOutline"
           v-model="user.name"
-          label="Name"
+          label="名前"
           density="compact"
           variant="outlined"
           v-bind:readonly="disabled_flg"
@@ -62,7 +62,7 @@ const onShow = () => {
         <v-text-field
           :prepend-icon="mdiEmailOutline"
           v-model="user.email"
-          label="Email"
+          label="Eメール"
           density="compact"
           variant="outlined"
           v-bind:readonly="disabled_flg"
@@ -70,7 +70,7 @@ const onShow = () => {
         <v-text-field
           :prepend-icon="mdiLockOutline"
           v-model="user.password"
-          label="Password"
+          label="パスワード"
           density="compact"
           type="password"
           variant="outlined"

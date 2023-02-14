@@ -4,6 +4,7 @@ import { useAuthStore } from "../stores/auth";
 import { useRouter } from "vue-router";
 import { mdiEmailOutline } from "@mdi/js";
 import { mdiLockOutline } from "@mdi/js";
+import { mdiAccountPlus } from "@mdi/js";
 
 type userSignObj = {
   name: string;
@@ -33,6 +34,10 @@ const onSignup = (): void => {
 <template>
   <v-container>
     <v-card class="mt-10 mb-8 mx-auto" max-width="400px">
+      <v-chip class="ma-2" color="#7b5544" variant="text" size="large"
+        ><v-icon start :icon="mdiAccountPlus"></v-icon>
+        ログイン画面
+      </v-chip>
       <v-container class="">
         <v-text-field
           :prepend-icon="mdiEmailOutline"

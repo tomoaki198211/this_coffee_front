@@ -214,7 +214,7 @@ setMaster();
           </v-btn>
         </v-col>
       </v-row>
-      <v-chip class="ma-2" color="#7b5544" label size="large"
+      <v-chip class="ma-2" color="#7b5544" variant="text" size="large"
         ><v-icon start :icon="mdiCoffeeOutline"></v-icon> コーヒー一覧画面
       </v-chip>
       <v-row>
@@ -230,26 +230,22 @@ setMaster();
         >
           <v-hover v-slot="{ isHovering, props }">
             <v-card
+              theme="dark"
               class="mx-auto"
               max-width="300"
               :elevation="isHovering ? 16 : 2"
               :class="{ 'on-hover': isHovering }"
-              :color="isHovering ? '#fff7ef' : undefined"
+              :color="isHovering ? '#9c5e31' : '#7b5544'"
               v-bind="props"
             >
               <v-img src="" alt="" height="100" cover></v-img>
-              <v-list-item>
-                <v-list-item-title
-                  >{{ coffee.coffee_property.name }}
-                </v-list-item-title>
-                <v-list-item-subtitle>{{
-                  coffee.coffee_property.store.name
-                }}</v-list-item-subtitle>
-              </v-list-item>
+              <v-card-title>{{ coffee.coffee_property.name }} </v-card-title>
+              <v-card-subtitle class="text-h6">
+                {{ coffee.coffee_property.store.name }}
+              </v-card-subtitle>
               <v-card-actions>
                 <v-btn
                   class="mx-auto"
-                  color="#7b5544"
                   :disabled="disabled_flg"
                   @click="
                     router.push({
@@ -258,7 +254,7 @@ setMaster();
                   "
                   >レビューを書く
                 </v-btn>
-                <v-btn class="mx-auto" color="#7b5544">詳細 </v-btn>
+                <v-btn class="mx-auto">詳細 </v-btn>
                 <FavoriteButton v-bind:coffee_id="coffee.id" />
                 <v-spacer></v-spacer>
               </v-card-actions>

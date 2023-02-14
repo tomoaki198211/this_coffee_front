@@ -9,6 +9,7 @@ type User = {
   client?: string | null;
   user_id?: string | null;
   user_name?: string | null;
+  admin?: string | null;
 };
 
 export const useAuthStore = defineStore({
@@ -19,6 +20,7 @@ export const useAuthStore = defineStore({
     client: localStorage.getItem("client"),
     user_id: localStorage.getItem("user-id"),
     user_name: localStorage.getItem("user-name"),
+    admin: localStorage.getItem("admin"),
   }),
 
   actions: {
@@ -75,11 +77,13 @@ export const useAuthStore = defineStore({
             localStorage["access-token"] = response.headers["access-token"];
             localStorage["user-id"] = response.data.data.id;
             localStorage["user-name"] = response.data.data.name;
+            localStorage["admin"] = response.data.data.admin;
             this.access_token = response.headers["access-token"];
             this.client = response.headers["client"];
             this.uid = response.headers["uid"];
             this.user_id = response.data.data.id;
             this.user_name = response.data.data.name;
+            this.admin = response.data.data.admin;
             console.log("status:", response.status);
             messageStore.flash("ログインしました");
             router.push({ path: "/reviews" });
@@ -127,11 +131,13 @@ export const useAuthStore = defineStore({
             localStorage["access-token"] = response.headers["access-token"];
             localStorage["user-id"] = response.data.data.id;
             localStorage["user-name"] = response.data.data.name;
+            localStorage["admin"] = response.data.data.admin;
             this.access_token = response.headers["access-token"];
             this.client = response.headers["client"];
             this.uid = response.headers["uid"];
             this.user_id = response.data.data.id;
             this.user_name = response.data.data.name;
+            this.admin = response.data.data.admin;
             console.log("status:", response.status);
             messageStore.flash("ログインしました");
             router.push({ path: "/reviews" });
@@ -157,11 +163,13 @@ export const useAuthStore = defineStore({
       localStorage.removeItem("client");
       localStorage.removeItem("user-id");
       localStorage.removeItem("user-name");
+      localStorage.removeItem("admin");
       this.access_token = null;
       this.client = null;
       this.uid = null;
       this.user_id = null;
       this.user_name = null;
+      this.admin = null;
       messageStore.flash("ログアウトしました");
     },
 
@@ -180,11 +188,13 @@ export const useAuthStore = defineStore({
       localStorage.removeItem("client");
       localStorage.removeItem("user-id");
       localStorage.removeItem("user-name");
+      localStorage.removeItem("admin");
       this.access_token = null;
       this.client = null;
       this.uid = null;
       this.user_id = null;
       this.user_name = null;
+      this.admin = null;
       messageStore.flash("アカウントを削除しました");
     },
 

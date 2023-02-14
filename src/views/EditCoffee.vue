@@ -5,6 +5,7 @@ import { useMessageStore } from "@/stores/message";
 import { useRouter } from "vue-router";
 import axios, { type AxiosResponse } from "axios";
 import { mdiArrowLeftThick } from "@mdi/js";
+import { mdiCoffeeOutline } from "@mdi/js";
 
 interface Props {
   id: number;
@@ -134,6 +135,10 @@ async function destroyCoffee(): Promise<void> {
       </v-col>
       <v-col cols="12" sm="11">
         <v-card class="mx-auto" max-width="500">
+          <v-chip class="ma-2" color="#7b5544" variant="text" size="large"
+            ><v-icon start :icon="mdiCoffeeOutline"></v-icon>
+            コーヒーマスタ編集画面
+          </v-chip>
           <v-img src="" alt="" height="200" cover></v-img>
           <v-divider></v-divider>
           <v-list-item>

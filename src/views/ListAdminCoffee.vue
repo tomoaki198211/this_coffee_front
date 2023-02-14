@@ -5,7 +5,7 @@ import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import { mdiMagnify } from "@mdi/js";
 import { mdiPlus } from "@mdi/js";
-import { mdiAccountSupervisorOutline } from "@mdi/js";
+import { mdiCoffeeOutline } from "@mdi/js";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -206,9 +206,9 @@ const searchReset = () => {
           </v-btn>
         </v-col>
       </v-row>
-      <v-chip class="ma-2" color="#7b5544" label size="large"
-        ><v-icon start :icon="mdiAccountSupervisorOutline"></v-icon>
-        ユーザー管理画面
+      <v-chip class="ma-2" color="#7b5544" variant="text" size="large"
+        ><v-icon start :icon="mdiCoffeeOutline"></v-icon>
+        コーヒーマスタ管理画面
       </v-chip>
       <v-btn
         color="#7b5544"
