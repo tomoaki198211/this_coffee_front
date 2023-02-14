@@ -9,6 +9,7 @@ import ListUser from "@/views/ListUser.vue";
 import ListAdminCoffee from "@/views/ListAdminCoffee.vue";
 import PostCoffee from "@/views/PostCoffee.vue";
 import NotFound from "@/views/NotFound.vue";
+import MyAccount from "../views/MyAccount.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,18 +30,9 @@ const router = createRouter({
       component: SignupView,
     },
     {
-      path: "/auth/account/:id",
+      path: "/auth/account",
       name: "my_account",
-      //動的インポート
-      component: () => {
-        return import("../views/MyAccount.vue");
-      },
-      props: (routes) => {
-        const idNum = Number(routes.params.id);
-        return {
-          id: idNum,
-        };
-      },
+      component: MyAccount,
     },
     {
       path: "/users/admin/edit/:id",
@@ -132,9 +124,25 @@ const router = createRouter({
 });
 
 // ログインしていない状態ではloginとsignupにしか移動出来ない;
+// router.beforeEach((to, from, next) => {
+//   const authStore = useAuthStore();
+//   if (to.name !== "login" && to.name !== "signup" && !authStore.isAuthencated())
+//     next({ name: "login" });
+//   else next();
+// });
+
+//ログインしていないとマイアカウントにいけない
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
-  if (to.name !== "login" && to.name !== "signup" && !authStore.isAuthencated())
+  if (to.name == "myaccount" && !authStore.isAuthencated())
+    next({ name: "login" });
+  else next();
+});
+
+//ログインしていないとレビューを投稿出来ない。
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+  if (to.name == "post_review" && !authStore.isAuthencated())
     next({ name: "login" });
   else next();
 });
@@ -181,7 +189,7 @@ router.beforeEach((to, from, next) => {
     authStore.isAuthencated() &&
     (to.name === "login" || to.name === "sign_up")
   )
-    next();
+    next({ name: "my_account" });
   else next();
 });
 

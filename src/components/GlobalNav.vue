@@ -18,8 +18,7 @@ const router = useRouter();
 const onLogout = (): void => {
   const authStore = useAuthStore();
   authStore.logout();
-  router.push("/auth/login");
-  router.push("/auth/login");
+  router.push("/");
 };
 </script>
 
@@ -37,6 +36,16 @@ const onLogout = (): void => {
       <v-list>
         <v-btn variant="plain" @click="router.push('/')">
           <v-icon :icon="mdiHome"></v-icon>ホーム
+        </v-btn>
+      </v-list>
+      <v-list>
+        <v-btn variant="plain" @click="router.push('/reviews')">
+          <v-icon :icon="mdiComment"></v-icon>レビュー
+        </v-btn>
+      </v-list>
+      <v-list>
+        <v-btn variant="plain" @click="router.push('/coffees')">
+          <v-icon :icon="mdiCoffee"></v-icon>コーヒー
         </v-btn>
       </v-list>
       <v-list>
@@ -62,10 +71,7 @@ const onLogout = (): void => {
         </v-btn>
       </v-list>
       <v-list>
-        <v-btn
-          variant="plain"
-          @click="router.push(`/auth/account/${authStore.user_id}`)"
-        >
+        <v-btn variant="plain" @click="router.push('/auth/account')">
           <v-icon :icon="mdiAccountCircleOutline"></v-icon>アカウント
         </v-btn>
       </v-list>

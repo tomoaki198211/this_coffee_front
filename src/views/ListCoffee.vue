@@ -5,6 +5,7 @@ import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import FavoriteButton from "../components/FavoriteButton.vue";
 import { mdiMagnify } from "@mdi/js";
+import { mdiCoffeeOutline } from "@mdi/js";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -22,6 +23,7 @@ const selected_store = reactive({
 });
 const categories = ref([]);
 const stores = ref([]);
+const disabled_flg = ref(false);
 const load = ref(false);
 const page = ref(1);
 const result = ref(1);
@@ -89,8 +91,11 @@ const getResult = (length) => {
   result.value = length;
 };
 
-setCoffee();
-setMaster();
+const startListCoffee = () => {
+  if (!authStore.isAuthencated()) {
+    disabled_flg.value = true;
+  }
+};
 
 //0マスター取得用
 async function setMaster(): Promise<void> {
@@ -151,6 +156,10 @@ const searchReset = () => {
   selected_store.id = "";
   search_word.value = "";
 };
+
+startListCoffee();
+setCoffee();
+setMaster();
 </script>
 
 <template>
@@ -205,6 +214,9 @@ const searchReset = () => {
           </v-btn>
         </v-col>
       </v-row>
+      <v-chip class="ma-2" color="#7b5544" label size="large"
+        ><v-icon start :icon="mdiCoffeeOutline"></v-icon> コーヒー一覧画面
+      </v-chip>
       <v-row>
         <v-col
           v-for="coffee in searchedCoffees"
@@ -238,6 +250,7 @@ const searchReset = () => {
                 <v-btn
                   class="mx-auto"
                   color="#7b5544"
+                  :disabled="disabled_flg"
                   @click="
                     router.push({
                       path: `/review/post/${coffee.id}`,

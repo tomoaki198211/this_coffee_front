@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
+import { useRouter } from "vue-router";
 import { mdiEmailOutline } from "@mdi/js";
 import { mdiLockOutline } from "@mdi/js";
 
@@ -15,7 +16,7 @@ const user: userLoginObj = reactive({
 });
 
 const authStore = useAuthStore();
-
+const router = useRouter();
 const onLogin = (): void => {
   const authStore = useAuthStore();
   const email = user.email;
@@ -40,14 +41,14 @@ const guestAdminLogin = (): void => {
         <v-text-field
           :prepend-icon="mdiEmailOutline"
           v-model="user.email"
-          label="Email"
+          label="Eメール"
           density="compact"
           variant="outlined"
         ></v-text-field>
         <v-text-field
           :prepend-icon="mdiLockOutline"
           v-model="user.password"
-          label="Password"
+          label="パスワード"
           density="compact"
           type="password"
           variant="outlined"
@@ -83,6 +84,27 @@ const guestAdminLogin = (): void => {
             @click="guestAdminLogin"
           >
             <p class="font-weight-bold btn-txt">ゲスト管理者ログイン</p>
+          </v-btn>
+        </v-card-actions>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn
+            class="mx-auto"
+            variant="text"
+            color="#7b5544"
+            @click="router.push('/auth/signup')"
+          >
+            新規登録する場合はこちら
+          </v-btn>
+        </v-card-actions>
+        <v-card-actions>
+          <v-btn
+            class="mx-auto"
+            variant="text"
+            color="#7b5544"
+            @click="router.push('/reviews')"
+          >
+            ログインせずにレビューを見る
           </v-btn>
         </v-card-actions>
       </v-container>

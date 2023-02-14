@@ -5,7 +5,8 @@ import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import { mdiMagnify } from "@mdi/js";
 import { mdiAutorenew } from "@mdi/js";
-import { mdiCommentOutline } from "@mdi/js";
+import { mdiCommentTextOutline } from "@mdi/js";
+import { mdiLockOutline } from "@mdi/js";
 import moment from "moment";
 
 const authStore = useAuthStore();
@@ -24,8 +25,10 @@ const selected_store = reactive({
 });
 const categories = ref([]);
 const stores = ref([]);
-const whole: boolean = ref(false);
+const isAll: boolean = ref(false);
 const load = ref(false);
+
+//ページネーション関連
 const page = ref(1);
 const result = ref(1);
 let itemsPerPage = 8;
@@ -33,6 +36,7 @@ const screenWidth = ref(window.innerWidth);
 onMounted(() => {
   window.addEventListener("resize", resize);
 });
+
 const resize = () => {
   screenWidth.value = window.innerWidth;
   if (screenWidth.value > 1920) {
@@ -49,38 +53,24 @@ const resize = () => {
     itemsPerPage = 3;
   }
 };
+
 const momentDate = (date) => {
   return moment(date).format("YYYY/MM/DD");
 };
+
 const searchReset = () => {
   selected_category.id = "";
   selected_store.id = "";
   search_word.value = "";
-  // setReview();
 };
 
-// const goToPage = (page) => {
-//   searchedReviews.value = searchedReviews.value.slice(
-//     itemsPerPage * (page - 1),
-//     itemsPerPage * page
-//   );
-// };
-
-//apiで検索する際はwatchを使用
-// watch(search_word, () => {
-//   setSearch();
-// });
-
-// watch(selected_category, () => {
-//   setSearch();
-// });
-
-// watch(selected_store, () => {
-//   setSearch();
-// });
-
-setMaster();
-setReview();
+const startReview = () => {
+  if (!authStore.isAuthencated()) {
+    setAllReview();
+  } else {
+    setReview();
+  }
+};
 
 //front側で検索する際にcomputedを使用
 const searchedReviews = computed(() => {
@@ -105,7 +95,6 @@ const searchedReviews = computed(() => {
   );
   return reviews;
 });
-//---------
 
 const getResult = (length) => {
   result.value = length;
@@ -136,7 +125,7 @@ async function setReview(): Promise<void> {
       },
     })
     .then((response) => {
-      whole.value = false;
+      isAll.value = false;
       index.reviews = response.data;
       load.value = true;
       console.log(response.data);
@@ -153,12 +142,13 @@ async function setAllReview(): Promise<void> {
       },
     })
     .then((response) => {
-      whole.value = true;
+      isAll.value = true;
       index.reviews = response.data;
       console.log(response.data);
     });
 }
 
+//api側で検索する場合に使用
 async function setSearch(): Promise<void> {
   await axios
     .post("/api/v1/reviews/search", {
@@ -178,6 +168,22 @@ async function setSearch(): Promise<void> {
       console.log(response.data);
     });
 }
+
+startReview();
+setMaster();
+
+//api側で検索する際はwatchを使用
+// watch(search_word, () => {
+//   setSearch();
+// });
+
+// watch(selected_category, () => {
+//   setSearch();
+// });
+
+// watch(selected_store, () => {
+//   setSearch();
+// });
 </script>
 
 <template>
@@ -231,25 +237,31 @@ async function setSearch(): Promise<void> {
         </v-btn>
       </v-col>
     </v-row>
-    <template v-if="whole == false">
+    <v-chip class="ma-2" color="#7b5544" label size="large"
+      ><v-icon start :icon="mdiCommentTextOutline"></v-icon> レビュー一覧画面
+    </v-chip>
+
+    <template v-if="isAll == false">
       <v-btn
         color="#7b5544"
         variant="plain"
         class="mx-auto"
         size="x-large"
         @click="setAllReview()"
-        ><v-icon :icon="mdiAutorenew"></v-icon>全体</v-btn
+        ><v-icon :icon="mdiAutorenew"></v-icon>個人</v-btn
       ></template
     >
     <template v-else>
-      <v-btn
-        color="#7b5544"
-        variant="plain"
-        class="mx-auto"
-        size="x-large"
-        @click="setReview()"
-        ><v-icon :icon="mdiAutorenew"></v-icon>個人</v-btn
-      >
+      <template v-if="authStore.isAuthencated()">
+        <v-btn
+          color="#7b5544"
+          variant="plain"
+          class="mx-auto"
+          size="x-large"
+          @click="setReview()"
+          ><v-icon :icon="mdiAutorenew"></v-icon>全体</v-btn
+        >
+      </template>
     </template>
     <v-row>
       <v-col
@@ -304,6 +316,11 @@ async function setSearch(): Promise<void> {
                 >詳細
               </v-btn>
               <v-spacer></v-spacer>
+              <template v-if="!isAll">
+                <template v-if="!review.setting">
+                  <v-icon :icon="mdiLockOutline" size="large"></v-icon>
+                </template>
+              </template>
             </v-card-actions>
           </v-card>
         </v-hover>

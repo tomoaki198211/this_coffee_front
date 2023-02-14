@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, computed } from "vue";
+import { ref, reactive, computed } from "vue";
 import { useAuthStore } from "../stores/auth";
 import { useMessageStore } from "@/stores/message";
 import axios from "axios";
@@ -18,8 +18,12 @@ const count = computed((): number => {
   return favorites.list.length;
 });
 const messageStore = useMessageStore();
-
-setFavorite();
+const disabled_flg = ref(false);
+const startFavorites = () => {
+  if (!authStore.isAuthencated()) {
+    disabled_flg.value = true;
+  }
+};
 
 //お気に入りをしているかどうか
 const isFavorited = computed((): Boolean => {
@@ -97,14 +101,27 @@ async function deleteFavorite(): Promise<void> {
       setFavorite();
     });
 }
+
+startFavorites();
+setFavorite();
 </script>
 
 <template>
-  <v-btn class="mx-auto" v-if="isFavorited" @click="deleteFavorite()">
+  <v-btn
+    class="mx-auto"
+    v-if="isFavorited"
+    @click="deleteFavorite()"
+    :disabled="disabled_flg"
+  >
     <v-icon :icon="mdiHeart"></v-icon>
     <p class="ml-3">{{ count }}</p>
   </v-btn>
-  <v-btn class="mx-auto" v-else @click="registerFavorite()">
+  <v-btn
+    class="mx-auto"
+    v-else
+    @click="registerFavorite()"
+    :disabled="disabled_flg"
+  >
     <v-icon :icon="mdiHeartOutline"></v-icon>
     <p class="ml-3">{{ count }}</p>
   </v-btn>
