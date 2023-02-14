@@ -29,42 +29,52 @@ const onSignup = (): void => {
 </script>
 
 <template>
-  <v-card class="mt-10 mb-8 mx-auto" width="400px">
-    <v-container class="">
-      <v-text-field
-        :prepend-icon="mdiEmailOutline"
-        v-model="user.name"
-        label="Name"
-        density="compact"
-        variant="outlined"
-      ></v-text-field>
-      <v-text-field
-        :prepend-icon="mdiEmailOutline"
-        v-model="user.email"
-        label="Email"
-        density="compact"
-        variant="outlined"
-      ></v-text-field>
-      <v-text-field
-        :prepend-icon="mdiLockOutline"
-        v-model="user.password"
-        label="Password"
-        density="compact"
-        type="password"
-        variant="outlined"
-      ></v-text-field>
-      <v-card-actions>
-        <v-btn
-          class="mx-auto"
-          variant="flat"
-          color="#7b5544"
-          width="200px"
-          @click="onSignup()"
-          ><p class="font-weight-bold btn-txt">新規登録</p>
-        </v-btn>
-      </v-card-actions>
-    </v-container>
-  </v-card>
+  <v-container>
+    <v-card class="mt-10 mb-8 mx-auto" max-width="400px">
+      <v-container class="">
+        <v-text-field
+          :prepend-icon="mdiEmailOutline"
+          v-model="user.name"
+          label="Name"
+          density="compact"
+          variant="outlined"
+        ></v-text-field>
+        <v-text-field
+          :prepend-icon="mdiEmailOutline"
+          v-model="user.email"
+          label="Email"
+          density="compact"
+          variant="outlined"
+        ></v-text-field>
+        <v-text-field
+          :prepend-icon="mdiLockOutline"
+          v-model="user.password"
+          label="Password"
+          density="compact"
+          type="password"
+          variant="outlined"
+        ></v-text-field>
+        <v-text-field
+          :prepend-icon="mdiLockOutline"
+          v-model="user.password_confirmation"
+          label="Password"
+          density="compact"
+          type="password"
+          variant="outlined"
+        ></v-text-field>
+        <v-card-actions>
+          <v-btn
+            class="mx-auto"
+            variant="flat"
+            color="#7b5544"
+            width="200px"
+            @click="onSignup()"
+            ><p class="font-weight-bold btn-txt">新規登録</p>
+          </v-btn>
+        </v-card-actions>
+      </v-container>
+    </v-card>
+  </v-container>
 </template>
 
 <style scoped>

@@ -49,11 +49,7 @@ async function setFavorite(): Promise<void> {
     },
   };
   await axios
-    .get(
-      `http://localhost:3000/api/v1/coffees/${props.coffee_id}/favorites`,
-      {},
-      config
-    )
+    .get(`/api/v1/coffees/${props.coffee_id}/favorites`, {}, config)
     .then((response) => {
       console.log(response.data);
       favorites.list = response.data;
@@ -75,11 +71,7 @@ async function registerFavorite(): Promise<void> {
     },
   };
   await axios
-    .post(
-      `http://localhost:3000/api/v1/coffees/${props.coffee_id}/favorites`,
-      data,
-      config
-    )
+    .post(`/api/v1/coffees/${props.coffee_id}/favorites`, data, config)
     .then((response) => {
       console.log(response.data);
       favorites.list = response.data;
@@ -92,16 +84,13 @@ async function registerFavorite(): Promise<void> {
 async function deleteFavorite(): Promise<void> {
   const favoriteid = findFavoriteId();
   await axios
-    .delete(
-      `http://localhost:3000/api/v1/coffees/${props.coffee_id}/favorites/${favoriteid}`,
-      {
-        headers: {
-          uid: authStore.uid,
-          "access-token": authStore.access_token,
-          client: authStore.client,
-        },
-      }
-    )
+    .delete(`/api/v1/coffees/${props.coffee_id}/favorites/${favoriteid}`, {
+      headers: {
+        uid: authStore.uid,
+        "access-token": authStore.access_token,
+        client: authStore.client,
+      },
+    })
     .then((response) => {
       console.log(response.data);
       messageStore.flash("お気に入りを解除しました");

@@ -55,7 +55,7 @@ showCoffee();
 //選択したマスターのshow画面
 async function showCoffee(): Promise<void> {
   await axios
-    .get(`http://localhost:3000/api/v1/coffees/${props.id}`, {
+    .get(`/api/v1/coffees/${props.id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -91,12 +91,10 @@ async function postReview(): Promise<void> {
       client: authStore.client,
     },
   };
-  await axios
-    .post("http://localhost:3000/api/v1/reviews", data, config)
-    .then((response) => {
-      router.push("/reviews");
-      console.log(response.data);
-    });
+  await axios.post("/api/v1/reviews", data, config).then((response) => {
+    router.push("/reviews");
+    console.log(response.data);
+  });
 }
 </script>
 

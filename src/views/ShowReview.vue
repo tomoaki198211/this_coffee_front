@@ -70,7 +70,7 @@ setReview();
 
 async function setReview(): Promise<void> {
   await axios
-    .get(`http://localhost:3000/api/v1/reviews/${props.id}`, {
+    .get(`/api/v1/reviews/${props.id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -99,7 +99,7 @@ async function setReview(): Promise<void> {
 }
 async function destroyReview(id): Promise<void> {
   await axios
-    .delete(`http://localhost:3000/api/v1/reviews/${id}`, {
+    .delete(`/api/v1/reviews/${id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -142,11 +142,7 @@ async function updateReview(): Promise<void> {
     },
   };
   await axios
-    .patch(
-      `http://localhost:3000/api/v1/reviews/${review_id.value}`,
-      data,
-      config
-    )
+    .patch(`/api/v1/reviews/${review_id.value}`, data, config)
     .then((response) => {
       setReview();
       onShow();

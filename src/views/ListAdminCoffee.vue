@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import { mdiMagnify } from "@mdi/js";
-import { mdiFileEditOutline } from "@mdi/js";
+import { mdiPlus } from "@mdi/js";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -24,7 +24,7 @@ const categories = ref([]);
 const stores = ref([]);
 const load = ref(false);
 const page = ref(1);
-const result = ref();
+const result = ref(1);
 let itemsPerPage = 8;
 const screenWidth = ref(window.innerWidth);
 onMounted(() => {
@@ -95,7 +95,7 @@ setMaster();
 //0マスター取得用
 async function setMaster(): Promise<void> {
   await axios
-    .get("http://localhost:3000/api/v1/coffees/mdata", {
+    .get("/api/v1/coffees/option", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -111,7 +111,7 @@ async function setMaster(): Promise<void> {
 //1 axios コーヒーは直近1０件ほどに制限
 async function setCoffee(): Promise<void> {
   await axios
-    .get("http://localhost:3000/api/v1/coffees", {
+    .get("/api/v1/coffees", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -128,7 +128,7 @@ async function setCoffee(): Promise<void> {
 // 2 axios 検索結果を表示する
 async function setSearch(): Promise<void> {
   await axios
-    .post("http://localhost:3000/api/v1/coffees/search", {
+    .post("/api/v1/coffees/search", {
       search: {
         word: search_word.value,
         category: selected_category.id,
@@ -198,39 +198,51 @@ const searchReset = () => {
             icon
             color="#7b5544"
             variant="plain"
-            class="mx-auto ml-3"
+            class="ml-5"
             size="x-large"
             @click="searchReset()"
             ><p>検索リセット</p>
           </v-btn>
         </v-col>
       </v-row>
+
+      <v-btn
+        color="#7b5544"
+        variant="plain"
+        class="mx-auto"
+        size="large"
+        @click="
+          router.push({
+            path: '/coffees/admin/post',
+          })
+        "
+        ><v-icon :icon="mdiPlus"></v-icon>新規作成
+      </v-btn>
       <v-table density="compact">
-        <thead>
+        <thead class="head_bg">
           <tr>
-            <th>商品名</th>
-            <th>分類</th>
-            <th>販売店名</th>
-            <th></th>
+            <th><p class="txt_white">商品名</p></th>
+            <th><p class="txt_white">分類</p></th>
+            <th><p class="txt_white">販売店名</p></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="coffee in searchedCoffees" :key="coffee.id">
-            <td>{{ coffee.coffee_property.name }}</td>
-            <td>{{ coffee.category.name }}</td>
-            <td>{{ coffee.coffee_property.store.name }}</td>
             <td>
               <v-btn
-                variant="plain"
+                variant="text"
+                size="small"
                 @click="
                   router.push({
-                    path: `/coffees/master/${coffee.id}`,
+                    path: `/coffees/admin/edit/${coffee.id}`,
                   })
                 "
               >
-                <v-icon :icon="mdiFileEditOutline"> </v-icon>編集
+                {{ coffee.coffee_property.name }}
               </v-btn>
             </td>
+            <td>{{ coffee.category.name }}</td>
+            <td>{{ coffee.coffee_property.store.name }}</td>
           </tr>
         </tbody>
       </v-table>
@@ -263,8 +275,13 @@ const searchReset = () => {
 .coffee_txt {
   color: #7b5544;
 }
-td,
-th {
-  font-size: 12px;
+td {
+  font-size: 13px;
+}
+.head_bg {
+  background-color: #7b5544;
+}
+.txt_white {
+  color: #fff;
 }
 </style>

@@ -5,6 +5,7 @@ import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import { mdiMagnify } from "@mdi/js";
 import { mdiAutorenew } from "@mdi/js";
+import { mdiCommentOutline } from "@mdi/js";
 import moment from "moment";
 
 const authStore = useAuthStore();
@@ -26,7 +27,7 @@ const stores = ref([]);
 const whole: boolean = ref(false);
 const load = ref(false);
 const page = ref(1);
-const result = ref();
+const result = ref(1);
 let itemsPerPage = 8;
 const screenWidth = ref(window.innerWidth);
 onMounted(() => {
@@ -112,7 +113,7 @@ const getResult = (length) => {
 
 async function setMaster(): Promise<void> {
   await axios
-    .get("http://localhost:3000/api/v1/coffees/mdata", {
+    .get("/api/v1/coffees/option", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -127,7 +128,7 @@ async function setMaster(): Promise<void> {
 
 async function setReview(): Promise<void> {
   await axios
-    .get("http://localhost:3000/api/v1/reviews", {
+    .get("/api/v1/reviews", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -144,7 +145,7 @@ async function setReview(): Promise<void> {
 
 async function setAllReview(): Promise<void> {
   await axios
-    .get("http://localhost:3000/api/v1/reviews/all", {
+    .get("/api/v1/reviews/all", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -160,7 +161,7 @@ async function setAllReview(): Promise<void> {
 
 async function setSearch(): Promise<void> {
   await axios
-    .post("http://localhost:3000/api/v1/reviews/search", {
+    .post("/api/v1/reviews/search", {
       search: {
         word: search_word.value,
         category: selected_category.id,
@@ -223,7 +224,7 @@ async function setSearch(): Promise<void> {
           icon
           color="#7b5544"
           variant="plain"
-          class="mx-auto ml-3"
+          class="ml-5"
           @click="searchReset()"
           size="x-large"
           ><p>検索リセット</p>
@@ -268,48 +269,28 @@ async function setSearch(): Promise<void> {
             style="border-width: 2px"
             :elevation="isHovering ? 16 : 2"
             :class="{ 'on-hover': isHovering }"
-            :color="isHovering ? '#ffe5cc' : undefined"
+            :color="isHovering ? '#fff7ef' : undefined"
             v-bind="props"
           >
-            <v-list-item class="mb-1">
+            <v-list-item class="mb-1 txt_white head_bg">
               <v-list-item-title>
                 {{ review.coffee.coffee_property.name }}
               </v-list-item-title>
-              <v-list-item-subtitle>{{
+              <v-list-item-title>{{
                 review.coffee.coffee_property.store.name
-              }}</v-list-item-subtitle>
+              }}</v-list-item-title>
             </v-list-item>
-            <v-divider></v-divider>
-            <v-list-item>
+            <v-card-text>
               <v-row class="">
                 <v-col>
-                  <v-list-item-subtitle>
-                    {{ review.user.name }}
-                  </v-list-item-subtitle>
-                </v-col>
-                <v-col>
-                  <v-list-item-subtitle>
-                    {{ momentDate(review.created_at) }}
-                  </v-list-item-subtitle>
+                  {{ review.user.name }}
+                  {{ momentDate(review.created_at) }}
                 </v-col>
               </v-row>
-              <v-list-item-subtitle class="mt-1">
-                直感的な評価:{{ review.intuition }}
-              </v-list-item-subtitle>
-              <v-list-item-subtitle class="mt-1">
-                コストパフォーマンス:{{ review.efficiency }}
-              </v-list-item-subtitle>
-            </v-list-item>
-            <v-list-item>
-              <v-textarea
-                :placeholder="review.remarks"
-                variant="underlined"
-                rows="1"
-                class=""
-                readonly
-                width="100%"
-              />
-            </v-list-item>
+              直感的な評価:{{ review.intuition }}<br />
+              コストパフォーマンス:{{ review.efficiency }}<br />
+              感想:{{ review.remarks }}
+            </v-card-text>
             <v-card-actions>
               <v-btn
                 class="mx-auto"
@@ -353,5 +334,12 @@ async function setSearch(): Promise<void> {
 }
 .coffee_txt {
   color: #7b5544;
+}
+.head_bg {
+  background-color: #7b5544;
+}
+.txt_white {
+  color: #fff;
+  font-weight: bold;
 }
 </style>

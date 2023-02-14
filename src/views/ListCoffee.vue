@@ -24,7 +24,7 @@ const categories = ref([]);
 const stores = ref([]);
 const load = ref(false);
 const page = ref(1);
-const result = ref();
+const result = ref(1);
 let itemsPerPage = 8;
 const screenWidth = ref(window.innerWidth);
 onMounted(() => {
@@ -95,7 +95,7 @@ setMaster();
 //0マスター取得用
 async function setMaster(): Promise<void> {
   await axios
-    .get("http://localhost:3000/api/v1/coffees/mdata", {
+    .get("/api/v1/coffees/option", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -111,7 +111,7 @@ async function setMaster(): Promise<void> {
 //1 axios コーヒーは直近1０件ほどに制限
 async function setCoffee(): Promise<void> {
   await axios
-    .get("http://localhost:3000/api/v1/coffees", {
+    .get("/api/v1/coffees", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -128,7 +128,7 @@ async function setCoffee(): Promise<void> {
 // 2 axios 検索結果を表示する
 async function setSearch(): Promise<void> {
   await axios
-    .post("http://localhost:3000/api/v1/coffees/search", {
+    .post("/api/v1/coffees/search", {
       search: {
         word: search_word.value,
         category: selected_category.id,
@@ -198,7 +198,7 @@ const searchReset = () => {
             icon
             color="#7b5544"
             variant="plain"
-            class="mx-auto ml-3"
+            class="ml-5"
             size="x-large"
             @click="searchReset()"
             ><p>検索リセット</p>
@@ -222,7 +222,7 @@ const searchReset = () => {
               max-width="300"
               :elevation="isHovering ? 16 : 2"
               :class="{ 'on-hover': isHovering }"
-              :color="isHovering ? '#ffe5cc' : undefined"
+              :color="isHovering ? '#fff7ef' : undefined"
               v-bind="props"
             >
               <v-img src="" alt="" height="100" cover></v-img>
