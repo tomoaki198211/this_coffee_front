@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
-import LoginView from "../views/LoginView.vue";
-import HomeView from "../views/HomeView.vue";
-import SignupView from "../views/SignupView.vue";
-import ListReview from "../views/ListReview.vue";
+import LoginView from "@/views/LoginView.vue";
+import HomeView from "@/views/HomeView.vue";
+import SignupView from "@/views/SignupView.vue";
+import ListReview from "@/views/ListReview.vue";
 import ListCoffee from "@/views/ListCoffee.vue";
 import ListUser from "@/views/ListUser.vue";
 import ListAdminCoffee from "@/views/ListAdminCoffee.vue";
@@ -131,7 +131,7 @@ const router = createRouter({
   ],
 });
 
-//ログインしていない状態ではloginとsignupにしか移動出来ない
+// ログインしていない状態ではloginとsignupにしか移動出来ない;
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   if (to.name !== "login" && to.name !== "signup" && !authStore.isAuthencated())
@@ -174,14 +174,14 @@ router.beforeEach((to, from, next) => {
   else next();
 });
 
-//ログイン中はログイン、アカウント登録画面に行けない
+// ログイン中はログイン、アカウント登録画面に行けない(未完成)
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   if (
-    (to.name === "login" || to.name === "sign_up") &&
-    authStore.isAuthencated()
+    authStore.isAuthencated() &&
+    (to.name === "login" || to.name === "sign_up")
   )
-    next(false);
+    next();
   else next();
 });
 
