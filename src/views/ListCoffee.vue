@@ -39,7 +39,7 @@ const disabled_flg = ref(false);
 const load = ref(false);
 const page = ref(1);
 const result = ref(1);
-let itemsPerPage = 8;
+let itemsPerPage = ref(8);
 const screenWidth = ref(window.innerWidth);
 onMounted(() => {
   window.addEventListener("resize", resize);
@@ -47,32 +47,21 @@ onMounted(() => {
 const resize = () => {
   screenWidth.value = window.innerWidth;
   if (screenWidth.value > 1920) {
-    itemsPerPage = 18;
+    itemsPerPage.value = 24;
   } else if (screenWidth.value > 1280) {
-    itemsPerPage = 12;
+    itemsPerPage.value = 12;
+  } else if (screenWidth.value > 960) {
+    itemsPerPage.value = 9;
   } else if (screenWidth.value > 768) {
-    itemsPerPage = 8;
+    itemsPerPage.value = 8;
   } else if (screenWidth.value > 600) {
-    itemsPerPage = 6;
+    itemsPerPage.value = 6;
   } else if (screenWidth.value > 400) {
-    itemsPerPage = 4;
+    itemsPerPage.value = 4;
   } else {
-    itemsPerPage = 3;
+    itemsPerPage.value = 3;
   }
 };
-
-//apiで検索する際はwatchを使用
-// watch(search_word, () => {
-//   setSearch();
-// });
-
-// watch(selected_category, () => {
-//   setSearch();
-// });
-
-// watch(selected_store, () => {
-//   setSearch();
-// });
 
 //front側で検索する際にcomputedを使用
 const searchedCoffees = computed(() => {
@@ -99,8 +88,8 @@ const searchedCoffees = computed(() => {
   }
   getResult(coffees.length);
   coffees = coffees.slice(
-    itemsPerPage * (page.value - 1),
-    itemsPerPage * page.value
+    itemsPerPage.value * (page.value - 1),
+    itemsPerPage.value * page.value
   );
   return coffees;
 });
@@ -125,6 +114,29 @@ const searchReset = () => {
 const change_favorite = () => {
   favorite_flg.value = false;
 };
+
+const image_url = {
+  5: beans_img,
+  2: can_img,
+  3: cappuccino_img,
+  4: float_img,
+  1: hot_img,
+  6: ice_img,
+  7: instant_img,
+};
+
+//apiで検索する際はwatchを使用
+// watch(search_word, () => {
+//   setSearch();
+// });
+
+// watch(selected_category, () => {
+//   setSearch();
+// });
+
+// watch(selected_store, () => {
+//   setSearch();
+// });
 
 //0マスター取得用
 async function setMaster(): Promise<void> {
@@ -172,6 +184,7 @@ async function favoriteCoffee(): Promise<void> {
       favorite.coffees = response.data;
       favorite_flg.value = true;
       load.value = true;
+      page.value = 1;
       console.log(favorite.coffees);
     });
 }
@@ -197,29 +210,22 @@ async function setSearch(): Promise<void> {
     });
 }
 
+resize();
 startListCoffee();
 setCoffee();
 setMaster();
 
-const image_url = {
-  1: beans_img,
-  2: can_img,
-  3: cappuccino_img,
-  4: float_img,
-  5: hot_img,
-  6: ice_img,
-  7: instant_img,
-};
 // :src="`https://product.starbucks.co.jp${coffee.coffee_property.image}`"
 </script>
 
 <template>
   <div>
-    <v-container fluid grid-list-xl class="container_out">
+    <v-container fluid grid-list-xl class="w-100">
       <v-row>
         <v-col cols="12" sm="4">
           <v-text-field
             v-model="search_word"
+            clearable
             label="商品名"
             variant="underlined"
             :prepend-icon="mdiMagnify"
@@ -367,9 +373,6 @@ const image_url = {
 </template>
 
 <style scoped>
-.container_out {
-  width: 100%;
-}
 .coffee_txt {
   color: #7b5544;
 }

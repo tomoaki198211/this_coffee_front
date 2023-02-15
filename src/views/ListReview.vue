@@ -3,10 +3,15 @@ import { reactive, ref, watch, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios from "axios";
+import moment from "moment";
 import { mdiMagnify } from "@mdi/js";
 import { mdiAutorenew } from "@mdi/js";
 import { mdiCommentTextOutline } from "@mdi/js";
-import moment from "moment";
+import { mdiEmoticonExcitedOutline } from "@mdi/js";
+import { mdiEmoticonHappyOutline } from "@mdi/js";
+import { mdiEmoticonNeutralOutline } from "@mdi/js";
+import { mdiEmoticonSadOutline } from "@mdi/js";
+import { mdiEmoticonDeadOutline } from "@mdi/js";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -25,44 +30,95 @@ const selected_store = reactive({
 const categories = ref([]);
 const stores = ref([]);
 const isAll: boolean = ref(false);
-const load = ref(false);
+
+const emotion = {
+  5: mdiEmoticonExcitedOutline,
+  4: mdiEmoticonHappyOutline,
+  3: mdiEmoticonNeutralOutline,
+  2: mdiEmoticonSadOutline,
+  1: mdiEmoticonDeadOutline,
+};
+
+const emotion_text = {
+  5: "大満足！！",
+  4: "満足！",
+  3: "普通",
+  2: "うーん",
+  1: "合わなかった",
+};
+
+const emotion_color = {
+  5: "red",
+  4: "orange",
+  3: "green",
+  2: "blue-lighten-2",
+  1: "indigo",
+};
 
 //ページネーション関連
 const page = ref(1);
 const result = ref(1);
-let itemsPerPage = 8;
+let itemsPerPage = ref(8);
 const screenWidth = ref(window.innerWidth);
+
+//画面サイズが変更したらresizeメソッドが動く
 onMounted(() => {
   window.addEventListener("resize", resize);
 });
 
+//画面サイズによって画面幅を変更
 const resize = () => {
   screenWidth.value = window.innerWidth;
   if (screenWidth.value > 1920) {
-    itemsPerPage = 18;
+    itemsPerPage.value = 24;
   } else if (screenWidth.value > 1280) {
-    itemsPerPage = 12;
+    itemsPerPage.value = 12;
+  } else if (screenWidth.value > 960) {
+    itemsPerPage.value = 9;
   } else if (screenWidth.value > 768) {
-    itemsPerPage = 8;
+    itemsPerPage.value = 8;
   } else if (screenWidth.value > 600) {
-    itemsPerPage = 6;
+    itemsPerPage.value = 6;
   } else if (screenWidth.value > 400) {
-    itemsPerPage = 4;
+    itemsPerPage.value = 4;
   } else {
-    itemsPerPage = 3;
+    itemsPerPage.value = 3;
   }
 };
 
+//算出プロパティで1ページあたりの表示を決定
+const getReviews = computed(() => {
+  let reviews = [];
+  getResult(index.reviews.length);
+  reviews = index.reviews.slice(
+    itemsPerPage.value * (page.value - 1),
+    itemsPerPage.value * page.value
+  );
+  return reviews;
+});
+
+const getResult = (length) => {
+  result.value = length;
+};
+
+//日付の修正
 const momentDate = (date) => {
   return moment(date).format("YYYY/MM/DD");
 };
 
+//検索リセット
 const searchReset = () => {
   selected_category.id = "";
   selected_store.id = "";
   search_word.value = "";
+  if (isAll.value) {
+    setAllReview();
+  } else {
+    setReview();
+  }
 };
 
+//スタート時の設定
 const startReview = () => {
   if (!authStore.isAuthencated()) {
     setAllReview();
@@ -71,37 +127,42 @@ const startReview = () => {
   }
 };
 
-const page_restart = () => {
-  page.value = 1;
-};
-
-//front側で検索する際にcomputedを使用
-const searchedReviews = computed(() => {
-  let reviews = [];
-  for (let i in index.reviews) {
-    let review = index.reviews[i];
-    if (
-      (review.coffee.coffee_property.name.indexOf(search_word.value) !== -1 ||
-        search_word.value == "") &&
-      (review.coffee.category.id === selected_category.id ||
-        selected_category.id == "") &&
-      (review.coffee.coffee_property.store.id === selected_store.id ||
-        selected_store.id == "")
-    ) {
-      reviews.push(review);
-    }
-  }
-  getResult(reviews.length);
-  reviews = reviews.slice(
-    itemsPerPage * (page.value - 1),
-    itemsPerPage * page.value
-  );
-  return reviews;
+watch(selected_category, () => {
+  setSearch();
 });
 
-const getResult = (length) => {
-  result.value = length;
-};
+watch(selected_store, () => {
+  setSearch();
+});
+
+//api側で検索する際はwatchを使用
+// watch(search_word, () => {
+//   setSearch();
+// });
+
+//front側で検索する際にcomputedを使用
+// const searchedReviews = computed(() => {
+//   let reviews = [];
+//   for (let i in index.reviews) {
+//     let review = index.reviews[i];
+//     if (
+//       (review.coffee.coffee_property.name.indexOf(search_word.value) !== -1 ||
+//         search_word.value == "") &&
+//       (review.coffee.category.id === selected_category.id ||
+//         selected_category.id == "") &&
+//       (review.coffee.coffee_property.store.id === selected_store.id ||
+//         selected_store.id == "")
+//     ) {
+//       reviews.push(review);
+//     }
+//   }
+//   getResult(reviews.length);
+//   reviews = reviews.slice(
+//     itemsPerPage * (page.value - 1),
+//     itemsPerPage * page.value
+//   );
+//   return reviews;
+// });
 
 async function setMaster(): Promise<void> {
   await axios
@@ -130,7 +191,6 @@ async function setReview(): Promise<void> {
     .then((response) => {
       isAll.value = false;
       index.reviews = response.data;
-      load.value = true;
       page.value = 1;
       console.log(response.data);
     });
@@ -170,35 +230,26 @@ async function setSearch(): Promise<void> {
     })
     .then((response) => {
       index.reviews = response.data;
+      page.value = 1;
       console.log(response.data);
     });
 }
 
+resize();
 startReview();
 setMaster();
-
-//api側で検索する際はwatchを使用
-// watch(search_word, () => {
-//   setSearch();
-// });
-
-// watch(selected_category, () => {
-//   setSearch();
-// });
-
-// watch(selected_store, () => {
-//   setSearch();
-// });
 </script>
 
 <template>
-  <v-container fluid grid-list-xl class="container_out">
+  <v-container fluid grid-list-xl class="w-100">
     <v-row>
       <v-col cols="12" sm="4">
         <v-text-field
           v-model="search_word"
-          label="商品名"
+          label="商品名+Enterで検索"
           variant="underlined"
+          v-on:keyup.enter="setSearch()"
+          clearable
           :prepend-icon="mdiMagnify"
         ></v-text-field>
       </v-col>
@@ -269,7 +320,7 @@ setMaster();
     </template>
     <v-row>
       <v-col
-        v-for="review in searchedReviews"
+        v-for="review in getReviews"
         :key="review.id"
         cols="12"
         xs="1"
@@ -299,13 +350,26 @@ setMaster();
             <v-divider></v-divider>
             <v-card-text>
               {{ review.user.name }}
-              {{ momentDate(review.created_at) }}
+              {{ momentDate(review.created_at) }}<br />
+              <v-rating
+                v-model="review.intuition"
+                bg-color="orange-lighten-1"
+                color="blue"
+                readonly
+              ></v-rating>
+              <v-chip
+                class="ma-2"
+                :color="emotion_color[review.intuition]"
+                label
+                text-color="white"
+                size="x-large"
+              >
+                <v-icon start :icon="`${emotion[review.intuition]}`"></v-icon>
+                {{ emotion_text[review.intuition] }}
+              </v-chip>
             </v-card-text>
-            <v-card-text>
-              直感的な評価:{{ review.intuition }}<br />
-              コストパフォーマンス:{{ review.efficiency }}<br />
-              感想:{{ review.remarks }}
-            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-text>感想:{{ review.remarks }}</v-card-text>
             <v-card-actions>
               <v-btn
                 class="mx-auto"
@@ -329,9 +393,7 @@ setMaster();
         </v-hover>
       </v-col>
     </v-row>
-    <template
-      v-if="index.reviews !== 0 && searchedReviews.length === 0 && load == true"
-    >
+    <template v-if="result === 0">
       <v-row justify="center" align="center">
         <p class="coffee_txt">
           検索結果がありません。<br />検索条件を変更して下さい。
@@ -349,9 +411,6 @@ setMaster();
 </template>
 
 <style scoped>
-.container_out {
-  width: 100%;
-}
 .coffee_txt {
   color: #7b5544;
 }
