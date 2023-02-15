@@ -26,7 +26,7 @@ const authStore = useAuthStore();
   padding-bottom: 50px;
 }
 .top {
-  background: #ebdecc url("@/assets/bg-2.png") no-repeat center center;
+  background: #ebdecc url("@/assets/bg.png") no-repeat center center;
   background-size: contain;
 }
 </style>

@@ -5,9 +5,7 @@ const messageStore = useMessageStore();
 </script>
 
 <template v-if="(messageStore.flag = true)">
-  <!-- <v-alert color="#ebdecc"> -->
-  <p class="text-center font-weight-bold">{{ messageStore.text }}</p>
-  <!-- </v-alert> -->
+  <p class="text-center font-weight-bold pt-2">{{ messageStore.text }}</p>
 </template>
 <style scoped>
 p {

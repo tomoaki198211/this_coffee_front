@@ -127,6 +127,7 @@ async function setReview(): Promise<void> {
       isAll.value = false;
       index.reviews = response.data;
       load.value = true;
+      page.value = 1;
       console.log(response.data);
     });
 }
@@ -143,6 +144,7 @@ async function setAllReview(): Promise<void> {
     .then((response) => {
       isAll.value = true;
       index.reviews = response.data;
+      page.value = 1;
       console.log(response.data);
     });
 }

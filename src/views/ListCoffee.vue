@@ -6,12 +6,24 @@ import axios from "axios";
 import FavoriteButton from "../components/FavoriteButton.vue";
 import { mdiMagnify } from "@mdi/js";
 import { mdiCoffeeOutline } from "@mdi/js";
+import { mdiHeart } from "@mdi/js";
+import beans_img from "@/assets/image/beans.png";
+import can_img from "@/assets/image/can.png";
+import cappuccino_img from "@/assets/image/cappucino.png";
+import float_img from "@/assets/image/float.png";
+import hot_img from "@/assets/image/hot.png";
+import ice_img from "@/assets/image/ice.png";
+import instant_img from "@/assets/image/instant.png";
 
 const authStore = useAuthStore();
 const router = useRouter();
 const index = reactive({
   coffees: [],
 });
+const favorite = reactive({
+  coffees: [],
+});
+const favorite_flg = ref(false);
 const search_word = ref("");
 const selected_category = reactive({
   id: "",
@@ -78,6 +90,13 @@ const searchedCoffees = computed(() => {
       coffees.push(coffee);
     }
   }
+  if (favorite_flg.value) {
+    coffees = coffees.filter(
+      (coffee) =>
+        favorite.coffees.filter((favorite) => favorite.id === coffee.id)
+          .length > 0
+    );
+  }
   getResult(coffees.length);
   coffees = coffees.slice(
     itemsPerPage * (page.value - 1),
@@ -97,6 +116,16 @@ const startListCoffee = () => {
   }
 };
 
+const searchReset = () => {
+  selected_category.id = "";
+  selected_store.id = "";
+  search_word.value = "";
+};
+
+const change_favorite = () => {
+  favorite_flg.value = false;
+};
+
 //0マスター取得用
 async function setMaster(): Promise<void> {
   await axios
@@ -113,7 +142,7 @@ async function setMaster(): Promise<void> {
     });
 }
 
-//1 axios コーヒーは直近1０件ほどに制限
+//1 axios
 async function setCoffee(): Promise<void> {
   await axios
     .get("/api/v1/coffees", {
@@ -127,6 +156,23 @@ async function setCoffee(): Promise<void> {
       index.coffees = response.data;
       load.value = true;
       console.log(response.data);
+    });
+}
+
+async function favoriteCoffee(): Promise<void> {
+  await axios
+    .get("/api/v1/coffees/likes", {
+      headers: {
+        uid: authStore.uid,
+        "access-token": authStore.access_token,
+        client: authStore.client,
+      },
+    })
+    .then((response) => {
+      favorite.coffees = response.data;
+      favorite_flg.value = true;
+      load.value = true;
+      console.log(favorite.coffees);
     });
 }
 
@@ -151,15 +197,20 @@ async function setSearch(): Promise<void> {
     });
 }
 
-const searchReset = () => {
-  selected_category.id = "";
-  selected_store.id = "";
-  search_word.value = "";
-};
-
 startListCoffee();
 setCoffee();
 setMaster();
+
+const image_url = {
+  1: beans_img,
+  2: can_img,
+  3: cappuccino_img,
+  4: float_img,
+  5: hot_img,
+  6: ice_img,
+  7: instant_img,
+};
+// :src="`https://product.starbucks.co.jp${coffee.coffee_property.image}`"
 </script>
 
 <template>
@@ -217,6 +268,31 @@ setMaster();
       <v-chip class="ma-2" color="#7b5544" variant="text" size="large"
         ><v-icon start :icon="mdiCoffeeOutline"></v-icon> コーヒー一覧画面
       </v-chip>
+      <template v-if="authStore.isAuthencated()">
+        <template v-if="favorite_flg">
+          <v-btn
+            class="mx-auto"
+            @click="change_favorite()"
+            variant="text"
+            size="large"
+            color="#7b5544"
+          >
+            <p class="ml-3">全体へ戻る</p>
+          </v-btn>
+        </template>
+        <template v-else>
+          <v-btn
+            class="mx-auto"
+            @click="favoriteCoffee()"
+            variant="text"
+            size="large"
+            color="#7b5544"
+          >
+            <v-icon :icon="mdiHeart"></v-icon>
+            <p class="ml-3">お気に入りのみ</p>
+          </v-btn>
+        </template>
+      </template>
       <v-row>
         <v-col
           v-for="coffee in searchedCoffees"
@@ -238,9 +314,15 @@ setMaster();
               :color="isHovering ? '#9c5e31' : '#7b5544'"
               v-bind="props"
             >
-              <v-img src="" alt="" height="100" cover></v-img>
-              <v-card-title>{{ coffee.coffee_property.name }} </v-card-title>
-              <v-card-subtitle class="text-h6">
+              <v-img
+                :src="`${image_url[coffee.category_id]}`"
+                alt=""
+                height="100"
+              ></v-img>
+              <v-card-title class="text-body-1"
+                >{{ coffee.coffee_property.name }}
+              </v-card-title>
+              <v-card-subtitle class="text-body-1">
                 {{ coffee.coffee_property.store.name }}
               </v-card-subtitle>
               <v-card-actions>
