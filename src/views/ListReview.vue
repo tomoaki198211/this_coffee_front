@@ -71,6 +71,10 @@ const startReview = () => {
   }
 };
 
+const page_restart = () => {
+  page.value = 1;
+};
+
 //front側で検索する際にcomputedを使用
 const searchedReviews = computed(() => {
   let reviews = [];
@@ -279,17 +283,20 @@ setMaster();
             class="mx-auto"
             max-width="300"
             style="border-width: 2px"
-            :elevation="isHovering ? 16 : 2"
+            :elevation="isHovering ? 24 : 2"
             :class="{ 'on-hover': isHovering }"
             :color="isHovering ? '#fff7ef' : undefined"
             v-bind="props"
           >
-            <v-card-title>
-              {{ review.coffee.coffee_property.name }}
-            </v-card-title>
-            <v-card-subtitle>{{
-              review.coffee.coffee_property.store.name
-            }}</v-card-subtitle>
+            <div class="coffee_bg txt_white mp-2">
+              <v-card-title>
+                {{ review.coffee.coffee_property.name }}
+              </v-card-title>
+              <v-card-subtitle>{{
+                review.coffee.coffee_property.store.name
+              }}</v-card-subtitle>
+            </div>
+            <v-divider></v-divider>
             <v-card-text>
               {{ review.user.name }}
               {{ momentDate(review.created_at) }}
@@ -348,7 +355,7 @@ setMaster();
 .coffee_txt {
   color: #7b5544;
 }
-.head_bg {
+.coffee_bg {
   background-color: #7b5544;
 }
 .txt_white {
