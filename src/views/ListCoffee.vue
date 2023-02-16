@@ -3,6 +3,7 @@ import { ref, reactive, watch, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import { usePageStore } from "../stores/page";
+import { useSearchStore } from "../stores/search";
 import axios from "axios";
 import FavoriteButton from "../components/FavoriteButton.vue";
 import { mdiMagnify } from "@mdi/js";
@@ -18,28 +19,19 @@ import instant_img from "@/assets/image/instant.png";
 
 const authStore = useAuthStore();
 const router = useRouter();
-// const usePageStore = usePageStore();
+const categories = ref([]);
+const stores = ref([]);
+const pageStore = usePageStore();
+const searchStore = useSearchStore();
 const index = reactive({
   coffees: [],
 });
 const favorite = reactive({
   coffees: [],
 });
-const favorite_flg = ref(false);
-const search_word = ref("");
-const selected_category = reactive({
-  id: "",
-  name: "",
-});
-const selected_store = reactive({
-  id: "",
-  name: "",
-});
-const categories = ref([]);
-const stores = ref([]);
-const disabled_flg = ref(false);
+const favorite_flg: boolean = ref(false);
+const disabled_flg: boolean = ref(false);
 const load = ref(false);
-const page = ref(1);
 const result = ref(1);
 let itemsPerPage = ref(8);
 const screenWidth = ref(window.innerWidth);
@@ -73,12 +65,12 @@ const searchedCoffees = computed(() => {
   for (let i in index.coffees) {
     let coffee = index.coffees[i];
     if (
-      (coffee.coffee_property.name.indexOf(search_word.value) !== -1 ||
-        search_word.value == "") &&
-      (coffee.category.id === selected_category.id ||
-        selected_category.id == "") &&
-      (coffee.coffee_property.store.id === selected_store.id ||
-        selected_store.id == "")
+      (coffee.coffee_property.name.indexOf(searchStore.search_word) !== -1 ||
+        searchStore.search_word.value == "") &&
+      (coffee.category.id === searchStore.selected_category.id ||
+        searchStore.selected_category.id == "") &&
+      (coffee.coffee_property.store.id === searchStore.selected_store.id ||
+        searchStore.selected_store.id == "")
     ) {
       coffees.push(coffee);
     }
@@ -92,8 +84,8 @@ const searchedCoffees = computed(() => {
   }
   getResult(coffees.length);
   coffees = coffees.slice(
-    itemsPerPage.value * (page.value - 1),
-    itemsPerPage.value * page.value
+    itemsPerPage.value * (pageStore.page - 1),
+    itemsPerPage.value * pageStore.page
   );
   return coffees;
 });
@@ -110,13 +102,18 @@ const startListCoffee = () => {
 };
 
 const searchReset = () => {
-  selected_category.id = "";
-  selected_store.id = "";
-  search_word.value = "";
+  searchStore.setWord("");
+  searchStore.setCategory("");
+  searchStore.setStore("");
+  pageStore.setPage(1);
 };
 
 const change_favorite = () => {
   favorite_flg.value = false;
+};
+
+const pageReset = () => {
+  pageStore.setPage(1);
 };
 
 const image_url = {
@@ -175,6 +172,7 @@ async function setCoffee(): Promise<void> {
     });
 }
 
+//2お気に入り取得
 async function favoriteCoffee(): Promise<void> {
   await axios
     .get("/api/v1/coffees/likes", {
@@ -188,19 +186,19 @@ async function favoriteCoffee(): Promise<void> {
       favorite.coffees = response.data;
       favorite_flg.value = true;
       load.value = true;
-      page.value = 1;
+      pageStore.setPage(1);
       console.log(favorite.coffees);
     });
 }
 
-// 2 axios 検索結果を表示する
+//3API側で検索結果を表示する
 async function setSearch(): Promise<void> {
   await axios
     .post("/api/v1/coffees/search", {
       search: {
-        word: search_word.value,
-        category: selected_category.id,
-        store: selected_store.id,
+        word: searchStore.search_word,
+        category: searchStore.selected_category.id,
+        store: searchStore.selected_store.id,
       },
       headers: {
         uid: authStore.uid,
@@ -228,19 +226,21 @@ setMaster();
       <v-row>
         <v-col cols="12" sm="4">
           <v-text-field
-            v-model="search_word"
+            @change="pageReset()"
+            v-model="searchStore.search_word"
             clearable
-            label="商品名"
+            label="商品名+Enterで検索"
             variant="underlined"
             :prepend-icon="mdiMagnify"
           ></v-text-field>
         </v-col>
         <v-col cols="12" sm="3">
           <v-select
-            v-model="selected_category.id"
+            @focus="pageReset()"
+            v-model="searchStore.selected_category.id"
             :prepend-icon="mdiMagnify"
             label="分類"
-            :hint="`${selected_category.id},${selected_category.name}`"
+            :hint="`${searchStore.selected_category.id},${searchStore.selected_category.name}`"
             :items="categories"
             item-title="name"
             item-value="id"
@@ -251,10 +251,11 @@ setMaster();
         </v-col>
         <v-col cols="12" sm="3">
           <v-select
-            v-model="selected_store.id"
+            @focus="pageReset()"
+            v-model="searchStore.selected_store.id"
             :prepend-icon="mdiMagnify"
             label="販売店"
-            :hint="`${selected_store.id},${selected_store.name}`"
+            :hint="`${searchStore.selected_store.id},${searchStore.selected_store.name}`"
             :items="stores"
             item-title="name"
             item-value="id"
@@ -367,7 +368,7 @@ setMaster();
         </v-row>
       </template>
       <v-pagination
-        v-model="page"
+        v-model="pageStore.page"
         :length="Math.ceil(result / itemsPerPage)"
         rounded="circle"
         class="mt-2"
@@ -384,7 +385,4 @@ setMaster();
 .bg_color {
   background-color: #d7ccc8;
 }
-/* .txt_white {
-  color: #7b5544;
-} */
 </style>
