@@ -2,6 +2,8 @@
 import { reactive, ref, watch, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
+import { usePageStore } from "../stores/page";
+import { useSearchStore } from "../stores/search";
 import axios from "axios";
 import moment from "moment";
 import { mdiMagnify } from "@mdi/js";
@@ -15,21 +17,13 @@ import { mdiEmoticonDeadOutline } from "@mdi/js";
 
 const authStore = useAuthStore();
 const router = useRouter();
+const pageStore = usePageStore();
+const searchStore = useSearchStore();
+const categories = ref([]);
+const stores = ref([]);
 const index = reactive({
   reviews: [],
 });
-const search_word: string = ref("");
-const selected_category = reactive({
-  id: "",
-  name: "",
-});
-const selected_store = reactive({
-  id: "",
-  name: "",
-});
-const categories = ref([]);
-const stores = ref([]);
-const isAll: boolean = ref(false);
 
 const emotion = {
   5: mdiEmoticonExcitedOutline,
@@ -56,7 +50,6 @@ const emotion_color = {
 };
 
 //ページネーション関連
-const page = ref(1);
 const result = ref(1);
 let itemsPerPage = ref(8);
 const screenWidth = ref(window.innerWidth);
@@ -93,8 +86,8 @@ const getReviews = computed(() => {
   let reviews = [];
   getResult(index.reviews.length);
   reviews = index.reviews.slice(
-    itemsPerPage.value * (page.value - 1),
-    itemsPerPage.value * page.value
+    itemsPerPage.value * (pageStore.review_page - 1),
+    itemsPerPage.value * pageStore.review_page
   );
   return reviews;
 });
@@ -110,31 +103,43 @@ const momentDate = (date) => {
 
 //検索リセット
 const searchReset = () => {
-  selected_category.id = "";
-  selected_store.id = "";
-  search_word.value = "";
-  if (isAll.value) {
-    setAllReview();
-  } else {
+  searchStore.setReviewWord("");
+  searchStore.setReviewCategory("");
+  searchStore.setReviewStore("");
+  pageStore.setReviewPage(1);
+  if (searchStore.review_isall) {
     setReview();
+  } else {
+    setAllReview();
   }
 };
 
-//スタート時の設定
-const startReview = () => {
-  if (!authStore.isAuthencated()) {
-    setAllReview();
-  } else {
-    setReview();
-  }
-};
-
-watch(selected_category, () => {
+const onSearch = () => {
   setSearch();
+  pageStore.setReviewPage(1);
+};
+
+//切り替え時の設定
+const switchReview = () => {
+  if (
+    searchStore.review_search_word != "" ||
+    searchStore.review_selected_category.id != "" ||
+    searchStore.review_selected_store.id != ""
+  ) {
+    setSearch();
+  } else if (searchStore.review_isall) {
+    setReview();
+  } else {
+    setAllReview();
+  }
+};
+
+watch(searchStore.review_selected_category, () => {
+  onSearch();
 });
 
-watch(selected_store, () => {
-  setSearch();
+watch(searchStore.review_selected_store, () => {
+  onSearch();
 });
 
 //api側で検索する際はwatchを使用
@@ -191,9 +196,9 @@ async function setReview(): Promise<void> {
       },
     })
     .then((response) => {
-      isAll.value = false;
+      searchStore.setReviewisAll(true);
       index.reviews = response.data;
-      page.value = 1;
+      // pageStore.setReviewPage(1);
       console.log(response.data);
     });
 }
@@ -208,9 +213,9 @@ async function setAllReview(): Promise<void> {
       },
     })
     .then((response) => {
-      isAll.value = true;
+      searchStore.setReviewisAll(false);
       index.reviews = response.data;
-      page.value = 1;
+      // pageStore.setReviewPage(1);
       console.log(response.data);
     });
 }
@@ -220,9 +225,9 @@ async function setSearch(): Promise<void> {
   await axios
     .post("/api/v1/reviews/search", {
       search: {
-        word: search_word.value,
-        category: selected_category.id,
-        store: selected_store.id,
+        word: searchStore.review_search_word,
+        category: searchStore.review_selected_category.id,
+        store: searchStore.review_selected_store.id,
       },
       headers: {
         uid: authStore.uid,
@@ -232,14 +237,15 @@ async function setSearch(): Promise<void> {
     })
     .then((response) => {
       index.reviews = response.data;
-      page.value = 1;
+      // pageStore.setReviewPage(1);
+      searchStore.setReviewisAll(false);
       console.log(response.data);
     });
 }
 
-resize();
-startReview();
 setMaster();
+resize();
+switchReview();
 </script>
 
 <template>
@@ -247,20 +253,20 @@ setMaster();
     <v-row>
       <v-col cols="12" sm="4">
         <v-text-field
-          v-model="search_word"
+          v-model="searchStore.review_search_word"
           label="商品名+Enterで検索"
           variant="underlined"
-          v-on:keyup.enter="setSearch()"
+          v-on:keyup.enter="onSearch()"
           clearable
           :prepend-icon="mdiMagnify"
         ></v-text-field>
       </v-col>
       <v-col cols="12" sm="3">
         <v-select
-          v-model="selected_category.id"
+          v-model="searchStore.review_selected_category.id"
           :prepend-icon="mdiMagnify"
           label="分類"
-          :hint="`${selected_category.id},${selected_category.name}`"
+          :hint="`${searchStore.review_selected_category.id},${searchStore.review_selected_category.name}`"
           :items="categories"
           item-title="name"
           item-value="id"
@@ -271,10 +277,10 @@ setMaster();
       </v-col>
       <v-col cols="12" sm="3">
         <v-select
-          v-model="selected_store.id"
+          v-model="searchStore.review_selected_store.id"
           :prepend-icon="mdiMagnify"
           label="販売店"
-          :hint="`${selected_store.id},${selected_store.name}`"
+          :hint="`${searchStore.review_selected_store.id},${searchStore.review_selected_store.name}`"
           :items="stores"
           item-title="name"
           item-value="id"
@@ -298,18 +304,8 @@ setMaster();
     <v-chip class="ma-2" color="#7b5544" variant="text" size="large"
       ><v-icon start :icon="mdiCommentTextOutline"></v-icon> レビュー一覧画面
     </v-chip>
-    <template v-if="isAll == false">
-      <v-btn
-        color="#7b5544"
-        variant="plain"
-        class="mx-auto"
-        size="x-large"
-        @click="setAllReview()"
-        ><v-icon :icon="mdiAutorenew"></v-icon>個人</v-btn
-      ></template
-    >
-    <template v-else>
-      <template v-if="authStore.isAuthencated()">
+    <template v-if="authStore.isAuthencated()">
+      <template v-if="searchStore.review_isall == false">
         <v-btn
           color="#7b5544"
           variant="plain"
@@ -317,6 +313,16 @@ setMaster();
           size="x-large"
           @click="setReview()"
           ><v-icon :icon="mdiAutorenew"></v-icon>全体</v-btn
+        ></template
+      >
+      <template v-else>
+        <v-btn
+          color="#7b5544"
+          variant="plain"
+          class="mx-auto"
+          size="x-large"
+          @click="setAllReview()"
+          ><v-icon :icon="mdiAutorenew"></v-icon>個人</v-btn
         >
       </template>
     </template>
@@ -385,7 +391,7 @@ setMaster();
                 >詳細
               </v-btn>
               <v-spacer></v-spacer>
-              <template v-if="!isAll">
+              <template v-if="!searchStore.review_isall">
                 <template v-if="!review.setting">
                   <v-btn color="#7b5544" size="large" disabled> 非公開 </v-btn>
                 </template>
@@ -403,7 +409,7 @@ setMaster();
       </v-row>
     </template>
     <v-pagination
-      v-model="page"
+      v-model="pageStore.review_page"
       :length="Math.ceil(result / itemsPerPage)"
       rounded="circle"
       class="mt-2"
