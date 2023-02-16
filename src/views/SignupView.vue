@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { reactive, computed } from "vue";
 import { useAuthStore } from "../stores/auth";
+import { useRouter } from "vue-router";
 import { mdiEmailOutline } from "@mdi/js";
 import { mdiLockOutline } from "@mdi/js";
+import { mdiAccountPlus } from "@mdi/js";
 
 type userSignObj = {
   name: string;
@@ -17,6 +19,7 @@ const user: userSignObj = reactive({
   password: "",
   password_confirmation: "",
 });
+const router = useRouter();
 
 const onSignup = (): void => {
   const authStore = useAuthStore();
@@ -31,25 +34,29 @@ const onSignup = (): void => {
 <template>
   <v-container>
     <v-card class="mt-10 mb-8 mx-auto" max-width="400px">
+      <v-chip class="ma-2" color="#7b5544" variant="text" size="large"
+        ><v-icon start :icon="mdiAccountPlus"></v-icon>
+        ログイン画面
+      </v-chip>
       <v-container class="">
         <v-text-field
           :prepend-icon="mdiEmailOutline"
           v-model="user.name"
-          label="Name"
+          label="名前"
           density="compact"
           variant="outlined"
         ></v-text-field>
         <v-text-field
           :prepend-icon="mdiEmailOutline"
           v-model="user.email"
-          label="Email"
+          label="Eメール"
           density="compact"
           variant="outlined"
         ></v-text-field>
         <v-text-field
           :prepend-icon="mdiLockOutline"
           v-model="user.password"
-          label="Password"
+          label="パスワード"
           density="compact"
           type="password"
           variant="outlined"
@@ -57,7 +64,7 @@ const onSignup = (): void => {
         <v-text-field
           :prepend-icon="mdiLockOutline"
           v-model="user.password_confirmation"
-          label="Password"
+          label="パスワード確認"
           density="compact"
           type="password"
           variant="outlined"
@@ -70,6 +77,27 @@ const onSignup = (): void => {
             width="200px"
             @click="onSignup()"
             ><p class="font-weight-bold btn-txt">新規登録</p>
+          </v-btn>
+        </v-card-actions>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn
+            class="mx-auto"
+            variant="text"
+            color="#7b5544"
+            @click="router.push('/auth/login')"
+          >
+            既にアカウントがある場合はこちら
+          </v-btn>
+        </v-card-actions>
+        <v-card-actions>
+          <v-btn
+            class="mx-auto"
+            variant="text"
+            color="#7b5544"
+            @click="router.push('/reviews')"
+          >
+            ログインせずにレビューを見る
           </v-btn>
         </v-card-actions>
       </v-container>

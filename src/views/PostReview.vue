@@ -165,7 +165,7 @@ async function postReview(): Promise<void> {
         <v-card class="mt-2">
           <v-list>
             <v-list-item>
-              <v-textarea v-model="remarks" label="備考" rows="2" class="" />
+              <v-textarea v-model="remarks" label="感想" rows="2" class="" />
               <v-list-item-title>
                 ※レビューを公開しない場合は非公開
               </v-list-item-title>

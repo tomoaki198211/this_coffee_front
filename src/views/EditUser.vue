@@ -7,6 +7,7 @@ import { useRouter } from "vue-router";
 import { mdiArrowLeftThick } from "@mdi/js";
 import { mdiEmailOutline } from "@mdi/js";
 import { mdiLockOutline } from "@mdi/js";
+import { mdiAccountSupervisorOutline } from "@mdi/js";
 
 interface Props {
   id: number;
@@ -93,25 +94,29 @@ async function destroyUser(): Promise<void> {
       </v-col>
       <v-col cols="12" sm="11">
         <v-card class="mt-10 mb-8 mx-auto" max-width="400px">
+          <v-chip class="ma-2" color="#7b5544" variant="text" size="large"
+            ><v-icon start :icon="mdiAccountSupervisorOutline"></v-icon>
+            ユーザー編集画面
+          </v-chip>
           <v-container class="">
             <v-text-field
               :prepend-icon="mdiEmailOutline"
               v-model="user.name"
-              label="Name"
+              label="名前"
               density="compact"
               variant="outlined"
             ></v-text-field>
             <v-text-field
               :prepend-icon="mdiEmailOutline"
               v-model="user.email"
-              label="Email"
+              label="Eメール"
               density="compact"
               variant="outlined"
             ></v-text-field>
             <v-text-field
               :prepend-icon="mdiLockOutline"
               v-model="user.password"
-              label="Password"
+              label="パスワード"
               density="compact"
               type="password"
               variant="outlined"
@@ -121,15 +126,17 @@ async function destroyUser(): Promise<void> {
                 class="mx-auto"
                 variant="flat"
                 color="#7b5544"
-                width="110px"
+                block
                 @click="updateUser()"
                 ><p class="font-weight-bold btn-txt">更新</p>
               </v-btn>
+            </v-card-actions>
+            <v-card-actions>
               <v-btn
                 class="mx-auto"
                 variant="flat"
                 color="red"
-                width="110px"
+                block
                 @click="destroyUser()"
                 ><p class="font-weight-bold btn-txt">アカウント削除</p>
               </v-btn>

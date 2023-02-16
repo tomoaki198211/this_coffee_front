@@ -36,6 +36,7 @@ const coffee_name: string = ref("");
 const coffee_store: string = ref("");
 const review_id: number = ref();
 const review_name: string = ref();
+const review_user_id: number = ref();
 const remarks: string = ref();
 const setting = reactive({
   value: "",
@@ -84,6 +85,7 @@ async function setReview(): Promise<void> {
       coffee_store.value =
         response.data.review.coffee.coffee_property.store.name;
       review_id.value = response.data.review.id;
+      review_user_id.value = response.data.review.user_id;
       review_name.value = response.data.review.user.name;
       review_created.value = response.data.review.created_at;
       remarks.value = response.data.review.remarks;
@@ -224,7 +226,7 @@ async function updateReview(): Promise<void> {
             <v-list-item>
               <v-textarea
                 v-model="remarks"
-                label="備考"
+                label="感想"
                 rows="2"
                 class=""
                 v-bind:readonly="disabled_flg"
@@ -243,41 +245,48 @@ async function updateReview(): Promise<void> {
               </v-select>
             </v-list-item>
             <v-card-actions>
-              <template v-if="disabled_flg == true">
-                <v-btn
-                  class="mx-auto"
-                  variant="flat"
-                  color="#7b5544"
-                  @click="onEdit()"
-                >
-                  <p class="font-weight-bold btn-txt">編集</p>
-                </v-btn>
-                <v-btn
-                  class="mx-auto"
-                  variant="flat"
-                  color="#7b5544"
-                  @click="destroyReview(review_id)"
-                >
-                  <p class="font-weight-bold btn-txt">削除</p>
-                </v-btn>
-              </template>
-              <template v-else>
-                <v-btn
-                  class="mx-auto"
-                  variant="flat"
-                  color="#7b5544"
-                  @click="onShow()"
-                >
-                  <p class="font-weight-bold btn-txt">編集取消し</p>
-                </v-btn>
-                <v-btn
-                  class="mx-auto"
-                  variant="flat"
-                  color="#7b5544"
-                  @click="updateReview()"
-                >
-                  <p class="font-weight-bold btn-txt">更新</p>
-                </v-btn>
+              <template
+                v-if="
+                  authStore.isAuthencated() &&
+                  review_user_id === Number(authStore.user_id)
+                "
+              >
+                <template v-if="disabled_flg == true">
+                  <v-btn
+                    class="mx-auto"
+                    variant="flat"
+                    color="#7b5544"
+                    @click="onEdit()"
+                  >
+                    <p class="font-weight-bold btn-txt">編集</p>
+                  </v-btn>
+                  <v-btn
+                    class="mx-auto"
+                    variant="flat"
+                    color="#7b5544"
+                    @click="destroyReview(review_id)"
+                  >
+                    <p class="font-weight-bold btn-txt">削除</p>
+                  </v-btn>
+                </template>
+                <template v-else>
+                  <v-btn
+                    class="mx-auto"
+                    variant="flat"
+                    color="#7b5544"
+                    @click="onShow()"
+                  >
+                    <p class="font-weight-bold btn-txt">編集取消し</p>
+                  </v-btn>
+                  <v-btn
+                    class="mx-auto"
+                    variant="flat"
+                    color="#7b5544"
+                    @click="updateReview()"
+                  >
+                    <p class="font-weight-bold btn-txt">更新</p>
+                  </v-btn>
+                </template>
               </template>
             </v-card-actions>
           </v-list>

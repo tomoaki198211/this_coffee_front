@@ -3,14 +3,10 @@ import { ref, reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
 import { useMessageStore } from "@/stores/message";
 import { useRouter } from "vue-router";
-import { mdiArrowLeftThick } from "@mdi/js";
+import { mdiAccountCircleOutline } from "@mdi/js";
 import { mdiEmailOutline } from "@mdi/js";
 import { mdiLockOutline } from "@mdi/js";
 
-interface Props {
-  id: number;
-}
-const props = defineProps<Props>();
 const authStore = useAuthStore();
 const router = useRouter();
 const disabled_flg = ref(true);
@@ -40,16 +36,25 @@ const onAccountDestroy = (): void => {
 const onEdit = () => {
   disabled_flg.value = false;
 };
+const onShow = () => {
+  disabled_flg.value = true;
+  user.name = authStore.user_name;
+  user.email = authStore.uid;
+};
 </script>
 
 <template>
   <v-container>
     <v-card class="mt-10 mb-8 mx-auto" max-width="400px">
+      <v-chip class="ma-2" color="#7b5544" variant="text" size="large"
+        ><v-icon start :icon="mdiAccountCircleOutline"></v-icon>
+        アカウント管理画面
+      </v-chip>
       <v-container class="">
         <v-text-field
           :prepend-icon="mdiEmailOutline"
           v-model="user.name"
-          label="Name"
+          label="名前"
           density="compact"
           variant="outlined"
           v-bind:readonly="disabled_flg"
@@ -57,7 +62,7 @@ const onEdit = () => {
         <v-text-field
           :prepend-icon="mdiEmailOutline"
           v-model="user.email"
-          label="Email"
+          label="Eメール"
           density="compact"
           variant="outlined"
           v-bind:readonly="disabled_flg"
@@ -65,42 +70,56 @@ const onEdit = () => {
         <v-text-field
           :prepend-icon="mdiLockOutline"
           v-model="user.password"
-          label="Password"
+          label="パスワード"
           density="compact"
           type="password"
           variant="outlined"
           v-bind:readonly="disabled_flg"
         ></v-text-field>
-        <v-card-actions>
-          <template v-if="disabled_flg == true">
+        <template v-if="disabled_flg == true">
+          <v-card-actions>
             <v-btn
+              block
               class="mx-auto"
               variant="flat"
               color="#7b5544"
-              width="200px"
               @click="onEdit()"
-              ><p class="font-weight-bold btn-txt">編集</p>
+              ><p class="font-weight-bold btn-txt">アカウント編集</p>
             </v-btn>
-          </template>
-          <template v-else>
+          </v-card-actions>
+        </template>
+        <template v-else>
+          <v-card-actions>
             <v-btn
+              block
               class="mx-auto"
               variant="flat"
               color="#7b5544"
-              width="110px"
-              @click="onAccountUpdate()"
-              ><p class="font-weight-bold btn-txt">更新</p>
+              @click="onShow()"
+              ><p class="font-weight-bold btn-txt">編集取り消し</p>
             </v-btn>
+          </v-card-actions>
+          <v-card-actions>
             <v-btn
+              block
+              class="mx-auto"
+              variant="flat"
+              color="#7b5544"
+              @click="onAccountUpdate()"
+              ><p class="font-weight-bold btn-txt">アカウント更新</p>
+            </v-btn>
+          </v-card-actions>
+          <v-card-actions>
+            <v-btn
+              block
               class="mx-auto"
               variant="flat"
               color="red"
-              width="110px"
               @click="onAccountDestroy()"
               ><p class="font-weight-bold btn-txt">アカウント削除</p>
             </v-btn>
-          </template>
-        </v-card-actions>
+          </v-card-actions>
+        </template>
       </v-container>
     </v-card>
   </v-container>

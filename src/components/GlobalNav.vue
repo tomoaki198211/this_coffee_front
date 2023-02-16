@@ -18,8 +18,7 @@ const router = useRouter();
 const onLogout = (): void => {
   const authStore = useAuthStore();
   authStore.logout();
-  router.push("/auth/login");
-  router.push("/auth/login");
+  router.push("/");
 };
 </script>
 
@@ -40,6 +39,16 @@ const onLogout = (): void => {
         </v-btn>
       </v-list>
       <v-list>
+        <v-btn variant="plain" @click="router.push('/reviews')">
+          <v-icon :icon="mdiComment"></v-icon>レビュー
+        </v-btn>
+      </v-list>
+      <v-list>
+        <v-btn variant="plain" @click="router.push('/coffees')">
+          <v-icon :icon="mdiCoffee"></v-icon>コーヒー
+        </v-btn>
+      </v-list>
+      <v-list>
         <v-btn variant="plain" @click="router.push('/auth/login')">
           <v-icon :icon="mdiLogin"></v-icon>ログイン
         </v-btn>
@@ -52,6 +61,11 @@ const onLogout = (): void => {
     </template>
     <template v-else>
       <v-list>
+        <v-btn variant="plain" @click="router.push('/')">
+          <v-icon :icon="mdiHome"></v-icon>ホーム
+        </v-btn>
+      </v-list>
+      <v-list>
         <v-btn variant="plain" @click="router.push('/reviews')">
           <v-icon :icon="mdiComment"></v-icon>レビュー
         </v-btn>
@@ -62,10 +76,7 @@ const onLogout = (): void => {
         </v-btn>
       </v-list>
       <v-list>
-        <v-btn
-          variant="plain"
-          @click="router.push(`/auth/account/${authStore.user_id}`)"
-        >
+        <v-btn variant="plain" @click="router.push('/auth/account')">
           <v-icon :icon="mdiAccountCircleOutline"></v-icon>アカウント
         </v-btn>
       </v-list>
@@ -74,21 +85,23 @@ const onLogout = (): void => {
           <v-icon :icon="mdiLogout"></v-icon>ログアウト
         </v-btn>
       </v-list>
-      <v-divider></v-divider>
-      <v-list>
-        <v-btn variant="plain" @click="router.push('/coffees/admin/index')">
-          <v-icon :icon="mdiDatabaseEdit"></v-icon>マスタ管理
-        </v-btn>
-      </v-list>
-      <v-list>
-        <v-btn variant="plain" @click="router.push('/users/admin/index')">
-          <v-icon :icon="mdiDatabaseEdit"></v-icon>ユーザー管理
-        </v-btn>
-      </v-list>
-      <v-divider></v-divider>
-      <v-list>
-        <p class="ml-3 overflow-x-auto">{{ authStore.user_name }}</p>
-      </v-list>
+      <template v-if="authStore.admin">
+        <v-divider></v-divider>
+        <v-list>
+          <v-btn variant="plain" @click="router.push('/coffees/admin/index')">
+            <v-icon :icon="mdiDatabaseEdit"></v-icon>マスタ管理
+          </v-btn>
+        </v-list>
+        <v-list>
+          <v-btn variant="plain" @click="router.push('/users/admin/index')">
+            <v-icon :icon="mdiDatabaseEdit"></v-icon>ユーザー管理
+          </v-btn>
+        </v-list>
+        <v-divider></v-divider>
+        <v-list>
+          <p class="ml-3 overflow-x-auto">{{ authStore.user_name }}</p>
+        </v-list>
+      </template>
     </template>
   </v-navigation-drawer>
 </template>

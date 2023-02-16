@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import { mdiPlus } from "@mdi/js";
+import { mdiAccountSupervisorOutline } from "@mdi/js";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -37,9 +38,10 @@ async function indexUsers(): Promise<void> {
 <template>
   <div>
     <v-container fluid grid-list-xl class="container_out">
-      <v-btn color="#7b5544" variant="plain" class="mx-auto" size="large"
-        ><v-icon :icon="mdiPlus"></v-icon>新規作成
-      </v-btn>
+      <v-chip class="ma-2" color="#7b5544" variant="text" size="large"
+        ><v-icon start :icon="mdiAccountSupervisorOutline"></v-icon>
+        ユーザー管理画面
+      </v-chip>
       <v-table density="compact">
         <thead class="head_bg">
           <tr>
