@@ -70,13 +70,15 @@ onMounted(() => {
 const resize = () => {
   screenWidth.value = window.innerWidth;
   if (screenWidth.value > 1920) {
-    itemsPerPage.value = 24;
-  } else if (screenWidth.value > 1280) {
+    itemsPerPage.value = 16;
+  } else if (screenWidth.value > 1440) {
     itemsPerPage.value = 12;
-  } else if (screenWidth.value > 960) {
-    itemsPerPage.value = 9;
-  } else if (screenWidth.value > 768) {
+  } else if (screenWidth.value > 1280) {
     itemsPerPage.value = 8;
+  } else if (screenWidth.value > 960) {
+    itemsPerPage.value = 6;
+  } else if (screenWidth.value > 768) {
+    itemsPerPage.value = 6;
   } else if (screenWidth.value > 600) {
     itemsPerPage.value = 6;
   } else if (screenWidth.value > 400) {

@@ -2,6 +2,7 @@
 import { ref, reactive, watch, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
+import { usePageStore } from "../stores/page";
 import axios from "axios";
 import FavoriteButton from "../components/FavoriteButton.vue";
 import { mdiMagnify } from "@mdi/js";
@@ -17,6 +18,7 @@ import instant_img from "@/assets/image/instant.png";
 
 const authStore = useAuthStore();
 const router = useRouter();
+// const usePageStore = usePageStore();
 const index = reactive({
   coffees: [],
 });
@@ -47,13 +49,15 @@ onMounted(() => {
 const resize = () => {
   screenWidth.value = window.innerWidth;
   if (screenWidth.value > 1920) {
-    itemsPerPage.value = 24;
-  } else if (screenWidth.value > 1280) {
+    itemsPerPage.value = 16;
+  } else if (screenWidth.value > 1440) {
     itemsPerPage.value = 12;
-  } else if (screenWidth.value > 960) {
-    itemsPerPage.value = 9;
-  } else if (screenWidth.value > 768) {
+  } else if (screenWidth.value > 1280) {
     itemsPerPage.value = 8;
+  } else if (screenWidth.value > 960) {
+    itemsPerPage.value = 6;
+  } else if (screenWidth.value > 768) {
+    itemsPerPage.value = 6;
   } else if (screenWidth.value > 600) {
     itemsPerPage.value = 6;
   } else if (screenWidth.value > 400) {
@@ -312,12 +316,11 @@ setMaster();
         >
           <v-hover v-slot="{ isHovering, props }">
             <v-card
-              theme="dark"
               class="mx-auto"
               max-width="300"
               :elevation="isHovering ? 24 : 2"
               :class="{ 'on-hover': isHovering }"
-              :color="isHovering ? '#9c5e31' : '#7b5544'"
+              :color="isHovering ? '#d7ccc8' : 'undefined'"
               v-bind="props"
             >
               <v-img
@@ -325,27 +328,29 @@ setMaster();
                 alt=""
                 height="100"
               ></v-img>
-              <v-card-title class="text-body-1"
-                >{{ coffee.coffee_property.name }}
-              </v-card-title>
-              <v-card-subtitle class="text-body-1">
-                {{ coffee.coffee_property.store.name }}
-              </v-card-subtitle>
-              <v-card-actions>
-                <v-btn
-                  class="mx-auto"
-                  :disabled="disabled_flg"
-                  @click="
-                    router.push({
-                      path: `/review/post/${coffee.id}`,
-                    })
-                  "
-                  >レビューを書く
-                </v-btn>
-                <v-btn class="mx-auto">詳細 </v-btn>
-                <FavoriteButton v-bind:coffee_id="coffee.id" />
-                <v-spacer></v-spacer>
-              </v-card-actions>
+              <div class="bg_color txt_white">
+                <v-card-title class="text-body-1"
+                  >{{ coffee.coffee_property.name }}
+                </v-card-title>
+                <v-card-subtitle class="text-body-1">
+                  {{ coffee.coffee_property.store.name }}
+                </v-card-subtitle>
+                <v-card-actions>
+                  <v-btn
+                    class="mx-auto"
+                    :disabled="disabled_flg"
+                    @click="
+                      router.push({
+                        path: `/review/post/${coffee.id}`,
+                      })
+                    "
+                    >レビューを書く
+                  </v-btn>
+                  <v-btn class="mx-auto">詳細 </v-btn>
+                  <FavoriteButton v-bind:coffee_id="coffee.id" />
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </div>
             </v-card>
           </v-hover>
         </v-col>
@@ -376,4 +381,10 @@ setMaster();
 .coffee_txt {
   color: #7b5544;
 }
+.bg_color {
+  background-color: #d7ccc8;
+}
+/* .txt_white {
+  color: #7b5544;
+} */
 </style>

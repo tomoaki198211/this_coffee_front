@@ -23,7 +23,7 @@ export const useMessageStore = defineStore("message", () => {
     this.text = message;
     setTimeout(() => {
       this.text = "";
-    }, 3000);
+    }, 5000);
   }
   return { text, flash };
 });
