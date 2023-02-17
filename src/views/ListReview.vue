@@ -348,12 +348,14 @@ switchReview();
             v-bind="props"
           >
             <div class="coffee_bg txt_white mp-2">
-              <v-card-title>
-                {{ review.coffee.coffee_property.name }}
-              </v-card-title>
-              <v-card-subtitle>{{
-                review.coffee.coffee_property.store.name
-              }}</v-card-subtitle>
+              <v-card-item>
+                <v-card-title>
+                  {{ review.coffee.coffee_property.name }}
+                </v-card-title>
+                <v-card-subtitle>{{
+                  review.coffee.coffee_property.store.name
+                }}</v-card-subtitle>
+              </v-card-item>
             </div>
             <v-divider></v-divider>
             <v-card-text>

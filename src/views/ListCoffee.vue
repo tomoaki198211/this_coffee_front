@@ -330,12 +330,14 @@ setMaster();
                 height="100"
               ></v-img>
               <div class="bg_color txt_white">
-                <v-card-title class="text-body-1"
-                  >{{ coffee.coffee_property.name }}
-                </v-card-title>
-                <v-card-subtitle class="text-body-1">
-                  {{ coffee.coffee_property.store.name }}
-                </v-card-subtitle>
+                <v-card-item>
+                  <v-card-title class="text-body-1"
+                    >{{ coffee.coffee_property.name }}
+                  </v-card-title>
+                  <v-card-subtitle class="text-body-1">
+                    {{ coffee.coffee_property.store.name }}
+                  </v-card-subtitle>
+                </v-card-item>
                 <v-card-actions>
                   <v-btn
                     class="mx-auto"
@@ -347,7 +349,15 @@ setMaster();
                     "
                     >レビューを書く
                   </v-btn>
-                  <v-btn class="mx-auto">詳細 </v-btn>
+                  <v-btn
+                    class="mx-auto"
+                    @click="
+                      router.push({
+                        path: `/coffees/${coffee.id}`,
+                      })
+                    "
+                    >詳細
+                  </v-btn>
                   <FavoriteButton v-bind:coffee_id="coffee.id" />
                   <v-spacer></v-spacer>
                 </v-card-actions>

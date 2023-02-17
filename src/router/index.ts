@@ -10,6 +10,7 @@ import ListAdminCoffee from "@/views/ListAdminCoffee.vue";
 import PostCoffee from "@/views/PostCoffee.vue";
 import NotFound from "@/views/NotFound.vue";
 import MyAccount from "../views/MyAccount.vue";
+import ShowCoffee from "@/views/ShowCoffee.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,6 +53,17 @@ const router = createRouter({
       path: "/users/admin/index",
       name: "index_user",
       component: ListUser,
+    },
+    {
+      path: "/coffees/:id",
+      name: "coffee",
+      component: ShowCoffee,
+      props: (routes) => {
+        const idNum = Number(routes.params.id);
+        return {
+          id: idNum,
+        };
+      },
     },
     {
       path: "/coffees",
