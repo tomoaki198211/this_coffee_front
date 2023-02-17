@@ -7,6 +7,7 @@ import axios, { type AxiosResponse } from "axios";
 import { mdiArrowLeftThick } from "@mdi/js";
 import { mdiCoffeeOutline } from "@mdi/js";
 import RadarChart from "../components/RadarChart.vue";
+import Image from "../components/CoffeeImage.vue";
 
 interface Props {
   id: number;
@@ -75,6 +76,7 @@ async function showCoffee(): Promise<void> {
     .then((response: AxiosResponse<any>) => {
       selected_store.name = response.data.coffee.coffee_property.store.name;
       selected_category.name = response.data.coffee.category.name;
+      selected_category.id = response.data.coffee.category.id;
       coffee.coffee_id = response.data.coffee.id;
       coffee.property_id = response.data.coffee.coffee_property.id;
       coffee.category_name = response.data.coffee.category.name;
@@ -117,7 +119,8 @@ async function showCoffee(): Promise<void> {
             ><v-icon start :icon="mdiCoffeeOutline"></v-icon>
             コーヒーマスタ
           </v-chip>
-          <v-img src="" alt="" height="150" cover></v-img>
+          <!-- <v-img src="" alt="" height="150" cover></v-img> -->
+          <Image v-bind:id="Number(selected_category.id)" v-bind:height="150" />
           <v-divider></v-divider>
           <v-card-item>
             <v-card-title> {{ coffee.name }}</v-card-title>

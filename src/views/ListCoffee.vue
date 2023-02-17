@@ -9,13 +9,7 @@ import FavoriteButton from "../components/FavoriteButton.vue";
 import { mdiMagnify } from "@mdi/js";
 import { mdiCoffeeOutline } from "@mdi/js";
 import { mdiHeart } from "@mdi/js";
-import beans_img from "@/assets/image/beans.png";
-import can_img from "@/assets/image/can.png";
-import cappuccino_img from "@/assets/image/cappucino.png";
-import float_img from "@/assets/image/float.png";
-import hot_img from "@/assets/image/hot.png";
-import ice_img from "@/assets/image/ice.png";
-import instant_img from "@/assets/image/instant.png";
+import Image from "../components/CoffeeImage.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -29,6 +23,7 @@ const index = reactive({
 const favorite = reactive({
   coffees: [],
 });
+
 const favorite_flg: boolean = ref(false);
 const disabled_flg: boolean = ref(false);
 const load = ref(false);
@@ -114,16 +109,6 @@ const change_favorite = () => {
 
 const pageReset = () => {
   pageStore.setPage(1);
-};
-
-const image_url = {
-  5: beans_img,
-  2: can_img,
-  3: cappuccino_img,
-  4: float_img,
-  1: hot_img,
-  6: ice_img,
-  7: instant_img,
 };
 
 //apiで検索する際はwatchを使用
@@ -324,11 +309,7 @@ setMaster();
               :color="isHovering ? '#d7ccc8' : 'undefined'"
               v-bind="props"
             >
-              <v-img
-                :src="`${image_url[coffee.category_id]}`"
-                alt=""
-                height="100"
-              ></v-img>
+              <Image v-bind:id="coffee.category_id" v-bind:height="100" />
               <div class="bg_color txt_white">
                 <v-card-item>
                   <v-card-title class="text-body-1"

@@ -6,6 +6,7 @@ import axios, { type AxiosResponse } from "axios";
 import RadarChart from "../components/RadarChart.vue";
 import moment from "moment";
 import { mdiArrowLeftThick } from "@mdi/js";
+import Image from "../components/CoffeeImage.vue";
 
 interface Props {
   id: number;
@@ -31,6 +32,7 @@ const evalutions_rate = ["弱い", "やや弱い", "普通", "やや強い", "�
 const evalutions_colors = ["red", "orange", "grey", "cyan", "green"];
 
 const review_created = ref();
+const category_id: number = ref();
 const coffee_id: number = ref(props.id);
 const coffee_name: string = ref("");
 const coffee_store: string = ref("");
@@ -80,6 +82,7 @@ async function setReview(): Promise<void> {
     })
     .then((response: AxiosResponse<any>) => {
       console.log(response.data);
+      category_id.value = response.data.review.coffee.category_id;
       coffee_id.value = response.data.review.coffee.id;
       coffee_name.value = response.data.review.coffee.coffee_property.name;
       coffee_store.value =
@@ -169,7 +172,7 @@ async function updateReview(): Promise<void> {
       </v-col>
       <v-col cols="12" sm="5">
         <v-card class="mx-auto" max-width="320">
-          <v-img src="" alt="" height="190" cover></v-img>
+          <Image :id="category_id" :height="190" />
           <v-list-item>
             <v-list-item-title>{{ coffee_name }} </v-list-item-title>
             <v-list-item-subtitle>{{ coffee_store }}</v-list-item-subtitle>

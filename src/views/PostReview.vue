@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import axios, { type AxiosResponse } from "axios";
 import RadarChart from "../components/RadarChart.vue";
 import { mdiArrowLeftThick } from "@mdi/js";
+import Image from "../components/CoffeeImage.vue";
 
 interface Props {
   id: number;
@@ -48,7 +49,12 @@ const attributes: attribute = reactive({
   acidity: null,
   bitter: null,
 });
-const prop_name = ref("");
+
+const coffee = reactive({
+  name: "",
+  store: "",
+  category_id: "",
+});
 
 showCoffee();
 
@@ -63,7 +69,9 @@ async function showCoffee(): Promise<void> {
       },
     })
     .then((response: AxiosResponse<any>) => {
-      prop_name.value = response.data;
+      coffee.name = response.data.coffee.coffee_property.name;
+      coffee.store = response.data.coffee.coffee_property.store.name;
+      coffee.category_id = response.data.coffee.category_id;
       console.log(response.data);
     });
 }
@@ -114,16 +122,11 @@ async function postReview(): Promise<void> {
       </v-col>
       <v-col cols="12" sm="5">
         <v-card class="mx-auto" max-width="320">
-          <v-img src="" alt="" height="190" cover></v-img>
+          <!-- <v-img src="" alt="" height="190" cover></v-img> -->
+          <Image :id="coffee.category_id" :height="190" />
           <v-list-item>
-            <v-list-item-title
-              >{{
-                prop_name ? prop_name.coffee.coffee_property.store.name : ""
-              }}
-            </v-list-item-title>
-            <v-list-item-subtitle>{{
-              prop_name ? prop_name.coffee.coffee_property.name : ""
-            }}</v-list-item-subtitle>
+            <v-list-item-title>{{ coffee.store }} </v-list-item-title>
+            <v-list-item-subtitle>{{ coffee.name }}</v-list-item-subtitle>
           </v-list-item>
         </v-card>
         <v-card class="mt-5">

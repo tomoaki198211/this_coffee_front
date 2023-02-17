@@ -6,6 +6,7 @@ import { useRouter } from "vue-router";
 import axios, { type AxiosResponse } from "axios";
 import { mdiArrowLeftThick } from "@mdi/js";
 import { mdiCoffeeOutline } from "@mdi/js";
+import Image from "../components/CoffeeImage.vue";
 
 interface Props {
   id: number;
@@ -139,7 +140,7 @@ async function destroyCoffee(): Promise<void> {
             ><v-icon start :icon="mdiCoffeeOutline"></v-icon>
             コーヒーマスタ編集画面
           </v-chip>
-          <v-img src="" alt="" height="200" cover></v-img>
+          <Image :id="selected_category.id" :height="200" />
           <v-divider></v-divider>
           <v-list-item>
             <v-select
