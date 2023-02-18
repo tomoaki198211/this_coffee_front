@@ -6,12 +6,7 @@ import { mdiEmailOutline } from "@mdi/js";
 import { mdiLockOutline } from "@mdi/js";
 import { mdiLogin } from "@mdi/js";
 
-type userLoginObj = {
-  email: string;
-  password: string;
-};
-
-const user: userLoginObj = reactive({
+const user: any = reactive({
   email: "",
   password: "",
 });

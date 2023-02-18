@@ -9,7 +9,7 @@ import { mdiCoffeeOutline } from "@mdi/js";
 
 const authStore = useAuthStore();
 const router = useRouter();
-const index = reactive({
+const index: any = reactive({
   coffees: [],
 });
 const search_word = ref("");
@@ -63,7 +63,7 @@ const resize = () => {
 
 //front側で検索する際にcomputedを使用
 const searchedCoffees = computed(() => {
-  let coffees = [];
+  let coffees: any = [];
   for (let i in index.coffees) {
     let coffee = index.coffees[i];
     if (
@@ -86,7 +86,7 @@ const searchedCoffees = computed(() => {
 });
 //---------
 
-const getResult = (length) => {
+const getResult = (length: any) => {
   result.value = length;
 };
 

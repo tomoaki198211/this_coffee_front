@@ -11,7 +11,7 @@ interface Props {
 }
 const props = defineProps<Props>();
 const authStore = useAuthStore();
-const favorites = reactive({
+const favorites: any = reactive({
   list: [],
 });
 const count = computed((): number => {
@@ -35,7 +35,7 @@ const isFavorited = computed((): Boolean => {
 
 //idを探す
 const findFavoriteId = () => {
-  const favorite = favorites.list.find((favorite) => {
+  const favorite = favorites.list.find((favorite: any) => {
     return favorite.user_id === Number(authStore.user_id);
   });
   if (favorite) {
@@ -53,7 +53,7 @@ async function setFavorite(): Promise<void> {
     },
   };
   await axios
-    .get(`/api/v1/coffees/${props.coffee_id}/favorites`, {}, config)
+    .get(`/api/v1/coffees/${props.coffee_id}/favorites`, config)
     .then((response) => {
       console.log(response.data);
       favorites.list = response.data;

@@ -17,13 +17,13 @@ const authStore = useAuthStore();
 const messageStore = useMessageStore();
 const router = useRouter();
 
-type userSignObj = {
-  name: string;
-  email: string;
-  password: string;
-};
+// type userSignObj = {
+//   name: string;
+//   email: string;
+//   password: string;
+// };
 
-const user: userSignObj = reactive({
+const user = reactive({
   name: authStore.user_name,
   email: authStore.uid,
   password: "",
@@ -59,7 +59,7 @@ async function updateUser(): Promise<void> {
       password: user.password,
     })
     .then(() => {
-      authStore.flase("更新しました");
+      messageStore.flash("更新しました");
     });
 }
 async function destroyUser(): Promise<void> {

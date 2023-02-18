@@ -9,13 +9,7 @@ import FavoriteButton from "../components/FavoriteButton.vue";
 import { mdiMagnify } from "@mdi/js";
 import { mdiCoffeeOutline } from "@mdi/js";
 import { mdiHeart } from "@mdi/js";
-import beans_img from "@/assets/image/beans.png";
-import can_img from "@/assets/image/can.png";
-import cappuccino_img from "@/assets/image/cappucino.png";
-import float_img from "@/assets/image/float.png";
-import hot_img from "@/assets/image/hot.png";
-import ice_img from "@/assets/image/ice.png";
-import instant_img from "@/assets/image/instant.png";
+import Image from "../components/CoffeeImage.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -23,14 +17,15 @@ const categories = ref([]);
 const stores = ref([]);
 const pageStore = usePageStore();
 const searchStore = useSearchStore();
-const index = reactive({
+const index: any = reactive({
   coffees: [],
 });
-const favorite = reactive({
+const favorite: any = reactive({
   coffees: [],
 });
-const favorite_flg: boolean = ref(false);
-const disabled_flg: boolean = ref(false);
+
+const favorite_flg = ref(false);
+const disabled_flg = ref(false);
 const load = ref(false);
 const result = ref(1);
 let itemsPerPage = ref(8);
@@ -61,12 +56,12 @@ const resize = () => {
 
 //front側で検索する際にcomputedを使用
 const searchedCoffees = computed(() => {
-  let coffees = [];
+  let coffees: any = [];
   for (let i in index.coffees) {
     let coffee = index.coffees[i];
     if (
       (coffee.coffee_property.name.indexOf(searchStore.search_word) !== -1 ||
-        searchStore.search_word.value == "") &&
+        searchStore.search_word == "") &&
       (coffee.category.id === searchStore.selected_category.id ||
         searchStore.selected_category.id == "") &&
       (coffee.coffee_property.store.id === searchStore.selected_store.id ||
@@ -77,8 +72,8 @@ const searchedCoffees = computed(() => {
   }
   if (favorite_flg.value) {
     coffees = coffees.filter(
-      (coffee) =>
-        favorite.coffees.filter((favorite) => favorite.id === coffee.id)
+      (coffee: any) =>
+        favorite.coffees.filter((favorite: any) => favorite.id === coffee.id)
           .length > 0
     );
   }
@@ -91,7 +86,7 @@ const searchedCoffees = computed(() => {
 });
 //---------
 
-const getResult = (length) => {
+const getResult = (length: any) => {
   result.value = length;
 };
 
@@ -114,16 +109,6 @@ const change_favorite = () => {
 
 const pageReset = () => {
   pageStore.setPage(1);
-};
-
-const image_url = {
-  5: beans_img,
-  2: can_img,
-  3: cappuccino_img,
-  4: float_img,
-  1: hot_img,
-  6: ice_img,
-  7: instant_img,
 };
 
 //apiで検索する際はwatchを使用
@@ -324,18 +309,16 @@ setMaster();
               :color="isHovering ? '#d7ccc8' : 'undefined'"
               v-bind="props"
             >
-              <v-img
-                :src="`${image_url[coffee.category_id]}`"
-                alt=""
-                height="100"
-              ></v-img>
+              <Image v-bind:id="coffee.category_id" v-bind:height="100" />
               <div class="bg_color txt_white">
-                <v-card-title class="text-body-1"
-                  >{{ coffee.coffee_property.name }}
-                </v-card-title>
-                <v-card-subtitle class="text-body-1">
-                  {{ coffee.coffee_property.store.name }}
-                </v-card-subtitle>
+                <v-card-item>
+                  <v-card-title class="text-body-1"
+                    >{{ coffee.coffee_property.name }}
+                  </v-card-title>
+                  <v-card-subtitle class="text-body-1">
+                    {{ coffee.coffee_property.store.name }}
+                  </v-card-subtitle>
+                </v-card-item>
                 <v-card-actions>
                   <v-btn
                     class="mx-auto"
@@ -347,7 +330,15 @@ setMaster();
                     "
                     >レビューを書く
                   </v-btn>
-                  <v-btn class="mx-auto">詳細 </v-btn>
+                  <v-btn
+                    class="mx-auto"
+                    @click="
+                      router.push({
+                        path: `/coffees/${coffee.id}`,
+                      })
+                    "
+                    >詳細
+                  </v-btn>
                   <FavoriteButton v-bind:coffee_id="coffee.id" />
                   <v-spacer></v-spacer>
                 </v-card-actions>

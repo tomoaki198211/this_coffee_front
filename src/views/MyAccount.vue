@@ -10,13 +10,8 @@ import { mdiLockOutline } from "@mdi/js";
 const authStore = useAuthStore();
 const router = useRouter();
 const disabled_flg = ref(true);
-type userSignObj = {
-  name: string;
-  email: string;
-  password: string;
-};
 
-const user: userSignObj = reactive({
+const user: any = reactive({
   name: authStore.user_name,
   email: authStore.uid,
   password: "",

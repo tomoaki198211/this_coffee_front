@@ -8,7 +8,7 @@ import { mdiAccountSupervisorOutline } from "@mdi/js";
 
 const authStore = useAuthStore();
 const router = useRouter();
-const index = reactive({
+const index: any = reactive({
   users: [],
 });
 const page = ref(1);

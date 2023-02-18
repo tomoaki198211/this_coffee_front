@@ -6,17 +6,12 @@ import axios, { type AxiosResponse } from "axios";
 import RadarChart from "../components/RadarChart.vue";
 import moment from "moment";
 import { mdiArrowLeftThick } from "@mdi/js";
+import Image from "../components/CoffeeImage.vue";
 
 interface Props {
   id: number;
 }
-interface attribute {
-  flavor: number;
-  sweetness: number;
-  rich: number;
-  acidity: number;
-  bitter: number;
-}
+
 const props = defineProps<Props>();
 const authStore = useAuthStore();
 const router = useRouter();
@@ -31,13 +26,14 @@ const evalutions_rate = ["弱い", "やや弱い", "普通", "やや強い", "�
 const evalutions_colors = ["red", "orange", "grey", "cyan", "green"];
 
 const review_created = ref();
-const coffee_id: number = ref(props.id);
-const coffee_name: string = ref("");
-const coffee_store: string = ref("");
-const review_id: number = ref();
-const review_name: string = ref();
-const review_user_id: number = ref();
-const remarks: string = ref();
+const category_id = ref();
+const coffee_id = ref(props.id);
+const coffee_name = ref("");
+const coffee_store = ref("");
+const review_id = ref();
+const review_name = ref();
+const review_user_id = ref();
+const remarks = ref();
 const setting = reactive({
   value: "",
   text: "",
@@ -54,7 +50,7 @@ const efficiency = reactive({
   value: "",
   text: "",
 });
-const attributes: attribute = reactive({
+const attributes: any = reactive({
   flavor: null,
   sweetness: null,
   rich: null,
@@ -63,7 +59,7 @@ const attributes: attribute = reactive({
 });
 const disabled_flg = ref(true);
 
-const momentDate = (date) => {
+const momentDate = (date: any) => {
   return moment(date).format("YYYY年/MM月/DD日");
 };
 
@@ -80,6 +76,7 @@ async function setReview(): Promise<void> {
     })
     .then((response: AxiosResponse<any>) => {
       console.log(response.data);
+      category_id.value = response.data.review.coffee.category_id;
       coffee_id.value = response.data.review.coffee.id;
       coffee_name.value = response.data.review.coffee.coffee_property.name;
       coffee_store.value =
@@ -99,7 +96,7 @@ async function setReview(): Promise<void> {
       attributes.bitter = response.data.review.bitter;
     });
 }
-async function destroyReview(id): Promise<void> {
+async function destroyReview(id: any): Promise<void> {
   await axios
     .delete(`/api/v1/reviews/${id}`, {
       headers: {
@@ -169,7 +166,7 @@ async function updateReview(): Promise<void> {
       </v-col>
       <v-col cols="12" sm="5">
         <v-card class="mx-auto" max-width="320">
-          <v-img src="" alt="" height="190" cover></v-img>
+          <Image :id="category_id" :height="190" />
           <v-list-item>
             <v-list-item-title>{{ coffee_name }} </v-list-item-title>
             <v-list-item-subtitle>{{ coffee_store }}</v-list-item-subtitle>
