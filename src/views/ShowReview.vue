@@ -11,13 +11,7 @@ import Image from "../components/CoffeeImage.vue";
 interface Props {
   id: number;
 }
-interface attribute {
-  flavor: number;
-  sweetness: number;
-  rich: number;
-  acidity: number;
-  bitter: number;
-}
+
 const props = defineProps<Props>();
 const authStore = useAuthStore();
 const router = useRouter();
@@ -32,14 +26,14 @@ const evalutions_rate = ["弱い", "やや弱い", "普通", "やや強い", "�
 const evalutions_colors = ["red", "orange", "grey", "cyan", "green"];
 
 const review_created = ref();
-const category_id: number = ref();
-const coffee_id: number = ref(props.id);
-const coffee_name: string = ref("");
-const coffee_store: string = ref("");
-const review_id: number = ref();
-const review_name: string = ref();
-const review_user_id: number = ref();
-const remarks: string = ref();
+const category_id = ref();
+const coffee_id = ref(props.id);
+const coffee_name = ref("");
+const coffee_store = ref("");
+const review_id = ref();
+const review_name = ref();
+const review_user_id = ref();
+const remarks = ref();
 const setting = reactive({
   value: "",
   text: "",
@@ -56,7 +50,7 @@ const efficiency = reactive({
   value: "",
   text: "",
 });
-const attributes: attribute = reactive({
+const attributes: any = reactive({
   flavor: null,
   sweetness: null,
   rich: null,
@@ -65,7 +59,7 @@ const attributes: attribute = reactive({
 });
 const disabled_flg = ref(true);
 
-const momentDate = (date) => {
+const momentDate = (date: any) => {
   return moment(date).format("YYYY年/MM月/DD日");
 };
 
@@ -102,7 +96,7 @@ async function setReview(): Promise<void> {
       attributes.bitter = response.data.review.bitter;
     });
 }
-async function destroyReview(id): Promise<void> {
+async function destroyReview(id: any): Promise<void> {
   await axios
     .delete(`/api/v1/reviews/${id}`, {
       headers: {

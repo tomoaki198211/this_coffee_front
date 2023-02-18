@@ -21,11 +21,11 @@ const pageStore = usePageStore();
 const searchStore = useSearchStore();
 const categories = ref([]);
 const stores = ref([]);
-const index = reactive({
+const index: any = reactive({
   reviews: [],
 });
 
-const emotion = {
+const emotion: any = {
   5: mdiEmoticonExcitedOutline,
   4: mdiEmoticonHappyOutline,
   3: mdiEmoticonNeutralOutline,
@@ -33,7 +33,7 @@ const emotion = {
   1: mdiEmoticonDeadOutline,
 };
 
-const emotion_text = {
+const emotion_text: any = {
   5: "大満足！！",
   4: "満足！",
   3: "普通",
@@ -41,7 +41,7 @@ const emotion_text = {
   1: "合わなかった",
 };
 
-const emotion_color = {
+const emotion_color: any = {
   5: "red",
   4: "orange",
   3: "green",
@@ -92,12 +92,12 @@ const getReviews = computed(() => {
   return reviews;
 });
 
-const getResult = (length) => {
+const getResult = (length: any) => {
   result.value = length;
 };
 
 //日付の修正
-const momentDate = (date) => {
+const momentDate = (date: any) => {
   return moment(date).format("YYYY/MM/DD");
 };
 
@@ -360,7 +360,7 @@ switchReview();
             <v-divider></v-divider>
             <v-card-text>
               {{ review.user.name }}
-              {{ momentDate(review.created_at) }}<br />
+              {{ momentDate(review.created_at!) }}<br />
               <v-rating
                 v-model="review.intuition"
                 bg-color="orange-lighten-1"

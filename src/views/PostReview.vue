@@ -10,13 +10,6 @@ import Image from "../components/CoffeeImage.vue";
 interface Props {
   id: number;
 }
-interface attribute {
-  flavor: number;
-  sweetness: number;
-  rich: number;
-  acidity: number;
-  bitter: number;
-}
 const props = defineProps<Props>();
 const authStore = useAuthStore();
 const router = useRouter();
@@ -30,19 +23,26 @@ const evalutions = [
 const evalutions_rate = ["弱い", "やや弱い", "普通", "やや強い", "強い"];
 const evalutions_colors = ["red", "orange", "grey", "cyan", "green"];
 
-const coffee_id: number = ref(props.id);
-const remarks: string = ref();
-const setting: boolean = ref(false);
+const coffee_id = ref(props.id);
+const remarks = ref();
+const setting = reactive({
+  value: false,
+  text: "非公開",
+});
+const settings = [
+  { value: true, text: "公開" },
+  { value: false, text: "非公開" },
+];
 
-const intuition = reactive({
+const intuition: any = reactive({
   value: "",
   text: "",
 });
-const efficiency = reactive({
+const efficiency: any = reactive({
   value: "",
   text: "",
 });
-const attributes: attribute = reactive({
+const attributes: any = reactive({
   flavor: null,
   sweetness: null,
   rich: null,
@@ -50,13 +50,11 @@ const attributes: attribute = reactive({
   bitter: null,
 });
 
-const coffee = reactive({
+const coffee: any = reactive({
   name: "",
   store: "",
   category_id: "",
 });
-
-showCoffee();
 
 //選択したマスターのshow画面
 async function showCoffee(): Promise<void> {
@@ -104,6 +102,7 @@ async function postReview(): Promise<void> {
     console.log(response.data);
   });
 }
+showCoffee();
 </script>
 
 <template>
@@ -169,18 +168,17 @@ async function postReview(): Promise<void> {
           <v-list>
             <v-list-item>
               <v-textarea v-model="remarks" label="感想" rows="2" class="" />
-              <v-list-item-title>
-                ※レビューを公開しない場合は非公開
-              </v-list-item-title>
-              <v-switch
-                v-model="setting"
-                hide-details
-                color="primary"
-                class="ml-5"
-                true-value="公開"
-                false-value="非公開"
-                :label="setting || '非公開'"
-              ></v-switch>
+              <v-select
+                v-model="setting.value"
+                density="compact"
+                label="公開・非公開"
+                :hint="`${setting.value},${setting.text}`"
+                :items="settings"
+                item-title="text"
+                item-value="value"
+                class=""
+              >
+              </v-select>
             </v-list-item>
             <v-card-actions>
               <v-btn
@@ -196,7 +194,6 @@ async function postReview(): Promise<void> {
           </v-list>
         </v-card>
       </v-col>
-
       <v-col cols="12" sm="6">
         <v-card class="mx-auto my-auto">
           <div class="d-flex justify-center">

@@ -16,8 +16,10 @@ const props = defineProps<Props>();
 const authStore = useAuthStore();
 const messageStore = useMessageStore();
 const router = useRouter();
-const coffee = reactive({
+const coffee: any = reactive({
   coffee_id: "",
+  category_name: "",
+  cstore_name: "",
   property_id: "",
   name: "",
   size: "",
@@ -28,7 +30,7 @@ const coffee = reactive({
   favorites: "",
 });
 const review = reactive({
-  intution: 0,
+  intuition: 0,
   efficiency: 0,
   flavor: 0,
   sweetness: 0,

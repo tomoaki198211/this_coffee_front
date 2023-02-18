@@ -17,15 +17,15 @@ const categories = ref([]);
 const stores = ref([]);
 const pageStore = usePageStore();
 const searchStore = useSearchStore();
-const index = reactive({
+const index: any = reactive({
   coffees: [],
 });
-const favorite = reactive({
+const favorite: any = reactive({
   coffees: [],
 });
 
-const favorite_flg: boolean = ref(false);
-const disabled_flg: boolean = ref(false);
+const favorite_flg = ref(false);
+const disabled_flg = ref(false);
 const load = ref(false);
 const result = ref(1);
 let itemsPerPage = ref(8);
@@ -56,12 +56,12 @@ const resize = () => {
 
 //front側で検索する際にcomputedを使用
 const searchedCoffees = computed(() => {
-  let coffees = [];
+  let coffees: any = [];
   for (let i in index.coffees) {
     let coffee = index.coffees[i];
     if (
       (coffee.coffee_property.name.indexOf(searchStore.search_word) !== -1 ||
-        searchStore.search_word.value == "") &&
+        searchStore.search_word == "") &&
       (coffee.category.id === searchStore.selected_category.id ||
         searchStore.selected_category.id == "") &&
       (coffee.coffee_property.store.id === searchStore.selected_store.id ||
@@ -72,8 +72,8 @@ const searchedCoffees = computed(() => {
   }
   if (favorite_flg.value) {
     coffees = coffees.filter(
-      (coffee) =>
-        favorite.coffees.filter((favorite) => favorite.id === coffee.id)
+      (coffee: any) =>
+        favorite.coffees.filter((favorite: any) => favorite.id === coffee.id)
           .length > 0
     );
   }
@@ -86,7 +86,7 @@ const searchedCoffees = computed(() => {
 });
 //---------
 
-const getResult = (length) => {
+const getResult = (length: any) => {
   result.value = length;
 };
 

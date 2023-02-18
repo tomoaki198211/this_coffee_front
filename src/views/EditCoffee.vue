@@ -17,6 +17,8 @@ const messageStore = useMessageStore();
 const router = useRouter();
 const coffee = reactive({
   coffee_id: "",
+  category_name: "",
+  store_name: "",
   property_id: "",
   name: "",
   size: "",

@@ -12,12 +12,12 @@ import can_img from "../assets/image/can.png";
 import other_img from "../assets/image/other.png";
 
 interface Props {
-  id: number;
+  id: any;
   height: number;
 }
 const props = defineProps<Props>();
 
-const image_url = {
+const image_url: any = {
   1: hot_img,
   2: ice_img,
   3: espresso_img,
