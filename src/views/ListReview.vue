@@ -188,7 +188,7 @@ async function setMaster(): Promise<void> {
 
 async function setReview(): Promise<void> {
   await axios
-    .get("/api/v1/reviews", {
+    .get("http://35.79.178.52/api/v1/reviews", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
