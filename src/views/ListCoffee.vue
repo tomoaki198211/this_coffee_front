@@ -127,7 +127,7 @@ const pageReset = () => {
 //0マスター取得用
 async function setMaster(): Promise<void> {
   await axios
-    .get("/api/v1/coffees/option", {
+    .get("api/v1/coffees/option", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -143,7 +143,7 @@ async function setMaster(): Promise<void> {
 //1 axios
 async function setCoffee(): Promise<void> {
   await axios
-    .get("/api/v1/coffees", {
+    .get("api/v1/coffees", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
