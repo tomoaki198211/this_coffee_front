@@ -143,7 +143,7 @@ async function setMaster(): Promise<void> {
 //1 axios
 async function setCoffee(): Promise<void> {
   await axios
-    .get("http://35.79.178.52/api/v1/coffees", {
+    .get("/api/v1/coffees", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
