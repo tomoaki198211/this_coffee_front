@@ -127,7 +127,7 @@ const pageReset = () => {
 //0マスター取得用
 async function setMaster(): Promise<void> {
   await axios
-    .get("http//35.79.178.52/api/v1/coffees/option", {
+    .get("/api/v1/coffees/option", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
