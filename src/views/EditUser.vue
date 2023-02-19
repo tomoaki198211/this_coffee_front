@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { reactive } from "vue";
 import axios, { type AxiosResponse } from "axios";
 import { useAuthStore } from "../stores/auth";
 import { useMessageStore } from "@/stores/message";
@@ -16,12 +16,6 @@ const props = defineProps<Props>();
 const authStore = useAuthStore();
 const messageStore = useMessageStore();
 const router = useRouter();
-
-// type userSignObj = {
-//   name: string;
-//   email: string;
-//   password: string;
-// };
 
 const user = reactive({
   name: authStore.user_name,
