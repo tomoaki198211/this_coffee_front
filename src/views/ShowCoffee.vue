@@ -8,6 +8,7 @@ import { mdiArrowLeftThick } from "@mdi/js";
 import { mdiCoffeeOutline } from "@mdi/js";
 import RadarChart from "../components/RadarChart.vue";
 import Image from "../components/CoffeeImage.vue";
+import GetTweet from "../components/GetTweet.vue";
 
 interface Props {
   id: number;
@@ -48,6 +49,7 @@ const selected_store = reactive({
 });
 const categories = ref([]);
 const stores = ref([]);
+const tab = ref();
 setMaster();
 showCoffee();
 
@@ -116,7 +118,7 @@ async function showCoffee(): Promise<void> {
         ></v-btn>
       </v-col>
       <v-col cols="12" sm="5">
-        <v-card class="mx-auto" max-width="400">
+        <v-card class="mx-auto" max-width="400" color="#fff7ef">
           <v-chip class="ma-2" color="#7b5544" variant="text" size="large"
             ><v-icon start :icon="mdiCoffeeOutline"></v-icon>
             コーヒーマスタ
@@ -147,58 +149,70 @@ async function showCoffee(): Promise<void> {
         </v-card>
       </v-col>
       <v-col cols="12" sm="5">
-        <v-card class="mx-auto" max-width="400">
-          <v-card-item>
-            <v-card-title>レビュー(平均)</v-card-title>
-          </v-card-item>
-          <v-card-item>
-            <v-card-subtitle class="text-body-1"
-              >レビュー件数:{{ coffee.count }}件</v-card-subtitle
-            ></v-card-item
-          >
-          <v-card-item>
-            <v-card-subtitle class="text-body-1"
-              >お気に入り件数:{{ coffee.favorites }}件</v-card-subtitle
-            >
-          </v-card-item>
-          <v-divider></v-divider>
-          <v-card-item>
-            <v-card-subtitle class="text-body-1"
-              >直感的な評価:{{
-                Number(review.intuition).toFixed(2)
-              }}</v-card-subtitle
-            >
-          </v-card-item>
-          <v-rating
-            v-model="review.intuition"
-            class=""
-            color="#7b5544"
-            readonly
-            half-increments
-          ></v-rating>
-          <v-card-item>
-            <v-card-subtitle class="text-body-1"
-              >コストパフォーマンス:{{
-                Number(review.efficiency).toFixed(2)
-              }}</v-card-subtitle
-            >
-          </v-card-item>
-          <v-rating
-            color="#7b5544"
-            v-model="review.efficiency"
-            readonly
-            half-increments
-          ></v-rating>
-          <v-divider></v-divider>
-          <div class="d-flex justify-center">
-            <RadarChart
-              :flavor="review.flavor"
-              :sweetness="review.sweetness"
-              :rich="review.rich"
-              :acidity="review.acidity"
-              :bitter="review.bitter"
-            /></div
-        ></v-card>
+        <v-card class="mx-auto" max-width="400" color="#fff7ef">
+          <v-tabs v-model="tab" bg-color="primary">
+            <v-tab value="one">レビュー</v-tab>
+            <v-tab value="two">ツイート直近10件</v-tab>
+          </v-tabs>
+          <v-window v-model="tab">
+            <v-window-item value="one">
+              <v-card-item>
+                <v-card-title>レビュー(平均)</v-card-title>
+              </v-card-item>
+              <v-card-item>
+                <v-card-subtitle class="text-body-1"
+                  >レビュー件数:{{ coffee.count }}件</v-card-subtitle
+                ></v-card-item
+              >
+              <v-card-item>
+                <v-card-subtitle class="text-body-1"
+                  >お気に入り件数:{{ coffee.favorites }}件</v-card-subtitle
+                >
+              </v-card-item>
+              <v-divider></v-divider>
+              <v-card-item>
+                <v-card-subtitle class="text-body-1"
+                  >直感的な評価:{{
+                    Number(review.intuition).toFixed(2)
+                  }}</v-card-subtitle
+                >
+              </v-card-item>
+              <v-rating
+                v-model="review.intuition"
+                class=""
+                color="#7b5544"
+                readonly
+                half-increments
+              ></v-rating>
+              <v-card-item>
+                <v-card-subtitle class="text-body-1"
+                  >コストパフォーマンス:{{
+                    Number(review.efficiency).toFixed(2)
+                  }}</v-card-subtitle
+                >
+              </v-card-item>
+              <v-rating
+                color="#7b5544"
+                v-model="review.efficiency"
+                readonly
+                half-increments
+              ></v-rating>
+              <v-divider></v-divider>
+              <div class="d-flex justify-center">
+                <RadarChart
+                  :flavor="review.flavor"
+                  :sweetness="review.sweetness"
+                  :rich="review.rich"
+                  :acidity="review.acidity"
+                  :bitter="review.bitter"
+                />
+              </div>
+            </v-window-item>
+            <v-window-item value="two">
+              <GetTweet :name="coffee.name" />
+            </v-window-item>
+          </v-window>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
