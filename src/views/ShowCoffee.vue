@@ -125,7 +125,7 @@ async function showCoffee(): Promise<void> {
           <Image v-bind:id="Number(selected_category.id)" v-bind:height="150" />
           <v-divider></v-divider>
           <v-card-item>
-            <v-card-title> {{ coffee.name }}</v-card-title>
+            <v-card-title class="text-body-1"> {{ coffee.name }}</v-card-title>
             <v-card-subtitle>
               {{ selected_store.name }}
             </v-card-subtitle>
@@ -142,6 +142,7 @@ async function showCoffee(): Promise<void> {
             <v-card-title> {{ coffee.price }}円〜</v-card-title>
             <v-card-subtitle>価格</v-card-subtitle>
           </v-card-item>
+          <v-divider></v-divider>
           <v-textarea reaonly disabled>{{ coffee.note }}</v-textarea>
         </v-card>
       </v-col>
@@ -160,7 +161,6 @@ async function showCoffee(): Promise<void> {
               >お気に入り件数:{{ coffee.favorites }}件</v-card-subtitle
             >
           </v-card-item>
-
           <v-divider></v-divider>
           <v-card-item>
             <v-card-subtitle class="text-body-1"

@@ -349,7 +349,7 @@ switchReview();
           >
             <div class="coffee_bg txt_white mp-2">
               <v-card-item>
-                <v-card-title>
+                <v-card-title class="text-body-1">
                   {{ review.coffee.coffee_property.name }}
                 </v-card-title>
                 <v-card-subtitle>{{

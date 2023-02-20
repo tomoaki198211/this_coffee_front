@@ -184,12 +184,14 @@ async function setCoffee(): Promise<void> {
         </template>
       </v-card>
       <tempalete v-if="!isShuffle">
-        <v-btn class="mx-auto" block @click="onShuffleStart()"
+        <v-btn class="mx-auto" block @click="onShuffleStart()" color="#d7ccc8"
           >今日の一杯を探す</v-btn
         >
       </tempalete>
       <tempalete v-else>
-        <v-btn class="mx-auto" block @click="onShuffleStop()">ストップ </v-btn>
+        <v-btn class="mx-auto" block @click="onShuffleStop()" color="#d7ccc8"
+          >ストップ
+        </v-btn>
       </tempalete>
     </v-card>
   </v-container>

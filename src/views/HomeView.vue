@@ -3,6 +3,7 @@ import { useRouter } from "vue-router";
 import { mdiCoffeeOutline } from "@mdi/js";
 import { mdiCommentTextOutline } from "@mdi/js";
 import { mdiAccountPlus } from "@mdi/js";
+import { mdiAccountSupervisorOutline } from "@mdi/js";
 import review_img from "@/assets/image/review.jpg";
 import pc_img from "@/assets/image/pc_coffee.jpg";
 
@@ -66,12 +67,18 @@ const router = useRouter();
               >右上のハンバーガーメニューアイコンを押すと「レビュー」「コーヒー」「ログイン」「新規登録」のメニューを表示します。</v-card-text
             >
             <v-divider></v-divider>
-            <v-card-title class="text-h6">ログインについて</v-card-title>
+            <v-card-title class="text-h6"
+              ><v-icon :icon="mdiAccountSupervisorOutline"></v-icon
+              >ログインについて</v-card-title
+            >
             <v-card-text
               >ログイン（登録）なしでも他の人のレビューを読む事が出来ます。アカウントを登録する事で、「レビュー投稿」と
               コーヒーを「お気に入り」出来るようになります。</v-card-text
             ><v-divider></v-divider>
-            <v-card-title class="text-h6">レビュー投稿</v-card-title>
+            <v-card-title class="text-h6"
+              ><v-icon :icon="mdiCommentTextOutline"></v-icon
+              >レビュー投稿</v-card-title
+            >
             <v-card-text
               >ログインした状態でコーヒー検索をします。レビューを書きたい対象の「レビューを書く」
               を押してレビュー投稿画面に入ります。</v-card-text
