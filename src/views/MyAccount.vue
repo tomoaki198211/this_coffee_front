@@ -3,19 +3,40 @@ import { ref, reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
 import { useMessageStore } from "@/stores/message";
 import { useRouter } from "vue-router";
+import axios from "axios";
 import { mdiAccountCircleOutline } from "@mdi/js";
 import { mdiEmailOutline } from "@mdi/js";
 import { mdiLockOutline } from "@mdi/js";
+import Image from "../components/CoffeeImage.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
 const disabled_flg = ref(true);
-
+const coffee = ref();
+const shuffled = ref(false);
+const isShuffle = ref(false);
 const user: any = reactive({
   name: authStore.user_name,
   email: authStore.uid,
   password: "",
 });
+const index: any = reactive({
+  coffees: [],
+});
+const onShuffleStart: any = () => {
+  if (index.coffees.length === 0) {
+    setCoffee();
+  }
+  isShuffle.value = true;
+  shuffled.value = false;
+};
+
+const onShuffleStop: any = () => {
+  coffee.value =
+    index.coffees[Math.floor(Math.random() * index.coffees.length)];
+  isShuffle.value = false;
+  shuffled.value = true;
+};
 
 const onAccountUpdate = (): void => {
   const authStore = useAuthStore();
@@ -36,6 +57,21 @@ const onShow = () => {
   user.name = authStore.user_name;
   user.email = authStore.uid;
 };
+
+async function setCoffee(): Promise<void> {
+  await axios
+    .get("/api/v1/coffees", {
+      headers: {
+        uid: authStore.uid,
+        "access-token": authStore.access_token,
+        client: authStore.client,
+      },
+    })
+    .then((response) => {
+      index.coffees = response.data;
+      console.log(response.data);
+    });
+}
 </script>
 
 <template>
@@ -117,10 +153,54 @@ const onShow = () => {
         </template>
       </v-container>
     </v-card>
+    <v-card class="mt-10 mb-8 mx-auto bg-color" max-width="400px">
+      <v-card-title>今日の一杯</v-card-title>
+      <v-card class="mx-auto mb-8" max-width="300">
+        <template v-if="shuffled">
+          <Image v-bind:id="coffee.category_id" v-bind:height="100" />
+          <div class="bg_color txt_white">
+            <v-card-item>
+              <v-card-title class="text-body-1">
+                {{ coffee ? coffee.coffee_property.name : "" }}
+              </v-card-title>
+              <v-card-subtitle class="text-body-1">
+                {{ coffee ? coffee.coffee_property.store.name : "" }}
+              </v-card-subtitle>
+            </v-card-item>
+          </div>
+        </template>
+        <template v-else>
+          <template v-if="isShuffle">
+            <div class="text-center">
+              <v-card-subtitle>おすすめの一杯を探しています</v-card-subtitle>
+              <v-progress-linear
+                color="deep-purple-accent-4"
+                indeterminate
+                rounded
+                height="6"
+              ></v-progress-linear>
+            </div>
+          </template>
+        </template>
+      </v-card>
+      <tempalete v-if="!isShuffle">
+        <v-btn class="mx-auto" block @click="onShuffleStart()" color="#d7ccc8"
+          >今日の一杯を探す</v-btn
+        >
+      </tempalete>
+      <tempalete v-else>
+        <v-btn class="mx-auto" block @click="onShuffleStop()" color="#d7ccc8"
+          >ストップ
+        </v-btn>
+      </tempalete>
+    </v-card>
   </v-container>
 </template>
 <style scoped>
 .btn-txt {
   color: #ffff;
+}
+.bg_color {
+  background-color: #d7ccc8;
 }
 </style>

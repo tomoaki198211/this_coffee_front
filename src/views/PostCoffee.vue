@@ -3,7 +3,7 @@ import { ref, reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
 import { useMessageStore } from "@/stores/message";
 import { useRouter } from "vue-router";
-import axios, { type AxiosResponse } from "axios";
+import axios from "axios";
 import { mdiArrowLeftThick } from "@mdi/js";
 import Image from "@/components/CoffeeImage.vue";
 

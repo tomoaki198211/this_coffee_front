@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, computed } from "vue";
+import { reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
 import { useRouter } from "vue-router";
 import { mdiEmailOutline } from "@mdi/js";
