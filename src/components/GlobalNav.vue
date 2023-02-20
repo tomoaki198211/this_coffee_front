@@ -10,6 +10,9 @@ import { mdiCoffee } from "@mdi/js";
 import { mdiComment } from "@mdi/js";
 import { mdiDatabaseEdit } from "@mdi/js";
 import { mdiAccountCircleOutline } from "@mdi/js";
+import { mdiHomeOutline } from "@mdi/js";
+import { mdiCoffeeOutline } from "@mdi/js";
+import { mdiCommentOutline } from "@mdi/js";
 
 const drawer = ref(false);
 const authStore = useAuthStore();
@@ -25,7 +28,98 @@ const onLogout = (): void => {
 <template>
   <v-app-bar :elevation="2" color="#7b5544">
     <v-app-bar-title><p class="title">this Coffee!</p></v-app-bar-title>
+    <template class="d-none d-md-block">
+      <template v-if="!authStore.isAuthencated()">
+        <v-btn
+          variant="plain"
+          @click="router.push('/')"
+          :prepend-icon="mdiHomeOutline"
+          size="large"
+          color="white"
+          >ホーム
+        </v-btn>
+        <v-btn
+          variant="plain"
+          @click="router.push('/reviews')"
+          :prepend-icon="mdiCommentOutline"
+          size="large"
+          color="white"
+        >
+          レビュー
+        </v-btn>
+        <v-btn
+          variant="plain"
+          @click="router.push('/coffees')"
+          :prepend-icon="mdiCoffeeOutline"
+          size="large"
+          color="white"
+          >コーヒー
+        </v-btn>
+        <v-btn
+          variant="plain"
+          @click="router.push('/auth/login')"
+          :prepend-icon="mdiLogin"
+          size="large"
+          color="white"
+        >
+          ログイン
+        </v-btn>
+        <v-btn
+          variant="plain"
+          @click="router.push('/auth/signup')"
+          :prepend-icon="mdiAccountPlus"
+          size="large"
+          color="white"
+        >
+          新規登録
+        </v-btn>
+      </template>
+      <template v-else>
+        <v-btn
+          variant="plain"
+          @click="router.push('/')"
+          :prepend-icon="mdiHomeOutline"
+          size="large"
+          color="white"
+          >ホーム
+        </v-btn>
+        <v-btn
+          variant="plain"
+          @click="router.push('/reviews')"
+          :prepend-icon="mdiCommentOutline"
+          size="large"
+          color="white"
+        >
+          レビュー
+        </v-btn>
+        <v-btn
+          variant="plain"
+          @click="router.push('/coffees')"
+          :prepend-icon="mdiCoffeeOutline"
+          size="large"
+          color="white"
+          >コーヒー
+        </v-btn>
+        <v-btn
+          variant="plain"
+          @click="router.push('/auth/account')"
+          :prepend-icon="mdiAccountCircleOutline"
+          size="large"
+          color="white"
+          >アカウント
+        </v-btn>
+        <v-btn
+          variant="plain"
+          @click="onLogout()"
+          :prepend-icon="mdiLogout"
+          size="large"
+          color="white"
+          >ログアウト
+        </v-btn>
+      </template>
+    </template>
     <v-app-bar-nav-icon
+      size="large"
       variant="text"
       @click.stop="drawer = !drawer"
       color="white"

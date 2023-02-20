@@ -47,6 +47,7 @@ const router = useRouter();
                 <v-card-subtitle>search</v-card-subtitle>
                 <v-card-text>
                   色々なコーヒーの情報を検索して、どんなコーヒーがあるか調べましょう。
+                  各コーヒーはレビューの平均値やtwitterで口コミを見る事が出来ます。
                 </v-card-text>
               </div>
               <v-avatar class="ma-3" size="150" rounded="0">
@@ -59,15 +60,16 @@ const router = useRouter();
       <v-col cols="12" sm="6">
         <v-col cols="12">
           <v-card max-width="400">
-            <v-card-title class="text-h6"
+            <v-card-title class="text-h6 bg-color"
               ><v-app-bar-nav-icon variant="plain"></v-app-bar-nav-icon
               >メニュー</v-card-title
             >
             <v-card-text
-              >右上のハンバーガーメニューアイコンを押すと「レビュー」「コーヒー」「ログイン」「新規登録」のメニューを表示します。</v-card-text
+              >スマートフォンでは右上のハンバーガーメニューアイコンを押すと「レビュー」「コーヒー」「ログイン」「新規登録」のメニューを表示します。
+              パソコンでは上記メニューを押す事で画面を移動出来ます。</v-card-text
             >
             <v-divider></v-divider>
-            <v-card-title class="text-h6"
+            <v-card-title class="text-h6 bg-color"
               ><v-icon :icon="mdiAccountSupervisorOutline"></v-icon
               >ログインについて</v-card-title
             >
@@ -75,7 +77,7 @@ const router = useRouter();
               >ログイン（登録）なしでも他の人のレビューを読む事が出来ます。アカウントを登録する事で、「レビュー投稿」と
               コーヒーを「お気に入り」出来るようになります。</v-card-text
             ><v-divider></v-divider>
-            <v-card-title class="text-h6"
+            <v-card-title class="text-h6 bg-color"
               ><v-icon :icon="mdiCommentTextOutline"></v-icon
               >レビュー投稿</v-card-title
             >
@@ -88,30 +90,30 @@ const router = useRouter();
               <v-btn
                 block
                 variant="outlined"
-                color="blue-grey"
+                color="#7b5544"
                 :prepend-icon="mdiCoffeeOutline"
                 @click="router.push('/coffees')"
-                >コーヒー検索へ</v-btn
+                >コーヒー検索を試す</v-btn
               >
             </v-card-actions>
             <v-card-actions>
               <v-btn
                 block
                 variant="outlined"
-                color="blue-grey"
+                color="#7b5544"
                 :prepend-icon="mdiCommentTextOutline"
                 @click="router.push('/reviews')"
-                >レビュー一覧へ</v-btn
+                >レビューを見てみる</v-btn
               >
             </v-card-actions>
             <v-card-actions>
               <v-btn
                 block
                 variant="outlined"
-                color="blue-grey"
+                color="#7b5544"
                 :prepend-icon="mdiAccountPlus"
                 @click="router.push('/auth/signup')"
-                >アカウント登録</v-btn
+                >アカウントを登録する！</v-btn
               >
             </v-card-actions>
           </v-card>
@@ -120,3 +122,8 @@ const router = useRouter();
     </v-row>
   </v-container>
 </template>
+<style scoped>
+.bg-color {
+  color: #7b5544;
+}
+</style>

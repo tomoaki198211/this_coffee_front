@@ -1,12 +1,10 @@
 <template>
   <v-footer class="footer" color="#7b5544">
     <v-row justify="center">
-      <!-- <v-btn color="white" variant="text" class="mx-2" rounded="xl">
-        {{}}
-      </v-btn> -->
       <v-col class="text-center" cols="12">
         <p class="footer_txt">
-          {{ new Date().getFullYear() }} — <strong>this Coffee!</strong>
+          {{ new Date().getFullYear() }} —
+          <strong>this Coffee! by tomoaki</strong>
         </p>
       </v-col>
     </v-row>

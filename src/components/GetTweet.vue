@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useAuthStore } from "../stores/auth";
+import { mdiTwitter } from "@mdi/js";
 
 interface Props {
   name: string;
@@ -32,7 +33,13 @@ async function getTweet(): Promise<void> {
 
 <template>
   <v-card>
-    <v-btn @click="getTweet()" variant="text">ツイッターで評判を見る</v-btn>
+    <v-btn
+      @click="getTweet()"
+      variant="text"
+      :prepend-icon="mdiTwitter"
+      :disabled="!authStore.isAuthencated()"
+      >ツイッターで評判を見る</v-btn
+    >
     <v-list>
       <v-list-item v-for="tweet in tweets" :key="tweet.id"
         >{{ tweet.text }}
