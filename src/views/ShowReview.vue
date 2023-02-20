@@ -2,6 +2,7 @@
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
+import { useMessageStore } from "@/stores/message";
 import axios, { type AxiosResponse } from "axios";
 import RadarChart from "../components/RadarChart.vue";
 import moment from "moment";
@@ -14,6 +15,7 @@ interface Props {
 
 const props = defineProps<Props>();
 const authStore = useAuthStore();
+const messageStore = useMessageStore();
 const router = useRouter();
 const evalutions = [
   { value: 5, text: "5:最高！" },
@@ -106,7 +108,7 @@ async function destroyReview(id: any): Promise<void> {
       },
     })
     .then((response: AxiosResponse<any>) => {
-      console.log(response.status);
+      messageStore.flash("レビューを削除しました");
       router.push("/reviews");
     });
 }
@@ -145,7 +147,10 @@ async function updateReview(): Promise<void> {
     .then((response) => {
       setReview();
       onShow();
-      console.log(response.data);
+      messageStore.flash("レビューを更新しました");
+    })
+    .catch((error) => {
+      messageStore.flash("レビューを更新出来ませんでした");
     });
 }
 </script>

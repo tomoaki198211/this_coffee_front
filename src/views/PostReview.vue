@@ -2,6 +2,7 @@
 import { ref, reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
 import { useRouter } from "vue-router";
+import { useMessageStore } from "@/stores/message";
 import axios, { type AxiosResponse } from "axios";
 import RadarChart from "../components/RadarChart.vue";
 import { mdiArrowLeftThick } from "@mdi/js";
@@ -13,6 +14,7 @@ interface Props {
 const props = defineProps<Props>();
 const authStore = useAuthStore();
 const router = useRouter();
+const messageStore = useMessageStore();
 const evalutions = [
   { value: 5, text: "5:最高！" },
   { value: 4, text: "4:満足！" },
@@ -70,7 +72,6 @@ async function showCoffee(): Promise<void> {
       coffee.name = response.data.coffee.coffee_property.name;
       coffee.store = response.data.coffee.coffee_property.store.name;
       coffee.category_id = response.data.coffee.category_id;
-      console.log(response.data);
     });
 }
 
@@ -97,10 +98,16 @@ async function postReview(): Promise<void> {
       client: authStore.client,
     },
   };
-  await axios.post("/api/v1/reviews", data, config).then((response) => {
-    router.push("/reviews");
-    console.log(response.data);
-  });
+  await axios
+    .post("/api/v1/reviews", data, config)
+    .then((response) => {
+      router.push("/reviews");
+      messageStore.flash("レビューを作成しました");
+    })
+    .catch((error) => {
+      console.log(error.message);
+      messageStore.flash("作成出来ませんでした。必須項目を入力して下さい");
+    });
 }
 showCoffee();
 </script>

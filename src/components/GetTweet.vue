@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 import { useAuthStore } from "../stores/auth";
 
@@ -7,7 +7,7 @@ interface Props {
   name: string;
 }
 const props = defineProps<Props>();
-const tweets = ref([]);
+const tweets: any = ref([]);
 const authStore = useAuthStore();
 
 async function getTweet(): Promise<void> {
