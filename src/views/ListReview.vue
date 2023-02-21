@@ -203,7 +203,7 @@ async function setReview(): Promise<void> {
 
 async function setAllReview(): Promise<void> {
   await axios
-    .get("/api/v1/reviews/all", {
+    .get("http://35.79.178.52/api/v1/reviews/all", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
