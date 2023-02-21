@@ -75,7 +75,7 @@ const router = useRouter();
             >
             <v-card-text
               >ログイン（登録）なしでも他の人のレビューを読む事が出来ます。アカウントを登録する事で、「レビュー投稿」と
-              コーヒーを「お気に入り」出来るようになります。</v-card-text
+              コーヒーを「お気に入り」出来るようになります。また、マイカウントで「今日の一杯」と「好みからレビューおすすめ検索」が可能です。</v-card-text
             ><v-divider></v-divider>
             <v-card-title class="text-h6 bg-color"
               ><v-icon :icon="mdiCommentTextOutline"></v-icon

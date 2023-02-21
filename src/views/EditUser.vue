@@ -35,7 +35,6 @@ async function setUser(): Promise<void> {
       },
     })
     .then((response: AxiosResponse<any>) => {
-      console.log(response.data);
       user.name = response.data.user.name;
       user.email = response.data.user.email;
     });

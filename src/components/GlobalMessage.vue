@@ -5,9 +5,13 @@ const messageStore = useMessageStore();
 </script>
 
 <template v-if="(messageStore.flag = true)">
-  <div class="message">
-    <p class="text-center font-weight-bold pt-2">{{ messageStore.text }}</p>
-  </div>
+  <v-row>
+    <v-col>
+      <div class="message">
+        <p class="text-center font-weight-bold pt-2">{{ messageStore.text }}</p>
+      </div>
+    </v-col>
+  </v-row>
 </template>
 <style scoped>
 p {

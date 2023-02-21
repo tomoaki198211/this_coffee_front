@@ -48,19 +48,6 @@ const resize = () => {
   }
 };
 
-//apiで検索する際はwatchを使用
-// watch(search_word, () => {
-//   setSearch();
-// });
-
-// watch(selected_category, () => {
-//   setSearch();
-// });
-
-// watch(selected_store, () => {
-//   setSearch();
-// });
-
 //front側で検索する際にcomputedを使用
 const searchedCoffees = computed(() => {
   let coffees: any = [];
@@ -122,7 +109,6 @@ async function setCoffee(): Promise<void> {
     .then((response) => {
       index.coffees = response.data;
       load.value = true;
-      console.log(response.data);
     });
 }
 
@@ -143,7 +129,6 @@ async function setSearch(): Promise<void> {
     })
     .then((response) => {
       index.coffees = response.data;
-      console.log(response.data);
     });
 }
 

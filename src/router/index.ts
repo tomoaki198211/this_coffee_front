@@ -102,7 +102,6 @@ const router = createRouter({
     {
       path: "/review/post/:id",
       name: "post_review",
-      //動的インポート
       component: () => {
         return import("../views/PostReview.vue");
       },
@@ -116,7 +115,6 @@ const router = createRouter({
     {
       path: "/review/:id",
       name: "review",
-      //動的インポート
       component: () => {
         return import("../views/ShowReview.vue");
       },
@@ -135,14 +133,6 @@ const router = createRouter({
   ],
 });
 
-// ログインしていない状態ではloginとsignupにしか移動出来ない;
-// router.beforeEach((to, from, next) => {
-//   const authStore = useAuthStore();
-//   if (to.name !== "login" && to.name !== "signup" && !authStore.isAuthencated())
-//     next({ name: "login" });
-//   else next();
-// });
-
 //ログインしていないとマイアカウントにいけない
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
@@ -159,9 +149,12 @@ router.beforeEach((to, from, next) => {
   else next();
 });
 
-//レビューは直接閲覧出来ない。レビュー一覧からのみ移動出来る
+//レビューは直接閲覧出来ない。レビュー一覧か、マイカウントからのみ移動出来る
 router.beforeEach((to, from, next) => {
-  if (to.name === "review" && from.name !== "reviews")
+  if (
+    to.name === "review" &&
+    !(from.name === "reviews" || from.name === "my_account")
+  )
     next({ name: "reviews" });
   else next();
 });

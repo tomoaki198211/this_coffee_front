@@ -29,7 +29,6 @@ async function indexUsers(): Promise<void> {
     })
     .then((response) => {
       index.users = response.data;
-      console.log(response.data);
     });
 }
 </script>

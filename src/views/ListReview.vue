@@ -198,8 +198,6 @@ async function setReview(): Promise<void> {
     .then((response) => {
       searchStore.setReviewisAll(true);
       index.reviews = response.data;
-      // pageStore.setReviewPage(1);
-      console.log(response.data);
     });
 }
 
@@ -215,8 +213,6 @@ async function setAllReview(): Promise<void> {
     .then((response) => {
       searchStore.setReviewisAll(false);
       index.reviews = response.data;
-      // pageStore.setReviewPage(1);
-      console.log(response.data);
     });
 }
 
@@ -239,7 +235,6 @@ async function setSearch(): Promise<void> {
       index.reviews = response.data;
       // pageStore.setReviewPage(1);
       searchStore.setReviewisAll(false);
-      console.log(response.data);
     });
 }
 

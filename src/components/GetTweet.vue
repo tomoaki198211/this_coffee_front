@@ -3,6 +3,7 @@ import { ref } from "vue";
 import axios from "axios";
 import { useAuthStore } from "../stores/auth";
 import { mdiTwitter } from "@mdi/js";
+import { useMessageStore } from "@/stores/message";
 
 interface Props {
   name: string;
@@ -10,8 +11,10 @@ interface Props {
 const props = defineProps<Props>();
 const tweets: any = ref([]);
 const authStore = useAuthStore();
+const messageStore = useMessageStore();
 
 async function getTweet(): Promise<void> {
+  tweets.value.length = 0;
   const config = {
     headers: {
       uid: authStore.uid,
@@ -24,10 +27,17 @@ async function getTweet(): Promise<void> {
       name: props.name,
     },
   };
-  await axios.post("/api/v1/tweets/search", data, config).then((response) => {
-    tweets.value = response.data;
-    console.log(response.data);
-  });
+  await axios
+    .post("/api/v1/tweets/search", data, config)
+    .then((response) => {
+      tweets.value = response.data;
+      if (tweets.value.length == 0) {
+        messageStore.flash("検索結果はありません。");
+      }
+    })
+    .catch((error) => {
+      messageStore.flash("検索結果がないか、取得出来ませんでした");
+    });
 }
 </script>
 

@@ -51,13 +51,10 @@ export const useAuthStore = defineStore({
             this.uid = response.headers["uid"];
             this.user_id = response.data.data.id;
             this.user_name = response.data.data.name;
-            console.log("status:", response.status);
             messageStore.flash("アカウントを作成してログインしました");
             router.push({ path: "/reviews" });
           });
       } catch (error: any) {
-        console.log(error);
-        console.log(error.response.status);
         messageStore.flash(error.response.data.errors.full_messages);
       }
     },
@@ -84,12 +81,10 @@ export const useAuthStore = defineStore({
             this.user_id = response.data.data.id;
             this.user_name = response.data.data.name;
             this.admin = response.data.data.admin;
-            console.log("status:", response.status);
             messageStore.flash("ログインしました");
             router.push({ path: "/reviews" });
           });
       } catch (error: any) {
-        console.log(error.response.status);
         messageStore.flash(error.response.data.errors[0]);
       }
     },
@@ -109,12 +104,10 @@ export const useAuthStore = defineStore({
           this.uid = response.headers["uid"];
           this.user_id = response.data.data.id;
           this.user_name = response.data.data.name;
-          console.log("status:", response.status);
           messageStore.flash("ログインしました");
           router.push({ path: "/reviews" });
         });
       } catch (error: any) {
-        console.log(error.response.status);
         messageStore.flash(error.response.data.errors[0]);
       }
     },
@@ -138,12 +131,10 @@ export const useAuthStore = defineStore({
             this.user_id = response.data.data.id;
             this.user_name = response.data.data.name;
             this.admin = response.data.data.admin;
-            console.log("status:", response.status);
             messageStore.flash("ログインしました");
             router.push({ path: "/reviews" });
           });
       } catch (error: any) {
-        console.log(error.response.status);
         messageStore.flash(error.response.data.errors[0]);
       }
     },
@@ -225,13 +216,10 @@ export const useAuthStore = defineStore({
             this.uid = response.headers["uid"];
             this.user_id = response.data.data.id;
             this.user_name = response.data.data.name;
-            console.log("status:", response.status);
             messageStore.flash("アカウントを更新しました");
             router.push({ path: "/reviews" });
           });
       } catch (error: any) {
-        console.log(error);
-        console.log(error.response.status);
         messageStore.flash(error.response.data.errors.full_messages);
       }
     },
