@@ -32,7 +32,6 @@ const onpreferenceCoffeeStart = async () => {
     .post("/api/v1/reviews/preference", data, config)
     .then((response) => {
       index.reviews = response.data;
-      console.data(response.data);
     })
     .catch((error) => {});
 };
