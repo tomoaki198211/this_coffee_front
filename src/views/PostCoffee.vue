@@ -71,7 +71,6 @@ async function postCoffeeMaster(): Promise<void> {
     router.push({
       path: "/coffees/admin/index",
     });
-    console.log(response.data);
   });
 }
 </script>

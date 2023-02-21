@@ -69,7 +69,6 @@ async function setCoffee(): Promise<void> {
     })
     .then((response) => {
       index.coffees = response.data;
-      console.log(response.data);
     });
 }
 </script>

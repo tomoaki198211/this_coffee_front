@@ -77,7 +77,6 @@ async function setReview(): Promise<void> {
       },
     })
     .then((response: AxiosResponse<any>) => {
-      console.log(response.data);
       category_id.value = response.data.review.coffee.category_id;
       coffee_id.value = response.data.review.coffee.id;
       coffee_name.value = response.data.review.coffee.coffee_property.name;
@@ -200,6 +199,7 @@ async function updateReview(): Promise<void> {
                     item-value="value"
                     class=""
                     v-bind:readonly="disabled_flg"
+                    color="red"
                   >
                   </v-select>
                 </td>
@@ -216,6 +216,7 @@ async function updateReview(): Promise<void> {
                     item-value="value"
                     class="pt-2"
                     v-bind:readonly="disabled_flg"
+                    color="red"
                   >
                   </v-select>
                 </td>
@@ -232,6 +233,7 @@ async function updateReview(): Promise<void> {
                 rows="2"
                 class=""
                 v-bind:readonly="disabled_flg"
+                color="red"
               />
               <v-select
                 v-model="setting.value"
@@ -243,6 +245,7 @@ async function updateReview(): Promise<void> {
                 item-value="value"
                 class=""
                 v-bind:readonly="disabled_flg"
+                color="red"
               >
               </v-select>
             </v-list-item>

@@ -105,7 +105,6 @@ async function postReview(): Promise<void> {
       messageStore.flash("レビューを作成しました");
     })
     .catch((error) => {
-      console.log(error.message);
       messageStore.flash("作成出来ませんでした。必須項目を入力して下さい");
     });
 }
@@ -128,7 +127,6 @@ showCoffee();
       </v-col>
       <v-col cols="12" sm="5">
         <v-card class="mx-auto" max-width="320">
-          <!-- <v-img src="" alt="" height="190" cover></v-img> -->
           <Image :id="coffee.category_id" :height="190" />
           <v-list-item>
             <v-list-item-title>{{ coffee.store }} </v-list-item-title>
@@ -143,11 +141,12 @@ showCoffee();
                   <v-select
                     v-model="intuition.value"
                     density="compact"
-                    label="直感的な評価"
+                    label="直感的な評価(必須項目)"
                     :hint="`${intuition.value},${intuition.text}`"
                     :items="evalutions"
                     item-title="text"
                     item-value="value"
+                    color="red"
                     class="pt-5"
                   >
                   </v-select>
@@ -158,11 +157,12 @@ showCoffee();
                   <v-select
                     v-model="efficiency.value"
                     density="compact"
-                    label="コストパフォーマンス"
+                    label="コストパフォーマンス(必須項目)"
                     :hint="`${efficiency.value},${efficiency.text}`"
                     :items="evalutions"
                     item-title="text"
                     item-value="value"
+                    color="red"
                     class="pt-5"
                   >
                   </v-select>
@@ -174,15 +174,22 @@ showCoffee();
         <v-card class="mt-2">
           <v-list>
             <v-list-item>
-              <v-textarea v-model="remarks" label="感想" rows="2" class="" />
+              <v-textarea
+                v-model="remarks"
+                label="感想(必須項目)"
+                rows="2"
+                color="red"
+                class=""
+              />
               <v-select
                 v-model="setting.value"
                 density="compact"
-                label="公開・非公開"
+                label="公開・非公開(必須項目)"
                 :hint="`${setting.value},${setting.text}`"
                 :items="settings"
                 item-title="text"
                 item-value="value"
+                color="red"
                 class=""
               >
               </v-select>

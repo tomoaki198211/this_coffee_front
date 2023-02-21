@@ -153,7 +153,6 @@ async function setCoffee(): Promise<void> {
     .then((response) => {
       index.coffees = response.data;
       load.value = true;
-      console.log(response.data);
     });
 }
 
@@ -172,7 +171,6 @@ async function favoriteCoffee(): Promise<void> {
       favorite_flg.value = true;
       load.value = true;
       pageStore.setPage(1);
-      console.log(favorite.coffees);
     });
 }
 
@@ -193,7 +191,6 @@ async function setSearch(): Promise<void> {
     })
     .then((response) => {
       index.coffees = response.data;
-      console.log(response.data);
     });
 }
 

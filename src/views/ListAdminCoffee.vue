@@ -109,7 +109,6 @@ async function setCoffee(): Promise<void> {
     .then((response) => {
       index.coffees = response.data;
       load.value = true;
-      console.log(response.data);
     });
 }
 
@@ -130,7 +129,6 @@ async function setSearch(): Promise<void> {
     })
     .then((response) => {
       index.coffees = response.data;
-      console.log(response.data);
     });
 }
 

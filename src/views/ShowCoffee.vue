@@ -99,7 +99,6 @@ async function showCoffee(): Promise<void> {
       review.rich = response.data.rich;
       review.acidity = response.data.acidity;
       review.bitter = response.data.bitter;
-      console.log(response.data);
     });
 }
 </script>

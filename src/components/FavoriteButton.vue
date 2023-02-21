@@ -55,7 +55,6 @@ async function setFavorite(): Promise<void> {
   await axios
     .get(`/api/v1/coffees/${props.coffee_id}/favorites`, config)
     .then((response) => {
-      console.log(response.data);
       favorites.list = response.data;
     });
 }
@@ -77,7 +76,6 @@ async function registerFavorite(): Promise<void> {
   await axios
     .post(`/api/v1/coffees/${props.coffee_id}/favorites`, data, config)
     .then((response) => {
-      console.log(response.data);
       favorites.list = response.data;
       messageStore.flash("お気に入りしました");
       setFavorite();
@@ -96,7 +94,6 @@ async function deleteFavorite(): Promise<void> {
       },
     })
     .then((response) => {
-      console.log(response.data);
       messageStore.flash("お気に入りを解除しました");
       setFavorite();
     });

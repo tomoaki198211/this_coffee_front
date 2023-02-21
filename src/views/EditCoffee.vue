@@ -75,7 +75,6 @@ async function showCoffee(): Promise<void> {
       coffee.price = response.data.coffee.coffee_property.price;
       coffee.note = response.data.coffee.coffee_property.note;
       coffee.image = response.data.coffee.coffee_property.image;
-      console.log(response.data);
     });
 }
 async function updateCoffee(): Promise<void> {
@@ -103,7 +102,9 @@ async function updateCoffee(): Promise<void> {
     .then((response) => {
       showCoffee();
       messageStore.flash("更新しました");
-      console.log(response.data);
+    })
+    .catch((error) => {
+      messageStore.flash("更新出来ませんでした");
     });
 }
 async function destroyCoffee(): Promise<void> {
@@ -116,7 +117,6 @@ async function destroyCoffee(): Promise<void> {
       },
     })
     .then((response: AxiosResponse<any>) => {
-      console.log(response.status);
       messageStore.flash("削除しました");
       router.push("/coffees/admin/index");
     });
