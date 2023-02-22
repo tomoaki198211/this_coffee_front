@@ -14,6 +14,7 @@ import { mdiEmoticonHappyOutline } from "@mdi/js";
 import { mdiEmoticonNeutralOutline } from "@mdi/js";
 import { mdiEmoticonSadOutline } from "@mdi/js";
 import { mdiEmoticonDeadOutline } from "@mdi/js";
+import { URL } from "@/url.ts";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -173,7 +174,7 @@ watch(searchStore.review_selected_store, () => {
 
 async function setMaster(): Promise<void> {
   await axios
-    .get("api/v1/coffees/option", {
+    .get(`${URL.ADDRESS}/api/v1/coffees/option`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
