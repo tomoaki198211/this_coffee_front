@@ -10,7 +10,7 @@ type User = {
   client?: string | null;
   user_id?: string | null;
   user_name?: string | null;
-  admin?: string | null;
+  admin?: string | boolean | null;
 };
 
 export const useAuthStore = defineStore({
