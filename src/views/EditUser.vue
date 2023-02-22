@@ -8,6 +8,7 @@ import { mdiArrowLeftThick } from "@mdi/js";
 import { mdiEmailOutline } from "@mdi/js";
 import { mdiLockOutline } from "@mdi/js";
 import { mdiAccountSupervisorOutline } from "@mdi/js";
+import { URL } from "../url";
 
 interface Props {
   id: number;
@@ -27,7 +28,7 @@ setUser();
 
 async function setUser(): Promise<void> {
   await axios
-    .get(`/api/v1/admin/users/${props.id}`, {
+    .get(`${URL.ADDRESS}/api/v1/admin/users/${props.id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -41,7 +42,7 @@ async function setUser(): Promise<void> {
 }
 async function updateUser(): Promise<void> {
   await axios
-    .put(`/api/v1/admin/users/${props.id}`, {
+    .put(`${URL.ADDRESS}/api/v1/admin/users/${props.id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -57,7 +58,7 @@ async function updateUser(): Promise<void> {
 }
 async function destroyUser(): Promise<void> {
   await axios
-    .delete(`/api/v1/admin/users/${props.id}`, {
+    .delete(`${URL.ADDRESS}/api/v1/admin/users/${props.id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,

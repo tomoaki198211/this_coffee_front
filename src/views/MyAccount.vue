@@ -7,6 +7,7 @@ import { mdiEmailOutline } from "@mdi/js";
 import { mdiLockOutline } from "@mdi/js";
 import Image from "../components/CoffeeImage.vue";
 import GetReccommend from "../components/GetReccommend.vue";
+import { URL } from "../url";
 
 const authStore = useAuthStore();
 const disabled_flg = ref(true);
@@ -58,7 +59,7 @@ const onShow = () => {
 
 async function setCoffee(): Promise<void> {
   await axios
-    .get("/api/v1/coffees", {
+    .get(`${URL.ADDRESS}/api/v1/coffees`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,

@@ -9,6 +9,7 @@ import { mdiCoffeeOutline } from "@mdi/js";
 import RadarChart from "../components/RadarChart.vue";
 import Image from "../components/CoffeeImage.vue";
 import GetTweet from "../components/GetTweet.vue";
+import { URL } from "../url";
 
 interface Props {
   id: number;
@@ -55,7 +56,7 @@ showCoffee();
 
 async function setMaster(): Promise<void> {
   await axios
-    .get("/api/v1/coffees/option", {
+    .get(`${URL.ADDRESS}/api/v1/coffees/option`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -70,7 +71,7 @@ async function setMaster(): Promise<void> {
 
 async function showCoffee(): Promise<void> {
   await axios
-    .get(`/api/v1/coffees/${props.id}`, {
+    .get(`${URL.ADDRESS}/api/v1/coffees/${props.id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,

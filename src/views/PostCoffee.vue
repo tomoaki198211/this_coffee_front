@@ -6,6 +6,7 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 import { mdiArrowLeftThick } from "@mdi/js";
 import Image from "@/components/CoffeeImage.vue";
+import { URL } from "../url";
 
 const authStore = useAuthStore();
 const messageStore = useMessageStore();
@@ -33,7 +34,7 @@ setMaster();
 
 async function setMaster(): Promise<void> {
   await axios
-    .get("/api/v1/coffees/option", {
+    .get(`${URL.ADDRESS}/api/v1/coffees/option`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -66,12 +67,14 @@ async function postCoffeeMaster(): Promise<void> {
       client: authStore.client,
     },
   };
-  await axios.post("/api/v1/coffees", data, config).then((response) => {
-    messageStore.flash("作成しました");
-    router.push({
-      path: "/coffees/admin/index",
+  await axios
+    .post(`${URL.ADDRESS}/api/v1/coffees`, data, config)
+    .then((response) => {
+      messageStore.flash("作成しました");
+      router.push({
+        path: "/coffees/admin/index",
+      });
     });
-  });
 }
 </script>
 <template>

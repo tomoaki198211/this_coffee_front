@@ -5,6 +5,7 @@ import { useMessageStore } from "@/stores/message";
 import axios from "axios";
 import { mdiHeart } from "@mdi/js";
 import { mdiHeartOutline } from "@mdi/js";
+import { URL } from "../url";
 
 interface Props {
   coffee_id: number;
@@ -53,7 +54,7 @@ async function setFavorite(): Promise<void> {
     },
   };
   await axios
-    .get(`/api/v1/coffees/${props.coffee_id}/favorites`, config)
+    .get(`${URL.ADDRESS}/api/v1/coffees/${props.coffee_id}/favorites`, config)
     .then((response) => {
       favorites.list = response.data;
     });
@@ -74,7 +75,11 @@ async function registerFavorite(): Promise<void> {
     },
   };
   await axios
-    .post(`/api/v1/coffees/${props.coffee_id}/favorites`, data, config)
+    .post(
+      `${URL.ADDRESS}/api/v1/coffees/${props.coffee_id}/favorites`,
+      data,
+      config
+    )
     .then((response) => {
       favorites.list = response.data;
       messageStore.flash("お気に入りしました");
@@ -86,13 +91,16 @@ async function registerFavorite(): Promise<void> {
 async function deleteFavorite(): Promise<void> {
   const favoriteid = findFavoriteId();
   await axios
-    .delete(`/api/v1/coffees/${props.coffee_id}/favorites/${favoriteid}`, {
-      headers: {
-        uid: authStore.uid,
-        "access-token": authStore.access_token,
-        client: authStore.client,
-      },
-    })
+    .delete(
+      `${URL.ADDRESS}/api/v1/coffees/${props.coffee_id}/favorites/${favoriteid}`,
+      {
+        headers: {
+          uid: authStore.uid,
+          "access-token": authStore.access_token,
+          client: authStore.client,
+        },
+      }
+    )
     .then((response) => {
       messageStore.flash("お気に入りを解除しました");
       setFavorite();

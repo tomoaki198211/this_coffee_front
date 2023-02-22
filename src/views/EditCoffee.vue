@@ -7,6 +7,7 @@ import axios, { type AxiosResponse } from "axios";
 import { mdiArrowLeftThick } from "@mdi/js";
 import { mdiCoffeeOutline } from "@mdi/js";
 import Image from "../components/CoffeeImage.vue";
+import { URL } from "../url";
 
 interface Props {
   id: number;
@@ -41,7 +42,7 @@ showCoffee();
 
 async function setMaster(): Promise<void> {
   await axios
-    .get("/api/v1/coffees/option", {
+    .get(`${URL.ADDRESS}/api/v1/coffees/option`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -56,7 +57,7 @@ async function setMaster(): Promise<void> {
 
 async function showCoffee(): Promise<void> {
   await axios
-    .get(`/api/v1/coffees/${props.id}`, {
+    .get(`${URL.ADDRESS}/api/v1/coffees/${props.id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -98,7 +99,7 @@ async function updateCoffee(): Promise<void> {
     },
   };
   await axios
-    .patch(`/api/v1/coffees/${props.id}`, data, config)
+    .patch(`${URL.ADDRESS}/api/v1/coffees/${props.id}`, data, config)
     .then((response) => {
       showCoffee();
       messageStore.flash("更新しました");
@@ -109,7 +110,7 @@ async function updateCoffee(): Promise<void> {
 }
 async function destroyCoffee(): Promise<void> {
   await axios
-    .delete(`/api/v1/coffees/${props.id}`, {
+    .delete(`${URL.ADDRESS}/api/v1/coffees/${props.id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
