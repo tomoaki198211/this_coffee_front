@@ -13,9 +13,9 @@ const props = defineProps<Props>();
 const tweets: any = ref([]);
 const authStore = useAuthStore();
 const messageStore = useMessageStore();
+const isTweetButton = ref(false);
 
 async function getTweet(): Promise<void> {
-  tweets.value.length = 0;
   const config = {
     headers: {
       uid: authStore.uid,
@@ -32,11 +32,13 @@ async function getTweet(): Promise<void> {
     .post(`${URL.ADDRESS}/api/v1/tweets/search`, data, config)
     .then((response) => {
       tweets.value = response.data;
-      if (tweets.value.length == 0) {
+      isTweetButton.value = true;
+      if (tweets.value == null) {
         messageStore.flash("検索結果はありません。");
       }
     })
     .catch((error) => {
+      isTweetButton.value = true;
       messageStore.flash("検索結果がないか、取得出来ませんでした");
     });
 }
@@ -44,13 +46,20 @@ async function getTweet(): Promise<void> {
 
 <template>
   <v-card>
-    <v-btn
-      @click="getTweet()"
-      variant="text"
-      :prepend-icon="mdiTwitter"
-      :disabled="!authStore.isAuthencated()"
-      >ツイッターで評判を見る</v-btn
-    >
+    <template v-if="!isTweetButton">
+      <v-btn
+        @click="getTweet()"
+        variant="text"
+        :prepend-icon="mdiTwitter"
+        :disabled="!authStore.isAuthencated()"
+        >ツイッターで評判を見る</v-btn
+      >
+    </template>
+    <template v-else>
+      <v-card-subtitle>
+        実行済みです。表示がない場合検索結果は０。
+      </v-card-subtitle>
+    </template>
     <v-list>
       <v-list-item v-for="tweet in tweets" :key="tweet.id"
         >{{ tweet.text }}

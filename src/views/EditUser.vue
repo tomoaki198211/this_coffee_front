@@ -41,19 +41,28 @@ async function setUser(): Promise<void> {
     });
 }
 async function updateUser(): Promise<void> {
-  await axios
-    .put(`${URL.ADDRESS}/api/v1/admin/users/${props.id}`, {
-      headers: {
-        uid: authStore.uid,
-        "access-token": authStore.access_token,
-        client: authStore.client,
-      },
+  const config = {
+    headers: {
+      uid: authStore.uid,
+      "access-token": authStore.access_token,
+      client: authStore.client,
+    },
+  };
+  const data = {
+    user: {
       name: user.name,
       email: user.email,
       password: user.password,
-    })
+    },
+  };
+  await axios
+    .patch(`${URL.ADDRESS}/api/v1/admin/users/${props.id}`, data, config)
     .then(() => {
       messageStore.flash("更新しました");
+      router.push("/users/admin/index");
+    })
+    .catch((error) => {
+      messageStore.flash("更新出来ませんでした");
     });
 }
 async function destroyUser(): Promise<void> {
@@ -68,6 +77,9 @@ async function destroyUser(): Promise<void> {
     .then(() => {
       messageStore.flash("削除しました");
       router.push("/users/admin/index");
+    })
+    .catch((error) => {
+      messageStore.flash("削除出来ませんでした");
     });
 }
 </script>
