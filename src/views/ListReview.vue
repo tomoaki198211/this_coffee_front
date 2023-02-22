@@ -14,7 +14,7 @@ import { mdiEmoticonHappyOutline } from "@mdi/js";
 import { mdiEmoticonNeutralOutline } from "@mdi/js";
 import { mdiEmoticonSadOutline } from "@mdi/js";
 import { mdiEmoticonDeadOutline } from "@mdi/js";
-import { URL } from "@/url.ts";
+import { URL } from "../url";
 
 const authStore = useAuthStore();
 const router = useRouter();
