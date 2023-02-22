@@ -173,7 +173,7 @@ watch(searchStore.review_selected_store, () => {
 
 async function setMaster(): Promise<void> {
   await axios
-    .get("/api/v1/coffees/option", {
+    .get("api/v1/coffees/option", {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
