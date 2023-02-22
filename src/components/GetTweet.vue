@@ -57,8 +57,8 @@ async function getTweet(): Promise<void> {
     </template>
     <template v-else>
       <v-card-subtitle>
-        実行済みです。表示がない場合検索結果は０。</v-card-subtitle
-      >
+        実行済みです。表示がない場合検索結果は０。
+      </v-card-subtitle>
     </template>
     <v-list>
       <v-list-item v-for="tweet in tweets" :key="tweet.id"

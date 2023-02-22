@@ -41,17 +41,22 @@ async function setUser(): Promise<void> {
     });
 }
 async function updateUser(): Promise<void> {
-  await axios
-    .patch(`${URL.ADDRESS}/api/v1/admin/users/${props.id}`, {
-      headers: {
-        uid: authStore.uid,
-        "access-token": authStore.access_token,
-        client: authStore.client,
-      },
+  const config = {
+    headers: {
+      uid: authStore.uid,
+      "access-token": authStore.access_token,
+      client: authStore.client,
+    },
+  };
+  const data = {
+    user: {
       name: user.name,
       email: user.email,
       password: user.password,
-    })
+    },
+  };
+  await axios
+    .patch(`${URL.ADDRESS}/api/v1/admin/users/${props.id}`, data, config)
     .then(() => {
       messageStore.flash("更新しました");
       router.push("/users/admin/index");
