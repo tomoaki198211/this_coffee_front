@@ -33,7 +33,7 @@ async function getTweet(): Promise<void> {
     .then((response) => {
       tweets.value = response.data;
       isTweetButton.value = true;
-      if (tweets.value.length == 0) {
+      if (tweets.value == null) {
         messageStore.flash("検索結果はありません。");
       }
     })
@@ -57,8 +57,8 @@ async function getTweet(): Promise<void> {
     </template>
     <template v-else>
       <v-card-subtitle>
-        実行済みです、空の場合は<br />検索結果がありません。
-      </v-card-subtitle>
+        実行済みです。表示がない場合検索結果は０。</v-card-subtitle
+      >
     </template>
     <v-list>
       <v-list-item v-for="tweet in tweets" :key="tweet.id"
