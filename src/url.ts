@@ -1,3 +1,3 @@
 export const URL = {
-  ADDRESS: "http://localhost:3000",
+  ADDRESS: "http://35.79.178.52",
 };
