@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import moment from "moment";
 import { useAuthStore } from "../stores/auth";
+import { URL } from "../url";
 
 const preference = ref(0);
 const index: any = reactive({
@@ -29,7 +30,7 @@ const onpreferenceCoffeeStart = async () => {
     },
   };
   await axios
-    .post("/api/v1/reviews/preference", data, config)
+    .post(`${URL.ADDRESS}/api/v1/reviews/preference`, data, config)
     .then((response) => {
       index.reviews = response.data;
     })

@@ -10,6 +10,7 @@ import { mdiMagnify } from "@mdi/js";
 import { mdiCoffeeOutline } from "@mdi/js";
 import { mdiHeart } from "@mdi/js";
 import Image from "../components/CoffeeImage.vue";
+import { URL } from "../url";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -127,7 +128,7 @@ const pageReset = () => {
 //0マスター取得用
 async function setMaster(): Promise<void> {
   await axios
-    .get("/api/v1/coffees/option", {
+    .get(`${URL.ADDRESS}/api/v1/coffees/option`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -143,7 +144,7 @@ async function setMaster(): Promise<void> {
 //1 axios
 async function setCoffee(): Promise<void> {
   await axios
-    .get("/api/v1/coffees", {
+    .get(`${URL.ADDRESS}/api/v1/coffees`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -159,7 +160,7 @@ async function setCoffee(): Promise<void> {
 //2お気に入り取得
 async function favoriteCoffee(): Promise<void> {
   await axios
-    .get("/api/v1/coffees/likes", {
+    .get(`${URL.ADDRESS}/api/v1/coffees/likes`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -177,7 +178,7 @@ async function favoriteCoffee(): Promise<void> {
 //3API側で検索結果を表示する
 async function setSearch(): Promise<void> {
   await axios
-    .post("/api/v1/coffees/search", {
+    .post(`${URL.ADDRESS}/api/v1/coffees/search`, {
       search: {
         word: searchStore.search_word,
         category: searchStore.selected_category.id,

@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import axios from "axios";
 import { mdiAccountSupervisorOutline } from "@mdi/js";
+import { URL } from "../url";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -20,7 +21,7 @@ indexUsers();
 
 async function indexUsers(): Promise<void> {
   await axios
-    .get("/api/v1/admin/users", {
+    .get(`${URL.ADDRESS}/api/v1/admin/users`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,

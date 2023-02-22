@@ -8,6 +8,7 @@ import RadarChart from "../components/RadarChart.vue";
 import moment from "moment";
 import { mdiArrowLeftThick } from "@mdi/js";
 import Image from "../components/CoffeeImage.vue";
+import { URL } from "../url";
 
 interface Props {
   id: number;
@@ -69,7 +70,7 @@ setReview();
 
 async function setReview(): Promise<void> {
   await axios
-    .get(`/api/v1/reviews/${props.id}`, {
+    .get(`${URL.ADDRESS}/api/v1/reviews/${props.id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -99,7 +100,7 @@ async function setReview(): Promise<void> {
 }
 async function destroyReview(id: any): Promise<void> {
   await axios
-    .delete(`/api/v1/reviews/${id}`, {
+    .delete(`${URL.ADDRESS}/api/v1/reviews/${id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -142,7 +143,7 @@ async function updateReview(): Promise<void> {
     },
   };
   await axios
-    .patch(`/api/v1/reviews/${review_id.value}`, data, config)
+    .patch(`${URL.ADDRESS}/api/v1/reviews/${review_id.value}`, data, config)
     .then((response) => {
       setReview();
       onShow();

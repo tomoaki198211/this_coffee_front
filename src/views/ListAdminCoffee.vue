@@ -6,6 +6,7 @@ import axios from "axios";
 import { mdiMagnify } from "@mdi/js";
 import { mdiPlus } from "@mdi/js";
 import { mdiCoffeeOutline } from "@mdi/js";
+import { URL } from "../url";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -83,7 +84,7 @@ setMaster();
 //0マスター取得用
 async function setMaster(): Promise<void> {
   await axios
-    .get("/api/v1/coffees/option", {
+    .get(`${URL.ADDRESS}/api/v1/coffees/option`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -99,7 +100,7 @@ async function setMaster(): Promise<void> {
 //1 axios コーヒーは直近1０件ほどに制限
 async function setCoffee(): Promise<void> {
   await axios
-    .get("/api/v1/coffees", {
+    .get(`${URL.ADDRESS}/api/v1/coffees`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -115,7 +116,7 @@ async function setCoffee(): Promise<void> {
 // 2 axios 検索結果を表示する
 async function setSearch(): Promise<void> {
   await axios
-    .post("/api/v1/coffees/search", {
+    .post(`${URL.ADDRESS}/api/v1/coffees/search`, {
       search: {
         word: search_word.value,
         category: selected_category.id,

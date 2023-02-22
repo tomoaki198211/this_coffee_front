@@ -4,6 +4,7 @@ import axios from "axios";
 import { useAuthStore } from "../stores/auth";
 import { mdiTwitter } from "@mdi/js";
 import { useMessageStore } from "@/stores/message";
+import { URL } from "../url";
 
 interface Props {
   name: string;
@@ -28,7 +29,7 @@ async function getTweet(): Promise<void> {
     },
   };
   await axios
-    .post("/api/v1/tweets/search", data, config)
+    .post(`${URL.ADDRESS}/api/v1/tweets/search`, data, config)
     .then((response) => {
       tweets.value = response.data;
       if (tweets.value.length == 0) {

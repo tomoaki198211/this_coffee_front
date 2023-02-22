@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import axios, { type AxiosResponse } from "axios";
 import { useMessageStore } from "@/stores/message";
 import router from "../router";
+import { URL } from "../url";
 
 type User = {
   uid?: string | null;
@@ -34,7 +35,7 @@ export const useAuthStore = defineStore({
       const messageStore = useMessageStore();
       try {
         await axios
-          .post("/api/v1/auth", {
+          .post(`${URL.ADDRESS}/api/v1/auth`, {
             email: email,
             password: password,
             password_confirmation: password_confirmation,
@@ -64,7 +65,7 @@ export const useAuthStore = defineStore({
       const messageStore = useMessageStore();
       try {
         await axios
-          .post("/api/v1/auth/sign_in", {
+          .post(`${URL.ADDRESS}/api/v1/auth/sign_in`, {
             email: email,
             password: password,
           })
@@ -93,20 +94,22 @@ export const useAuthStore = defineStore({
     async guest_login(): Promise<void> {
       const messageStore = useMessageStore();
       try {
-        await axios.post("/api/v1/auth/guest_sign_in", {}).then((response) => {
-          localStorage["client"] = response.headers["client"];
-          localStorage["uid"] = response.headers["uid"];
-          localStorage["access-token"] = response.headers["access-token"];
-          localStorage["user-id"] = response.data.data.id;
-          localStorage["user-name"] = response.data.data.name;
-          this.access_token = response.headers["access-token"];
-          this.client = response.headers["client"];
-          this.uid = response.headers["uid"];
-          this.user_id = response.data.data.id;
-          this.user_name = response.data.data.name;
-          messageStore.flash("ログインしました");
-          router.push({ path: "/reviews" });
-        });
+        await axios
+          .post(`${URL.ADDRESS}/api/v1/auth/guest_sign_in`, {})
+          .then((response) => {
+            localStorage["client"] = response.headers["client"];
+            localStorage["uid"] = response.headers["uid"];
+            localStorage["access-token"] = response.headers["access-token"];
+            localStorage["user-id"] = response.data.data.id;
+            localStorage["user-name"] = response.data.data.name;
+            this.access_token = response.headers["access-token"];
+            this.client = response.headers["client"];
+            this.uid = response.headers["uid"];
+            this.user_id = response.data.data.id;
+            this.user_name = response.data.data.name;
+            messageStore.flash("ログインしました");
+            router.push({ path: "/reviews" });
+          });
       } catch (error: any) {
         messageStore.flash(error.response.data.errors[0]);
       }
@@ -117,7 +120,7 @@ export const useAuthStore = defineStore({
       const messageStore = useMessageStore();
       try {
         await axios
-          .post("/api/v1/auth/guest_admin_sign_in", {})
+          .post(`${URL.ADDRESS}/api/v1/auth/guest_admin_sign_in`, {})
           .then((response) => {
             localStorage["client"] = response.headers["client"];
             localStorage["uid"] = response.headers["uid"];
@@ -142,7 +145,7 @@ export const useAuthStore = defineStore({
     //ログアウト
     async logout(): Promise<void> {
       const messageStore = useMessageStore();
-      await axios.delete("/api/v1/auth/sign_out", {
+      await axios.delete(`${URL.ADDRESS}/api/v1/auth/sign_out`, {
         headers: {
           uid: this.uid,
           "access-token": this.access_token,
@@ -167,7 +170,7 @@ export const useAuthStore = defineStore({
     //アカウント削除
     async sign_out(): Promise<void> {
       const messageStore = useMessageStore();
-      await axios.delete("/api/v1/auth", {
+      await axios.delete(`${URL.ADDRESS}/api/v1/auth`, {
         headers: {
           uid: this.uid,
           "access-token": this.access_token,
@@ -197,7 +200,7 @@ export const useAuthStore = defineStore({
       const messageStore = useMessageStore();
       try {
         await axios
-          .put("/api/v1/auth", {
+          .put(`${URL.ADDRESS}/api/v1/auth`, {
             uid: this.uid,
             "access-token": this.access_token,
             client: this.client,

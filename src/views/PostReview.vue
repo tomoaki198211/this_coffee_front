@@ -7,6 +7,7 @@ import axios, { type AxiosResponse } from "axios";
 import RadarChart from "../components/RadarChart.vue";
 import { mdiArrowLeftThick } from "@mdi/js";
 import Image from "../components/CoffeeImage.vue";
+import { URL } from "../url";
 
 interface Props {
   id: number;
@@ -61,7 +62,7 @@ const coffee: any = reactive({
 //選択したマスターのshow画面
 async function showCoffee(): Promise<void> {
   await axios
-    .get(`/api/v1/coffees/${props.id}`, {
+    .get(`${URL.ADDRESS}/api/v1/coffees/${props.id}`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -99,7 +100,7 @@ async function postReview(): Promise<void> {
     },
   };
   await axios
-    .post("/api/v1/reviews", data, config)
+    .post(`${URL.ADDRESS}/api/v1/reviews`, data, config)
     .then((response) => {
       router.push("/reviews");
       messageStore.flash("レビューを作成しました");

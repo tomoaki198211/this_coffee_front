@@ -189,7 +189,7 @@ async function setMaster(): Promise<void> {
 
 async function setReview(): Promise<void> {
   await axios
-    .get("/api/v1/reviews", {
+    .get(`${URL.ADDRESS}/api/v1/reviews`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -204,7 +204,7 @@ async function setReview(): Promise<void> {
 
 async function setAllReview(): Promise<void> {
   await axios
-    .get("/api/v1/reviews/all", {
+    .get(`${URL.ADDRESS}/api/v1/reviews/all`, {
       headers: {
         uid: authStore.uid,
         "access-token": authStore.access_token,
@@ -220,7 +220,7 @@ async function setAllReview(): Promise<void> {
 //api側で検索する場合に使用
 async function setSearch(): Promise<void> {
   await axios
-    .post("/api/v1/reviews/search", {
+    .post(`${URL.ADDRESS}/api/v1/reviews/search`, {
       search: {
         word: searchStore.review_search_word,
         category: searchStore.review_selected_category.id,
