@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import { useMessageStore } from "@/stores/message";
 import LoginView from "@/views/LoginView.vue";
 import HomeView from "@/views/HomeView.vue";
 import SignupView from "@/views/SignupView.vue";
@@ -38,7 +39,6 @@ const router = createRouter({
     {
       path: "/users/admin/edit/:id",
       name: "edit_user",
-      //動的インポート
       component: () => {
         return import("../views/EditUser.vue");
       },
@@ -83,7 +83,6 @@ const router = createRouter({
     {
       path: "/coffees/admin/edit/:id",
       name: "edit_coffee",
-      //動的インポート
       component: () => {
         return import("../views/EditCoffee.vue");
       },
@@ -136,66 +135,140 @@ const router = createRouter({
 //ログインしていないとマイアカウントにいけない
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
-  if (to.name == "myaccount" && !authStore.isAuthencated())
+  const messageStore = useMessageStore();
+  if (to.name == "my_account" && !authStore.isAuthencated()) {
+    messageStore.flash("ログインしていないとマイカウントに移動出来ません");
     next({ name: "login" });
-  else next();
+  } else next();
 });
 
 //ログインしていないとレビューを投稿出来ない。
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
-  if (to.name == "post_review" && !authStore.isAuthencated())
+  const messageStore = useMessageStore();
+  if (to.name == "post_review" && !authStore.isAuthencated()) {
+    messageStore.flash("ログインしていないユーザーはレビューを投稿出来ません");
     next({ name: "login" });
-  else next();
+  } else next();
 });
 
 //レビューは直接閲覧出来ない。レビュー一覧か、マイカウントからのみ移動出来る
 router.beforeEach((to, from, next) => {
+  const messageStore = useMessageStore();
   if (
     to.name === "review" &&
     !(from.name === "reviews" || from.name === "my_account")
-  )
+  ) {
+    messageStore.flash("レビューは直接開く事が出来ません");
     next({ name: "reviews" });
-  else next();
+  } else next();
 });
 
 //レビュー投稿は直接入力では投稿画面に行けない。
 router.beforeEach((to, from, next) => {
-  if (to.name === "post_review" && from.name !== "coffees")
+  const messageStore = useMessageStore();
+  if (to.name === "post_review" && from.name !== "coffees") {
+    messageStore.flash("レビュー投稿画面はコーヒー覧画面から選択して下さい");
     next({ name: "coffees" });
-  else next();
+  } else next();
 });
 
 //他ユーザーを管理するadminユーザーは一覧からのみエディット画面に行くことが出来る。
 router.beforeEach((to, from, next) => {
-  if (to.name === "edit_user" && from.name !== "index_user")
-    next({ name: "reviews" });
-  else next();
+  const messageStore = useMessageStore();
+  if (to.name === "edit_user" && from.name !== "index_user") {
+    messageStore.flash(
+      "他ユーザーの編集は管理者かつ、一覧画面から移動出来ます"
+    );
+    next({ name: "home" });
+  } else next();
 });
 
 //コーヒーマスターの編集はコーヒーマスター一覧からのみいくことが出来る
 router.beforeEach((to, from, next) => {
-  if (to.name === "edit_coffee" && from.name !== "index_coffee")
-    next({ name: "coffees" });
-  else next();
+  const messageStore = useMessageStore();
+  if (to.name === "edit_coffee" && from.name !== "index_coffee") {
+    messageStore.flash(
+      "コーヒーマスターの編集は管理者かつ、一覧画面から移動出来ます"
+    );
+    next({ name: "home" });
+  } else next();
 });
 
 //コーヒーマスターの投稿はコーヒーマスター一覧からのみいくことが出来る
 router.beforeEach((to, from, next) => {
-  if (to.name === "post_coffee" && from.name !== "index_coffee")
-    next({ name: "coffees" });
-  else next();
+  const messageStore = useMessageStore();
+  if (to.name === "post_coffee" && from.name !== "index_coffee") {
+    messageStore.flash(
+      "コーヒーマスターの投稿は管理者かつ、一覧画面から移動出来ます"
+    );
+    next({ name: "home" });
+  } else next();
 });
 
-// ログイン中はログイン、アカウント登録画面に行けない(未完成)
+// ログイン中はログイン、アカウント登録画面に行けない
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
+  const messageStore = useMessageStore();
   if (
     authStore.isAuthencated() &&
     (to.name === "login" || to.name === "signup")
-  )
+  ) {
+    messageStore.flash(
+      "ログイン中は、ログイン・アカウント登録画面に移動出来ません"
+    );
     next({ name: "my_account" });
-  else next();
+  } else next();
+});
+
+//コーヒー管理画面一覧は管理者しかアクセス出来ない
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+  const messageStore = useMessageStore();
+  if (to.name === "index_coffee" && authStore.admin !== true) {
+    messageStore.flash("管理者以外はアクセス出来ません");
+    next({ name: "home" });
+  } else next();
+});
+
+//ユーザー管理画面は管理者しかアクセス出来ない
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+  const messageStore = useMessageStore();
+  if (to.name === "index_user" && authStore.admin !== true) {
+    messageStore.flash("管理者以外はアクセス出来ません");
+    next({ name: "home" });
+  } else next();
+});
+
+//コーヒーマスターの投稿は管理者しか出来ない
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+  const messageStore = useMessageStore();
+  if (to.name === "post_coffee" && authStore.admin !== true) {
+    messageStore.flash("管理者以外はアクセス出来ません");
+    next({ name: "home" });
+  } else next();
+});
+
+//コーヒー編集は管理者しか出来ない
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+  const messageStore = useMessageStore();
+  if (to.name === "edit_coffee" && authStore.admin !== true) {
+    messageStore.flash("管理者以外はアクセス出来ません");
+    next({ name: "home" });
+  } else next();
+});
+
+//ユーザー編集は管理者しか出来ない
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+  const messageStore = useMessageStore();
+  if (to.name === "edit_user" && authStore.admin !== true) {
+    messageStore.flash("管理者以外はアクセス出来ません");
+    next({ name: "home" });
+  } else next();
 });
 
 export default router;
