@@ -17,9 +17,9 @@ export default defineConfig({
       "^/api/.*": {
         // target: "http://localhost:3000",
         //本番環境(s3)では下のproxyが動かずaxiosの部分を書き換えないと動かなかった
-        target: "http://35.79.178.52/api",
+        target: "http://35.79.178.52",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        // rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
   },
