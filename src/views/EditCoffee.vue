@@ -103,6 +103,7 @@ async function updateCoffee(): Promise<void> {
     .then((response) => {
       showCoffee();
       messageStore.flash("更新しました");
+      router.push("/coffees/admin/index");
     })
     .catch((error) => {
       messageStore.flash("更新出来ませんでした");
@@ -120,6 +121,9 @@ async function destroyCoffee(): Promise<void> {
     .then((response: AxiosResponse<any>) => {
       messageStore.flash("削除しました");
       router.push("/coffees/admin/index");
+    })
+    .catch((error) => {
+      messageStore.flash("削除出来ませんでした");
     });
 }
 </script>

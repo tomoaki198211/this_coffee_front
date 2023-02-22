@@ -1,3 +1,6 @@
 export const URL = {
-  ADDRESS: "http://35.79.178.52",
+  // 本番
+  // ADDRESS: "http://35.79.178.52",
+  // ローカル
+  ADDRESS: "",
 };

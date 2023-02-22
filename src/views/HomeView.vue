@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth";
 import { mdiCoffeeOutline } from "@mdi/js";
 import { mdiCommentTextOutline } from "@mdi/js";
 import { mdiAccountPlus } from "@mdi/js";
@@ -8,6 +9,7 @@ import review_img from "@/assets/image/review.jpg";
 import pc_img from "@/assets/image/pc_coffee.jpg";
 
 const router = useRouter();
+const authStore = useAuthStore();
 </script>
 <template>
   <v-container>
@@ -106,16 +108,18 @@ const router = useRouter();
                 >レビューを見てみる</v-btn
               >
             </v-card-actions>
-            <v-card-actions>
-              <v-btn
-                block
-                variant="outlined"
-                color="#7b5544"
-                :prepend-icon="mdiAccountPlus"
-                @click="router.push('/auth/signup')"
-                >アカウントを登録する！</v-btn
-              >
-            </v-card-actions>
+            <template v-if="!authStore.isAuthencated()">
+              <v-card-actions>
+                <v-btn
+                  block
+                  variant="outlined"
+                  color="#7b5544"
+                  :prepend-icon="mdiAccountPlus"
+                  @click="router.push('/auth/signup')"
+                  >アカウントを登録する！</v-btn
+                >
+              </v-card-actions>
+            </template>
           </v-card>
         </v-col>
       </v-col>
