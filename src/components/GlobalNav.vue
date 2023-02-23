@@ -13,6 +13,7 @@ import { mdiAccountCircleOutline } from "@mdi/js";
 import { mdiHomeOutline } from "@mdi/js";
 import { mdiCoffeeOutline } from "@mdi/js";
 import { mdiCommentOutline } from "@mdi/js";
+import logo from "../assets/image/logo3.png";
 
 const drawer = ref(false);
 const authStore = useAuthStore();
@@ -27,7 +28,9 @@ const onLogout = (): void => {
 
 <template>
   <v-app-bar :elevation="2" color="#7b5544">
-    <v-app-bar-title><p class="title">this Coffee!</p></v-app-bar-title>
+    <v-app-bar-title>
+      <v-img :src="logo" height="60px"></v-img>
+    </v-app-bar-title>
     <template class="d-none d-md-block">
       <template v-if="!authStore.isAuthencated()">
         <v-btn
