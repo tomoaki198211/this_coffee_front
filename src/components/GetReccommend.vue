@@ -7,7 +7,7 @@ import moment from "moment";
 import { useAuthStore } from "../stores/auth";
 import { URL } from "../url";
 
-const preference = ref(0);
+const preference = ref(null);
 const index: any = reactive({
   reviews: [],
 });
@@ -48,6 +48,7 @@ const onpreferenceCoffeeStart = async () => {
 <template>
   <v-card class="mt-10 mb-8 mx-auto bg-color" max-width="400px">
     <v-card-title>好みからおすすめを探す</v-card-title>
+    <v-card-subtitle>好みをチェックして下さい</v-card-subtitle>
     <v-container fluid>
       <v-row>
         <v-col cols="12" sm="6">
@@ -91,15 +92,16 @@ const onpreferenceCoffeeStart = async () => {
         </v-col>
       </v-row>
     </v-container>
-    <v-btn
-      class="mx-auto"
-      block
-      @click="onpreferenceCoffeeStart()"
-      color="#d7ccc8"
-      >おすすめを探す</v-btn
-    ><v-card-subtitle
-      >選択した項目の評価の高いレビューを5件表示</v-card-subtitle
-    >
+    <template v-if="preference !== null">
+      <v-btn
+        class="mx-auto"
+        block
+        @click="onpreferenceCoffeeStart()"
+        color="#d7ccc8"
+        >おすすめを探す
+      </v-btn>
+    </template>
+    <v-card-subtitle>選択した項目の評価の高いレビューを5件表示</v-card-subtitle>
     <v-list>
       <v-list-item
         v-for="review in index.reviews"
