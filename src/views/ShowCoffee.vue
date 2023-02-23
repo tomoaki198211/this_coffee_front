@@ -123,7 +123,6 @@ async function showCoffee(): Promise<void> {
             ><v-icon start :icon="mdiCoffeeOutline"></v-icon>
             コーヒーマスタ
           </v-chip>
-          <!-- <v-img src="" alt="" height="150" cover></v-img> -->
           <Image v-bind:id="Number(selected_category.id)" v-bind:height="150" />
           <v-divider></v-divider>
           <v-card-item>
