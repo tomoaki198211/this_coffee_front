@@ -56,7 +56,8 @@ export const useAuthStore = defineStore({
             router.push({ path: "/reviews" });
           });
       } catch (error: any) {
-        messageStore.flash(error.response.data.errors.full_messages);
+        const errors = error.response.data.errors.full_messages;
+        messageStore.flash(errors.join(","), "red");
       }
     },
 
@@ -86,7 +87,7 @@ export const useAuthStore = defineStore({
             router.push({ path: "/reviews" });
           });
       } catch (error: any) {
-        messageStore.flash(error.response.data.errors[0]);
+        messageStore.flash(error.response.data.errors[0], "red");
       }
     },
 
@@ -189,7 +190,7 @@ export const useAuthStore = defineStore({
       this.user_id = null;
       this.user_name = null;
       this.admin = null;
-      messageStore.flash("アカウントを削除しました");
+      messageStore.flash("アカウントを削除しました", "red");
     },
 
     async account_update(

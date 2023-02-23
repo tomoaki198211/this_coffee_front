@@ -62,7 +62,7 @@ async function updateUser(): Promise<void> {
       router.push("/users/admin/index");
     })
     .catch((error) => {
-      messageStore.flash("更新出来ませんでした");
+      messageStore.flash("更新出来ませんでした", "red");
     });
 }
 async function destroyUser(): Promise<void> {
@@ -79,7 +79,7 @@ async function destroyUser(): Promise<void> {
       router.push("/users/admin/index");
     })
     .catch((error) => {
-      messageStore.flash("削除出来ませんでした");
+      messageStore.flash("削除出来ませんでした", "red");
     });
 }
 </script>

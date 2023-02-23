@@ -34,12 +34,12 @@ async function getTweet(): Promise<void> {
       tweets.value = response.data;
       isTweetButton.value = true;
       if (tweets.value == null) {
-        messageStore.flash("検索結果はありません。");
+        messageStore.flash("検索結果はありません。", "red");
       }
     })
     .catch((error) => {
       isTweetButton.value = true;
-      messageStore.flash("検索結果がないか、取得出来ませんでした");
+      messageStore.flash("検索結果がないか、取得出来ませんでした", "red");
     });
 }
 </script>

@@ -2,6 +2,7 @@
 import { ref, reactive, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
+import { useMessageStore } from "@/stores/message";
 import { usePageStore } from "../stores/page";
 import { useSearchStore } from "../stores/search";
 import axios from "axios";
@@ -13,11 +14,12 @@ import Image from "../components/CoffeeImage.vue";
 import { URL } from "../url";
 
 const authStore = useAuthStore();
+const messageStore = useMessageStore();
 const router = useRouter();
-const categories = ref([]);
-const stores = ref([]);
 const pageStore = usePageStore();
 const searchStore = useSearchStore();
+const categories = ref([]);
+const stores = ref([]);
 const index: any = reactive({
   coffees: [],
 });
@@ -172,6 +174,9 @@ async function favoriteCoffee(): Promise<void> {
       favorite_flg.value = true;
       load.value = true;
       pageStore.setPage(1);
+    })
+    .catch((error) => {
+      messageStore.flash("お気に入り登録出来ませんでした", "red");
     });
 }
 
@@ -192,6 +197,9 @@ async function setSearch(): Promise<void> {
     })
     .then((response) => {
       index.coffees = response.data;
+    })
+    .catch((error) => {
+      messageStore.flash("検索結果を取得出来ませんでした", "red");
     });
 }
 

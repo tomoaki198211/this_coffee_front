@@ -2,6 +2,7 @@
 import { reactive, ref, watch, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
+import { useMessageStore } from "@/stores/message";
 import { usePageStore } from "../stores/page";
 import { useSearchStore } from "../stores/search";
 import axios from "axios";
@@ -17,6 +18,7 @@ import { mdiEmoticonDeadOutline } from "@mdi/js";
 import { URL } from "../url";
 
 const authStore = useAuthStore();
+const messageStore = useMessageStore();
 const router = useRouter();
 const pageStore = usePageStore();
 const searchStore = useSearchStore();
@@ -199,6 +201,9 @@ async function setReview(): Promise<void> {
     .then((response) => {
       searchStore.setReviewisAll(true);
       index.reviews = response.data;
+    })
+    .catch((error) => {
+      messageStore.flash("レビューを取得出来ませんでした", "red");
     });
 }
 
@@ -214,6 +219,9 @@ async function setAllReview(): Promise<void> {
     .then((response) => {
       searchStore.setReviewisAll(false);
       index.reviews = response.data;
+    })
+    .catch((error) => {
+      messageStore.flash("レビュー一覧を取得出来ませんでした", "red");
     });
 }
 
@@ -236,6 +244,9 @@ async function setSearch(): Promise<void> {
       index.reviews = response.data;
       // pageStore.setReviewPage(1);
       searchStore.setReviewisAll(false);
+    })
+    .catch((error) => {
+      messageStore.flash("検索結果を取得出来ませんでした", "red");
     });
 }
 

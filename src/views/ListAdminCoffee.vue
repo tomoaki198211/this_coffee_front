@@ -2,6 +2,7 @@
 import { ref, reactive, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
+import { useMessageStore } from "@/stores/message";
 import axios from "axios";
 import { mdiMagnify } from "@mdi/js";
 import { mdiPlus } from "@mdi/js";
@@ -9,6 +10,7 @@ import { mdiCoffeeOutline } from "@mdi/js";
 import { URL } from "../url";
 
 const authStore = useAuthStore();
+const messageStore = useMessageStore();
 const router = useRouter();
 const index: any = reactive({
   coffees: [],

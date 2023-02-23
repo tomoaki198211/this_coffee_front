@@ -106,7 +106,7 @@ async function updateCoffee(): Promise<void> {
       router.push("/coffees/admin/index");
     })
     .catch((error) => {
-      messageStore.flash("更新出来ませんでした");
+      messageStore.flash("更新出来ませんでした", "red");
     });
 }
 async function destroyCoffee(): Promise<void> {
@@ -123,7 +123,7 @@ async function destroyCoffee(): Promise<void> {
       router.push("/coffees/admin/index");
     })
     .catch((error) => {
-      messageStore.flash("削除出来ませんでした");
+      messageStore.flash("削除出来ませんでした", "red");
     });
 }
 </script>

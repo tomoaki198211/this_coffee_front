@@ -2,6 +2,7 @@
 import { ref, reactive } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import { useMessageStore } from "@/stores/message";
 import moment from "moment";
 import { useAuthStore } from "../stores/auth";
 import { URL } from "../url";
@@ -11,6 +12,7 @@ const index: any = reactive({
   reviews: [],
 });
 const authStore = useAuthStore();
+const messageStore = useMessageStore();
 const router = useRouter();
 //日付の修正
 const momentDate = (date: any) => {
@@ -34,7 +36,12 @@ const onpreferenceCoffeeStart = async () => {
     .then((response) => {
       index.reviews = response.data;
     })
-    .catch((error) => {});
+    .catch((error) => {
+      messageStore.flash(
+        "取得出来ませんでした。好みをチェックして下さい",
+        "red"
+      );
+    });
 };
 </script>
 

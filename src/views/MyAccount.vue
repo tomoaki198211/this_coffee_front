@@ -198,7 +198,7 @@ async function setCoffee(): Promise<void> {
               block
               @click="onShuffleStop()"
               color="#d7ccc8"
-              >ストップ
+              >結果を見る
             </v-btn>
           </tempalete>
         </v-card>

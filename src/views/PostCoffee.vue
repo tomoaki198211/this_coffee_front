@@ -71,9 +71,13 @@ async function postCoffeeMaster(): Promise<void> {
     .post(`${URL.ADDRESS}/api/v1/coffees`, data, config)
     .then((response) => {
       messageStore.flash("作成しました");
-      router.push({
-        path: "/coffees/admin/index",
-      });
+      router
+        .push({
+          path: "/coffees/admin/index",
+        })
+        .catch((error) => {
+          messageStore.flash("作成出来ませんでした", "red");
+        });
     });
 }
 </script>

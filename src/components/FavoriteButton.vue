@@ -84,6 +84,9 @@ async function registerFavorite(): Promise<void> {
       favorites.list = response.data;
       messageStore.flash("お気に入りしました");
       setFavorite();
+    })
+    .catch((error) => {
+      messageStore.flash("お気に入り出来ませんでした", "red");
     });
 }
 
@@ -104,6 +107,9 @@ async function deleteFavorite(): Promise<void> {
     .then((response) => {
       messageStore.flash("お気に入りを解除しました");
       setFavorite();
+    })
+    .catch((error) => {
+      messageStore.flash("お気に入りを解除出来ませんでした", "red");
     });
 }
 
