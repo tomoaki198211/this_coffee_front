@@ -8,15 +8,17 @@ const messageStore = useMessageStore();
   <v-row>
     <v-col>
       <div class="message">
-        <p class="text-center font-weight-bold pt-2">{{ messageStore.text }}</p>
+        <p
+          class="text-center font-weight-bold pt-2"
+          v-bind:style="{ color: messageStore.color }"
+        >
+          {{ messageStore.text }}
+        </p>
       </div>
     </v-col>
   </v-row>
 </template>
 <style scoped>
-p {
-  color: #7b5544;
-}
 .message {
   height: 30px;
 }

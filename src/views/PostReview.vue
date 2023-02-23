@@ -106,7 +106,10 @@ async function postReview(): Promise<void> {
       messageStore.flash("レビューを作成しました");
     })
     .catch((error) => {
-      messageStore.flash("作成出来ませんでした。必須項目を入力して下さい");
+      messageStore.flash(
+        "作成出来ませんでした。必須項目を入力して下さい",
+        "red"
+      );
     });
 }
 showCoffee();

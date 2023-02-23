@@ -108,7 +108,7 @@ async function destroyReview(id: any): Promise<void> {
       },
     })
     .then((response: AxiosResponse<any>) => {
-      messageStore.flash("レビューを削除しました");
+      messageStore.flash("レビューを削除しました", "red");
       router.push("/reviews");
     });
 }
