@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
+import { useRouter } from "vue-router";
 import axios from "axios";
 import { mdiAccountCircleOutline } from "@mdi/js";
 import { mdiEmailOutline } from "@mdi/js";
@@ -10,6 +11,7 @@ import GetReccommend from "../components/GetReccommend.vue";
 import { URL } from "../url";
 
 const authStore = useAuthStore();
+const router = useRouter();
 const disabled_flg = ref(true);
 const coffee = ref();
 const shuffled = ref(false);
@@ -167,6 +169,17 @@ async function setCoffee(): Promise<void> {
                     {{ coffee ? coffee.coffee_property.store.name : "" }}
                   </v-card-subtitle>
                 </v-card-item>
+                <v-card-action>
+                  <v-btn
+                    variant="text"
+                    @click="
+                      router.push({
+                        path: `/coffees/${coffee.id}`,
+                      })
+                    "
+                    >このコーヒーを見る</v-btn
+                  >
+                </v-card-action>
               </div>
             </template>
             <template v-else>
@@ -189,8 +202,8 @@ async function setCoffee(): Promise<void> {
               block
               @click="onShuffleStart()"
               color="#d7ccc8"
-              >今日の一杯を探す</v-btn
-            >
+              >今日の一杯を探す(ランダムで選択されます)
+            </v-btn>
           </tempalete>
           <tempalete v-else>
             <v-btn

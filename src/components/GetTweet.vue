@@ -16,6 +16,8 @@ const messageStore = useMessageStore();
 const isTweetButton = ref(false);
 
 async function getTweet(): Promise<void> {
+  isTweetButton.value = true;
+
   const config = {
     headers: {
       uid: authStore.uid,
@@ -32,13 +34,11 @@ async function getTweet(): Promise<void> {
     .post(`${URL.ADDRESS}/api/v1/tweets/search`, data, config)
     .then((response) => {
       tweets.value = response.data;
-      isTweetButton.value = true;
       if (tweets.value == null) {
-        messageStore.flash("検索結果はありません。", "red");
+        messageStore.flash("直近7日間の検索結果はありません。", "red");
       }
     })
     .catch((error) => {
-      isTweetButton.value = true;
       messageStore.flash("検索結果がないか、取得出来ませんでした", "red");
     });
 }
@@ -56,9 +56,7 @@ async function getTweet(): Promise<void> {
       >
     </template>
     <template v-else>
-      <v-card-subtitle>
-        実行済みです。表示がない場合検索結果は０。
-      </v-card-subtitle>
+      <v-card-title> 実行済みです。 </v-card-title>
     </template>
     <v-list>
       <v-list-item v-for="tweet in tweets" :key="tweet.id"
@@ -66,5 +64,8 @@ async function getTweet(): Promise<void> {
         <v-divider></v-divider>
       </v-list-item>
     </v-list>
+    <template v-if="isTweetButton && tweets === null">
+      <v-card-title> 直近7日間の検索結果は0です。 </v-card-title>
+    </template>
   </v-card>
 </template>

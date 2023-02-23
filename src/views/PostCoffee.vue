@@ -104,7 +104,6 @@ async function postCoffeeMaster(): Promise<void> {
             <v-select
               v-model="selected_category.id"
               label="分類"
-              :hint="`${selected_category.id},${selected_category.name}`"
               :items="categories"
               item-title="name"
               item-value="id"
@@ -115,7 +114,6 @@ async function postCoffeeMaster(): Promise<void> {
             <v-select
               v-model="selected_store.id"
               label="販売店"
-              :hint="`${selected_store.id},${selected_store.name}`"
               :items="stores"
               item-title="name"
               item-value="id"

@@ -77,7 +77,7 @@ const authStore = useAuthStore();
             >
             <v-card-text
               >ログイン（登録）なしでも他の人のレビューを読む事が出来ます。アカウントを登録する事で、「レビュー投稿」と
-              コーヒーを「お気に入り」出来るようになります。また、マイカウントで「今日の一杯」と「好みからレビューおすすめ検索」が可能です。</v-card-text
+              コーヒーを「お気に入り」出来るようになります。また、アカウント画面で「今日の一杯（ランダムセレクト）」と「好みからレビューおすすめ検索」が可能です。</v-card-text
             ><v-divider></v-divider>
             <v-card-title class="text-h6 bg-color"
               ><v-icon :icon="mdiCommentTextOutline"></v-icon
@@ -108,8 +108,8 @@ const authStore = useAuthStore();
                 >レビューを見てみる</v-btn
               >
             </v-card-actions>
-            <template v-if="!authStore.isAuthencated()">
-              <v-card-actions>
+            <v-card-actions>
+              <template v-if="!authStore.isAuthencated()">
                 <v-btn
                   block
                   variant="outlined"
@@ -118,8 +118,18 @@ const authStore = useAuthStore();
                   @click="router.push('/auth/signup')"
                   >アカウントを登録する！</v-btn
                 >
-              </v-card-actions>
-            </template>
+              </template>
+              <template v-else>
+                <v-btn
+                  block
+                  variant="outlined"
+                  color="#7b5544"
+                  :prepend-icon="mdiAccountPlus"
+                  @click="router.push('/auth/account')"
+                  >おすすめ機能を使ってみる</v-btn
+                >
+              </template>
+            </v-card-actions>
           </v-card>
         </v-col>
       </v-col>
