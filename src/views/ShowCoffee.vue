@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
-import { useMessageStore } from "@/stores/message";
 import { useRouter } from "vue-router";
 import axios, { type AxiosResponse } from "axios";
 import { mdiArrowLeftThick } from "@mdi/js";
@@ -16,7 +15,6 @@ interface Props {
 }
 const props = defineProps<Props>();
 const authStore = useAuthStore();
-const messageStore = useMessageStore();
 const router = useRouter();
 const coffee: any = reactive({
   coffee_id: "",
