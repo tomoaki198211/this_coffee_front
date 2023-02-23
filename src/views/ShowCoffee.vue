@@ -152,7 +152,7 @@ async function showCoffee(): Promise<void> {
         <v-card class="mx-auto" max-width="400" color="#fff7ef">
           <v-tabs v-model="tab" bg-color="primary">
             <v-tab value="one">レビュー</v-tab>
-            <v-tab value="two">ツイート直近10件</v-tab>
+            <v-tab value="two">ツイート直近(7日間)10件</v-tab>
           </v-tabs>
           <v-window v-model="tab">
             <v-window-item value="one">

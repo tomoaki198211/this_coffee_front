@@ -189,8 +189,8 @@ async function setCoffee(): Promise<void> {
               block
               @click="onShuffleStart()"
               color="#d7ccc8"
-              >今日の一杯を探す</v-btn
-            >
+              >今日の一杯を探す(ランダムで選択されます)
+            </v-btn>
           </tempalete>
           <tempalete v-else>
             <v-btn
