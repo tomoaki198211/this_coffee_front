@@ -174,9 +174,6 @@ async function favoriteCoffee(): Promise<void> {
       favorite_flg.value = true;
       load.value = true;
       pageStore.setPage(1);
-    })
-    .catch((error) => {
-      messageStore.flash("お気に入り登録出来ませんでした", "red");
     });
 }
 
