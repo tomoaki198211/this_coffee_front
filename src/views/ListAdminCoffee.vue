@@ -132,6 +132,9 @@ async function setSearch(): Promise<void> {
     })
     .then((response) => {
       index.coffees = response.data;
+    })
+    .catch((error) => {
+      messageStore.flash("検索結果を取得出来ませんでした", "red");
     });
 }
 
