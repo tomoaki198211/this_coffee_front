@@ -12,12 +12,12 @@ export default defineConfig({
     },
   },
   server: {
-    host: true,
+    // host: true,
     proxy: {
       "^/api/.*": {
-        target: "http://localhost:3000",
+        // target: "http://localhost:3000",
         //本番環境(s3)では下のproxyが動かずaxiosの部分に共通の定数URLを渡す事に
-        // target: "http://35.79.178.52",
+        target: "http://35.79.178.52",
         changeOrigin: true,
         // rewrite: (path) => path.replace(/^\/api/, ""),
       },

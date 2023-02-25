@@ -16,10 +16,10 @@ interface Props {
 const props = defineProps<Props>();
 const authStore = useAuthStore();
 const router = useRouter();
-const coffee: any = reactive({
+const coffee = reactive({
   coffee_id: "",
   category_name: "",
-  cstore_name: "",
+  store_name: "",
   property_id: "",
   name: "",
   size: "",

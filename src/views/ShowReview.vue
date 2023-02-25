@@ -13,21 +13,29 @@ import { URL } from "../url";
 interface Props {
   id: number;
 }
-
 const props = defineProps<Props>();
 const authStore = useAuthStore();
 const messageStore = useMessageStore();
 const router = useRouter();
-const evalutions = [
+const evalutions: { [key: string]: number | string }[] = [
   { value: 5, text: "5:最高！" },
   { value: 4, text: "4:満足！" },
   { value: 3, text: "3:普通" },
   { value: 2, text: "2:微妙" },
   { value: 1, text: "1:うーん" },
 ];
-const evalutions_rate = ["弱い", "やや弱い", "普通", "やや強い", "強い"];
-const evalutions_colors = ["red", "orange", "grey", "cyan", "green"];
-
+const evalutions_rate: string[] = [
+  "弱い",
+  "やや弱い",
+  "普通",
+  "やや強い",
+  "強い",
+];
+const evalutions_colors: string[] = ["red", "orange", "grey", "cyan", "green"];
+const settings: { [key: string]: boolean | string }[] = [
+  { value: true, text: "公開" },
+  { value: false, text: "非公開" },
+];
 const review_created = ref();
 const category_id = ref();
 const coffee_id = ref(props.id);
@@ -41,10 +49,7 @@ const setting = reactive({
   value: "",
   text: "",
 });
-const settings = [
-  { value: true, text: "公開" },
-  { value: false, text: "非公開" },
-];
+
 const intuition = reactive({
   value: "",
   text: "",
@@ -107,7 +112,7 @@ async function destroyReview(id: any): Promise<void> {
         client: authStore.client,
       },
     })
-    .then((response: AxiosResponse<any>) => {
+    .then((response) => {
       messageStore.flash("レビューを削除しました", "red");
       router.push("/reviews");
     });

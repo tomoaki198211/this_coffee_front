@@ -30,6 +30,7 @@ const selected_store = reactive({
 });
 const categories = ref([]);
 const stores = ref([]);
+
 setMaster();
 
 async function setMaster(): Promise<void> {
@@ -97,7 +98,6 @@ async function postCoffeeMaster(): Promise<void> {
       </v-col>
       <v-col cols="12" sm="11">
         <v-card class="mx-auto" max-width="500">
-          <!-- <v-img src="" alt="" height="200" cover></v-img> -->
           <Image v-bind:id="Number(selected_category.id)" v-bind:height="200" />
           <v-divider></v-divider>
           <v-list-item>

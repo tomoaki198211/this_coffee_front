@@ -16,32 +16,36 @@ const props = defineProps<Props>();
 const authStore = useAuthStore();
 const router = useRouter();
 const messageStore = useMessageStore();
-const evalutions = [
+const evalutions: { [key: string]: number | string }[] = [
   { value: 5, text: "5:最高！" },
   { value: 4, text: "4:満足！" },
   { value: 3, text: "3:普通" },
   { value: 2, text: "2:微妙" },
   { value: 1, text: "1:うーん" },
 ];
-const evalutions_rate = ["弱い", "やや弱い", "普通", "やや強い", "強い"];
-const evalutions_colors = ["red", "orange", "grey", "cyan", "green"];
-
+const evalutions_rate: string[] = [
+  "弱い",
+  "やや弱い",
+  "普通",
+  "やや強い",
+  "強い",
+];
+const evalutions_colors: string[] = ["red", "orange", "grey", "cyan", "green"];
+const settings: { [key: string]: boolean | string }[] = [
+  { value: true, text: "公開" },
+  { value: false, text: "非公開" },
+];
 const coffee_id = ref(props.id);
 const remarks = ref();
 const setting = reactive({
   value: false,
   text: "非公開",
 });
-const settings = [
-  { value: true, text: "公開" },
-  { value: false, text: "非公開" },
-];
-
-const intuition: any = reactive({
+const intuition = reactive({
   value: "",
   text: "",
 });
-const efficiency: any = reactive({
+const efficiency = reactive({
   value: "",
   text: "",
 });
@@ -53,7 +57,7 @@ const attributes: any = reactive({
   bitter: null,
 });
 
-const coffee: any = reactive({
+const coffee = reactive({
   name: "",
   store: "",
   category_id: "",
