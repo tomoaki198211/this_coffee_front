@@ -14,7 +14,6 @@ const index: any = reactive({
 const authStore = useAuthStore();
 const messageStore = useMessageStore();
 const router = useRouter();
-//日付の修正
 const momentDate = (date: any) => {
   return moment(date).format("YYYY/MM/DD");
 };

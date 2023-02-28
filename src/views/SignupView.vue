@@ -6,14 +6,14 @@ import { mdiEmailOutline } from "@mdi/js";
 import { mdiLockOutline } from "@mdi/js";
 import { mdiAccountPlus } from "@mdi/js";
 
-type userSignObj = {
+type User = {
   name: string;
   email: string;
   password: string;
   password_confirmation: string;
 };
 
-const user: userSignObj = reactive({
+const user: User = reactive({
   name: "",
   email: "",
   password: "",

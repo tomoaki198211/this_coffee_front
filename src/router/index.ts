@@ -132,7 +132,6 @@ const router = createRouter({
   ],
 });
 
-//ログインしていないとマイアカウントにいけない
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const messageStore = useMessageStore();
@@ -142,7 +141,6 @@ router.beforeEach((to, from, next) => {
   } else next();
 });
 
-//ログインしていないとレビューを投稿出来ない。
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const messageStore = useMessageStore();
@@ -152,7 +150,6 @@ router.beforeEach((to, from, next) => {
   } else next();
 });
 
-//レビューは直接閲覧出来ない。レビュー一覧か、マイカウントからのみ移動出来る
 router.beforeEach((to, from, next) => {
   const messageStore = useMessageStore();
   if (
@@ -164,7 +161,6 @@ router.beforeEach((to, from, next) => {
   } else next();
 });
 
-//レビュー投稿は直接入力では投稿画面に行けない。
 router.beforeEach((to, from, next) => {
   const messageStore = useMessageStore();
   if (to.name === "post_review" && from.name !== "coffees") {
@@ -173,7 +169,6 @@ router.beforeEach((to, from, next) => {
   } else next();
 });
 
-//他ユーザーを管理するadminユーザーは一覧からのみエディット画面に行くことが出来る。
 router.beforeEach((to, from, next) => {
   const messageStore = useMessageStore();
   if (to.name === "edit_user" && from.name !== "index_user") {
@@ -184,7 +179,6 @@ router.beforeEach((to, from, next) => {
   } else next();
 });
 
-//コーヒーマスターの編集はコーヒーマスター一覧からのみいくことが出来る
 router.beforeEach((to, from, next) => {
   const messageStore = useMessageStore();
   if (to.name === "edit_coffee" && from.name !== "index_coffee") {
@@ -195,7 +189,6 @@ router.beforeEach((to, from, next) => {
   } else next();
 });
 
-//コーヒーマスターの投稿はコーヒーマスター一覧からのみいくことが出来る
 router.beforeEach((to, from, next) => {
   const messageStore = useMessageStore();
   if (to.name === "post_coffee" && from.name !== "index_coffee") {
@@ -206,7 +199,6 @@ router.beforeEach((to, from, next) => {
   } else next();
 });
 
-// ログイン中はログイン、アカウント登録画面に行けない
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const messageStore = useMessageStore();
@@ -221,7 +213,6 @@ router.beforeEach((to, from, next) => {
   } else next();
 });
 
-//コーヒー管理画面一覧は管理者しかアクセス出来ない
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const messageStore = useMessageStore();
@@ -231,7 +222,6 @@ router.beforeEach((to, from, next) => {
   } else next();
 });
 
-//ユーザー管理画面は管理者しかアクセス出来ない
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const messageStore = useMessageStore();
@@ -241,7 +231,6 @@ router.beforeEach((to, from, next) => {
   } else next();
 });
 
-//コーヒーマスターの投稿は管理者しか出来ない
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const messageStore = useMessageStore();
@@ -251,7 +240,6 @@ router.beforeEach((to, from, next) => {
   } else next();
 });
 
-//コーヒー編集は管理者しか出来ない
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const messageStore = useMessageStore();
@@ -261,7 +249,6 @@ router.beforeEach((to, from, next) => {
   } else next();
 });
 
-//ユーザー編集は管理者しか出来ない
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const messageStore = useMessageStore();

@@ -57,7 +57,6 @@ const resize = () => {
   }
 };
 
-//front側で検索する際にcomputedを使用
 const searchedCoffees = computed(() => {
   let coffees: any = [];
   for (let i in index.coffees) {
@@ -127,7 +126,6 @@ const pageReset = () => {
 //   setSearch();
 // });
 
-//0マスター取得用
 async function setMaster(): Promise<void> {
   await axios
     .get(`${URL.ADDRESS}/api/v1/coffees/option`, {
@@ -143,7 +141,6 @@ async function setMaster(): Promise<void> {
     });
 }
 
-//1 axios
 async function setCoffee(): Promise<void> {
   await axios
     .get(`${URL.ADDRESS}/api/v1/coffees`, {
@@ -159,7 +156,6 @@ async function setCoffee(): Promise<void> {
     });
 }
 
-//2お気に入り取得
 async function favoriteCoffee(): Promise<void> {
   await axios
     .get(`${URL.ADDRESS}/api/v1/coffees/likes`, {
@@ -177,7 +173,6 @@ async function favoriteCoffee(): Promise<void> {
     });
 }
 
-//3API側で検索結果を表示する
 async function setSearch(): Promise<void> {
   await axios
     .post(`${URL.ADDRESS}/api/v1/coffees/search`, {
@@ -204,8 +199,6 @@ resize();
 startListCoffee();
 setCoffee();
 setMaster();
-
-// :src="`https://product.starbucks.co.jp${coffee.coffee_property.image}`"
 </script>
 
 <template>

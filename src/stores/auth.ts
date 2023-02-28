@@ -25,7 +25,6 @@ export const useAuthStore = defineStore({
   }),
 
   actions: {
-    //アカウント登録
     async signup(
       email: string,
       password: string,
@@ -61,7 +60,6 @@ export const useAuthStore = defineStore({
       }
     },
 
-    //ログイン
     async login(email: string, password: string): Promise<void> {
       const messageStore = useMessageStore();
       try {
@@ -91,7 +89,6 @@ export const useAuthStore = defineStore({
       }
     },
 
-    //ゲストログイン
     async guest_login(): Promise<void> {
       const messageStore = useMessageStore();
       try {
@@ -116,7 +113,6 @@ export const useAuthStore = defineStore({
       }
     },
 
-    //ゲスト管理者ログイン
     async guest_admin_login(): Promise<void> {
       const messageStore = useMessageStore();
       try {
@@ -143,7 +139,6 @@ export const useAuthStore = defineStore({
       }
     },
 
-    //ログアウト
     async logout(): Promise<void> {
       const messageStore = useMessageStore();
       await axios.delete(`${URL.ADDRESS}/api/v1/auth/sign_out`, {
@@ -168,7 +163,6 @@ export const useAuthStore = defineStore({
       messageStore.flash("ログアウトしました");
     },
 
-    //アカウント削除
     async sign_out(): Promise<void> {
       const messageStore = useMessageStore();
       await axios.delete(`${URL.ADDRESS}/api/v1/auth`, {

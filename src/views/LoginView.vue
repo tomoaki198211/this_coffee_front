@@ -6,11 +6,10 @@ import { mdiEmailOutline } from "@mdi/js";
 import { mdiLockOutline } from "@mdi/js";
 import { mdiLogin } from "@mdi/js";
 
-const user: any = reactive({
+const user = reactive({
   email: "",
   password: "",
 });
-
 const authStore = useAuthStore();
 const router = useRouter();
 const onLogin = (): void => {

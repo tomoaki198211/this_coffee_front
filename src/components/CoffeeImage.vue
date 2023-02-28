@@ -22,13 +22,16 @@ const image_url: any = {
   2: ice_img,
   3: espresso_img,
   4: rate_img,
-  5: float_img,
-  6: tea_img,
-  7: shop_img,
-  8: beans_img,
-  9: instant_img,
-  10: can_img,
-  11: other_img,
+  5: rate_img,
+  6: rate_img,
+  7: rate_img,
+  8: float_img,
+  9: float_img,
+  10: tea_img,
+  11: beans_img,
+  12: instant_img,
+  13: can_img,
+  14: other_img,
 };
 </script>
 <template>
