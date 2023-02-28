@@ -84,7 +84,6 @@ const resize = () => {
   }
 };
 
-//算出プロパティで1ページあたりの表示を決定
 const getReviews = computed(() => {
   let reviews = [];
   getResult(index.reviews.length);
@@ -99,12 +98,10 @@ const getResult = (length: any) => {
   result.value = length;
 };
 
-//日付の修正
 const momentDate = (date: any) => {
   return moment(date).format("YYYY/MM/DD");
 };
 
-//検索リセット
 const searchReset = () => {
   searchStore.setReviewWord("");
   searchStore.setReviewCategory("");
@@ -122,7 +119,6 @@ const onSearch = () => {
   pageStore.setReviewPage(1);
 };
 
-//切り替え時の設定
 const switchReview = () => {
   if (
     searchStore.review_search_word != "" ||
@@ -225,7 +221,6 @@ async function setAllReview(): Promise<void> {
     });
 }
 
-//api側で検索する場合に使用
 async function setSearch(): Promise<void> {
   await axios
     .post(`${URL.ADDRESS}/api/v1/reviews/search`, {
@@ -242,7 +237,6 @@ async function setSearch(): Promise<void> {
     })
     .then((response) => {
       index.reviews = response.data;
-      // pageStore.setReviewPage(1);
       searchStore.setReviewisAll(false);
     })
     .catch((error) => {

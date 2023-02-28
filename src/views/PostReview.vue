@@ -63,7 +63,6 @@ const coffee = reactive({
   category_id: "",
 });
 
-//選択したマスターのshow画面
 async function showCoffee(): Promise<void> {
   await axios
     .get(`${URL.ADDRESS}/api/v1/coffees/${props.id}`, {
@@ -80,7 +79,6 @@ async function showCoffee(): Promise<void> {
     });
 }
 
-//投稿処理
 async function postReview(): Promise<void> {
   const data = {
     review: {

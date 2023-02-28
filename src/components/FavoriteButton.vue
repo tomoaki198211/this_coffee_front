@@ -26,7 +26,6 @@ const startFavorites = () => {
   }
 };
 
-//お気に入りをしているかどうか
 const isFavorited = computed((): Boolean => {
   if (favorites.list.length === 0) {
     return false;
@@ -34,7 +33,6 @@ const isFavorited = computed((): Boolean => {
   return Boolean(findFavoriteId());
 });
 
-//idを探す
 const findFavoriteId = () => {
   const favorite = favorites.list.find((favorite: any) => {
     return favorite.user_id === Number(authStore.user_id);
@@ -44,7 +42,6 @@ const findFavoriteId = () => {
   }
 };
 
-//お気に入り一覧を取得する
 async function setFavorite(): Promise<void> {
   const config = {
     headers: {
@@ -60,7 +57,6 @@ async function setFavorite(): Promise<void> {
     });
 }
 
-//お気に入り登録
 async function registerFavorite(): Promise<void> {
   const data = {
     favorite: {
@@ -90,7 +86,6 @@ async function registerFavorite(): Promise<void> {
     });
 }
 
-//お気に入り解除
 async function deleteFavorite(): Promise<void> {
   const favoriteid = findFavoriteId();
   await axios
