@@ -63,11 +63,20 @@ const coffee = reactive({
   category_id: "",
 });
 
-const valid = ref(false);
-const intuitionValidation = (value) => !!value || "直感的な評価は必須項目です";
-const remarksValidation = (value) => !!value || "感想は必須項目です";
+const valid = ref("true");
+const form = ref();
+const requiredValidation = (value) => !!value || "必須項目です";
 const remarkslengthValidation = (value) =>
   value.length <= 80 || "80文字以内で入力して下さい";
+
+const form_validate = async () => {
+  const validResult = await form.value.validate();
+  if (validResult.valid) {
+    valid.value = true;
+  } else {
+    valid.value = false;
+  }
+};
 
 async function showCoffee(): Promise<void> {
   await axios
@@ -86,7 +95,7 @@ async function showCoffee(): Promise<void> {
 }
 
 async function postReview(): Promise<void> {
-  valid.value = true;
+  form_validate();
   const data = {
     review: {
       coffee_id: coffee_id.value,
@@ -146,7 +155,7 @@ showCoffee();
             <v-list-item-subtitle>{{ coffee.name }}</v-list-item-subtitle>
           </v-list-item>
         </v-card>
-        <v-form v-model="valid">
+        <v-form ref="form">
           <v-card class="mt-5">
             <v-table density="compact">
               <tbody>
@@ -154,9 +163,9 @@ showCoffee();
                   <td>
                     <v-select
                       v-model="intuition.value"
-                      :rules="[intuitionValidation]"
+                      :rules="[requiredValidation]"
                       density="compact"
-                      label="直感的な評価(必須項目)"
+                      label="直感的な評価"
                       :items="evalutions"
                       item-title="text"
                       item-value="value"
@@ -171,9 +180,9 @@ showCoffee();
                   <td>
                     <v-select
                       v-model="efficiency.value"
-                      :rules="efficiencyRules"
+                      :rules="[requiredValidation]"
                       density="compact"
-                      label="コストパフォーマンス(必須項目)"
+                      label="コストパフォーマンス"
                       :items="evalutions"
                       item-title="text"
                       item-value="value"
@@ -191,18 +200,17 @@ showCoffee();
               <v-list-item>
                 <v-textarea
                   v-model="remarks"
-                  :rules="[remarksValidation, remarkslengthValidation]"
+                  :rules="[requiredValidation, remarkslengthValidation]"
                   counter="80"
-                  label="感想(必須項目)"
+                  label="感想"
                   rows="2"
                   color="red"
                   class=""
                 />
                 <v-select
                   v-model="setting.value"
-                  :rules="settingRules"
                   density="compact"
-                  label="公開・非公開(必須項目)"
+                  label="公開・非公開"
                   :items="settings"
                   item-title="text"
                   item-value="value"
