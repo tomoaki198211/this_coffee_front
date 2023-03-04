@@ -14,10 +14,10 @@ const user = reactive({
 const authStore = useAuthStore();
 const router = useRouter();
 const messageStore = useMessageStore();
-const valid = ref("true");
+const valid = ref(true);
 const form = ref();
-const requiredValidation = (value) => !!value || "必須項目です";
-const emailValidation = (value) =>
+const requiredValidation = (value: boolean) => !!value || "必須項目です";
+const emailValidation = (value: any) =>
   value.match(
     /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/
   ) || "有効なEメールを入力して下さい";
