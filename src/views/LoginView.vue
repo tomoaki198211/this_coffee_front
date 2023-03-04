@@ -2,6 +2,7 @@
 import { ref, reactive } from "vue";
 import { useAuthStore } from "../stores/auth";
 import { useRouter } from "vue-router";
+import { useMessageStore } from "@/stores/message";
 import { mdiEmailOutline } from "@mdi/js";
 import { mdiLockOutline } from "@mdi/js";
 import { mdiLogin } from "@mdi/js";
@@ -12,23 +13,27 @@ const user = reactive({
 });
 const authStore = useAuthStore();
 const router = useRouter();
+const messageStore = useMessageStore();
 const valid = ref("true");
 const form = ref();
 const requiredValidation = (value) => !!value || "必須項目です";
 const emailValidation = (value) =>
-  value.match(/^[a-z.-]+@[a-z.-]+\.[a-z]+$/) || "有効なEメールを入力して下さい";
+  value.match(
+    /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/
+  ) || "有効なEメールを入力して下さい";
 
 const form_validate = async () => {
   const validResult = await form.value.validate();
   if (validResult.valid) {
     valid.value = true;
+    onLogin();
   } else {
+    messageStore.flash("必須項目を入力して下さい", "red");
     valid.value = false;
   }
 };
 
 const onLogin = (): void => {
-  form_validate();
   const authStore = useAuthStore();
   const email = user.email;
   const password = user.password;
@@ -77,7 +82,7 @@ const guestAdminLogin = (): void => {
               variant="flat"
               color="#7b5544"
               width="200px"
-              @click="onLogin"
+              @click="form_validate()"
             >
               <p class="font-weight-bold btn-txt">ログイン</p>
             </v-btn>
