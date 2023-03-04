@@ -63,6 +63,21 @@ const coffee = reactive({
   category_id: "",
 });
 
+const valid = ref("true");
+const form = ref();
+const requiredValidation = (value) => !!value || "必須項目です";
+const remarkslengthValidation = (value) =>
+  value.length <= 80 || "80文字以内で入力して下さい";
+
+const form_validate = async () => {
+  const validResult = await form.value.validate();
+  if (validResult.valid) {
+    valid.value = true;
+  } else {
+    valid.value = false;
+  }
+};
+
 async function showCoffee(): Promise<void> {
   await axios
     .get(`${URL.ADDRESS}/api/v1/coffees/${props.id}`, {
@@ -80,6 +95,7 @@ async function showCoffee(): Promise<void> {
 }
 
 async function postReview(): Promise<void> {
+  form_validate();
   const data = {
     review: {
       coffee_id: coffee_id.value,
@@ -139,77 +155,84 @@ showCoffee();
             <v-list-item-subtitle>{{ coffee.name }}</v-list-item-subtitle>
           </v-list-item>
         </v-card>
-        <v-card class="mt-5">
-          <v-table density="compact">
-            <tbody>
-              <tr>
-                <td>
-                  <v-select
-                    v-model="intuition.value"
-                    density="compact"
-                    label="直感的な評価(必須項目)"
-                    :items="evalutions"
-                    item-title="text"
-                    item-value="value"
-                    color="red"
-                    class="pt-5"
-                  >
-                  </v-select>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <v-select
-                    v-model="efficiency.value"
-                    density="compact"
-                    label="コストパフォーマンス(必須項目)"
-                    :items="evalutions"
-                    item-title="text"
-                    item-value="value"
-                    color="red"
-                    class="pt-5"
-                  >
-                  </v-select>
-                </td>
-              </tr>
-            </tbody>
-          </v-table>
-        </v-card>
-        <v-card class="mt-2">
-          <v-list>
-            <v-list-item>
-              <v-textarea
-                v-model="remarks"
-                label="感想(必須項目)"
-                rows="2"
-                color="red"
-                class=""
-              />
-              <v-select
-                v-model="setting.value"
-                density="compact"
-                label="公開・非公開(必須項目)"
-                :items="settings"
-                item-title="text"
-                item-value="value"
-                color="red"
-                class=""
-              >
-              </v-select>
-            </v-list-item>
-            <v-card-actions>
-              <v-btn
-                class="mx-auto"
-                variant="flat"
-                color="#7b5544"
-                width="200px"
-                @click="postReview()"
-              >
-                <p class="font-weight-bold btn-txt">レビューを投稿する</p>
-              </v-btn>
-            </v-card-actions>
-          </v-list>
-        </v-card>
+        <v-form ref="form">
+          <v-card class="mt-5">
+            <v-table density="compact">
+              <tbody>
+                <tr>
+                  <td>
+                    <v-select
+                      v-model="intuition.value"
+                      :rules="[requiredValidation]"
+                      density="compact"
+                      label="直感的な評価"
+                      :items="evalutions"
+                      item-title="text"
+                      item-value="value"
+                      color="red"
+                      class="pt-5"
+                      required
+                    >
+                    </v-select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <v-select
+                      v-model="efficiency.value"
+                      :rules="[requiredValidation]"
+                      density="compact"
+                      label="コストパフォーマンス"
+                      :items="evalutions"
+                      item-title="text"
+                      item-value="value"
+                      color="red"
+                      class="pt-5"
+                    >
+                    </v-select>
+                  </td>
+                </tr>
+              </tbody>
+            </v-table>
+          </v-card>
+          <v-card class="mt-2">
+            <v-list>
+              <v-list-item>
+                <v-textarea
+                  v-model="remarks"
+                  :rules="[requiredValidation, remarkslengthValidation]"
+                  counter="80"
+                  label="感想"
+                  rows="2"
+                  color="red"
+                  class=""
+                />
+                <v-select
+                  v-model="setting.value"
+                  density="compact"
+                  label="公開・非公開"
+                  :items="settings"
+                  item-title="text"
+                  item-value="value"
+                  color="red"
+                  class=""
+                >
+                </v-select>
+              </v-list-item>
+              <v-card-actions>
+                <v-btn
+                  class="mx-auto"
+                  variant="flat"
+                  color="#7b5544"
+                  width="200px"
+                  @click="postReview()"
+                >
+                  <p class="font-weight-bold btn-txt">レビューを投稿する</p>
+                </v-btn>
+              </v-card-actions>
+            </v-list>
+          </v-card>
+        </v-form>
       </v-col>
       <v-col cols="12" sm="6">
         <v-card class="mx-auto my-auto">
