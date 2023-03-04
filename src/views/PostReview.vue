@@ -63,10 +63,10 @@ const coffee = reactive({
   category_id: "",
 });
 
-const valid = ref("true");
+const valid = ref(true);
 const form = ref();
-const requiredValidation = (value) => !!value || "必須項目です";
-const remarkslengthValidation = (value) =>
+const requiredValidation = (value: boolean) => !!value || "必須項目です";
+const remarkslengthValidation = (value: any) =>
   value.length <= 80 || "80文字以内で入力して下さい";
 
 const form_validate = async () => {
